@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>统一认证中心 · 智课共生</title>
+  <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="stylesheet" href="/auth-pages.css?v=20260919w" />
+  <link rel="stylesheet" href="/auth-hero.css?v=20260919w" />
+</head>
+<body class="auth-body">
+  <main class="auth-shell">
+    <section class="hero-panel">
+      <div>
+        <div class="hero-deco" aria-hidden="true">
+          <i class="hero-orb orb-a"></i>
+          <i class="hero-orb orb-b"></i>
+          <i class="hero-orb orb-c"></i>
+          <i class="hero-dots"></i>
+          <i class="hero-glow"></i>
+        </div>
+
+        <div class="hero-header">
+          <div class="hero-brand">
+            <div class="hero-logo" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+            <div class="hero-brand-copy">
+              <strong>智课共生</strong>
+            </div>
+          </div>
+          <div class="hero-status">统一认证中心</div>
+        </div>
+
+        <div class="hero-copy">
+          <h1 aria-label="进入智课共生，选择你的身份。">
+            <span class="line" aria-hidden="true"><span class="ch">进</span><span class="ch">入</span><span class="ch">智</span><span class="ch">课</span><span class="ch">共</span><span class="ch">生</span><span class="ch">，</span></span>
+            <span class="line grad" style="--n:7" aria-hidden="true"><span class="ch gc" style="--i:0">选</span><span class="ch gc" style="--i:1">择</span><span class="ch gc" style="--i:2">你</span><span class="ch gc" style="--i:3">的</span><span class="ch gc" style="--i:4">身</span><span class="ch gc" style="--i:5">份</span><span class="ch gc" style="--i:6">。</span></span>
+          </h1>
+          <p>统一账号体系，一次登录进入对应的身份空间。</p>
+          <div class="hero-stats" aria-label="平台数据概览">
+            <div class="stat">
+              <strong>101+</strong>
+              <span>多学科课件样本</span>
+            </div>
+            <i class="divider" aria-hidden="true"></i>
+            <div class="stat">
+              <strong>7 步</strong>
+              <span>完整智课链路</span>
+            </div>
+            <i class="divider" aria-hidden="true"></i>
+            <div class="stat">
+              <strong>3 端</strong>
+              <span>身份空间</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="hero-list">
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+            <div>
+              <strong>统一认证</strong>
+              <span>统一账号，按身份进入对应空间。</span>
+            </div>
+          </div>
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+            <div>
+              <strong>权限隔离</strong>
+              <span>不同身份，独立入口与访问范围。</span>
+            </div>
+          </div>
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+            <div>
+              <strong>企业接入</strong>
+              <span>右上角可进入帮助中心；企业登录仍在准备中。</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-foot">© 2026 智课共生 · AI 互动智课生成与实时问答系统</div>
+      </div>
+    </section>
+
+    <section class="panel-zone">
+      <div class="panel-toolbar">
+        <a class="toolbar-link" href="#" data-lang="zh">中文</a>
+        <a class="toolbar-link" href="#" data-lang="en">EN</a>
+        <a class="toolbar-link" href="#" data-help>帮助中心</a>
+      </div>
+
+      <div class="panel-card portal">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">统一认证中心</h2>
+            <p class="panel-desc">选择身份后进入对应入口。</p>
+          </div>
+        </div>
+
+        <div id="sessionNote" class="session-note">
+          <div id="sessionText"></div>
+          <div class="session-actions">
+            <a id="continueLink" class="link" href="/workspace.html">返回当前首页</a>
+            <a id="logoutHere" class="link" href="#">退出当前账号</a>
+          </div>
+        </div>
+
+        <div id="authMessage" class="msg" role="status" aria-live="polite"></div>
+
+        <div class="panel-body">
+          <div class="choice-grid choice-grid-3">
+            <a class="choice-card role-teacher" href="/teacher/login.html">
+              <div class="choice-card-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+              <strong>教师入口</strong>
+              <p>备课 · 智课生成 · 学情</p>
+              <span>登录后进入教师侧空间。</span>
+              <i class="choice-go" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="m9 6 6 6-6 6"/>
+                </svg>
+              </i>
+            </a>
+            <a class="choice-card role-student" href="/student/login.html">
+              <div class="choice-card-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+              <strong>学生入口</strong>
+              <p>课程学习 · AI 问答 · 进度续接</p>
+              <span>登录后进入学生侧空间。</span>
+              <i class="choice-go" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="m9 6 6 6-6 6"/>
+                </svg>
+              </i>
+            </a>
+            <a class="choice-card role-admin" href="/admin/login">
+              <div class="choice-card-icon" aria-hidden="true"><img src="/brand-icon.jpg" alt="" /></div>
+              <strong>管理入口</strong>
+              <p>账号 · 权限 · 平台运营</p>
+              <span>仅限已授权账号。</span>
+              <i class="choice-go" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="m9 6 6 6-6 6"/>
+                </svg>
+              </i>
+            </a>
+          </div>
+
+          <div class="support-bar">
+            <div class="support-copy">未开通账号可前往开通中心。</div>
+            <div class="support-actions">
+              <a class="toolbar-link" href="/register.html">账号开通中心</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/help-modal.js?v=20260925a" data-help-modal="1"></script>
+  <script src="/app.js"></script>
+  <script src="/auth-pages.js"></script>
+  <script>
+    (function () {
+      const msg = document.getElementById('authMessage');
+      document.querySelectorAll('[data-feedback], [data-lang]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          const text = item.getAttribute('data-feedback')
+            || (item.getAttribute('data-lang') === 'en' ? 'English UI is being prepared.' : '当前为中文界面。');
+          if (msg) {
+            msg.className = 'msg ok';
+            msg.textContent = text;
+          }
+        });
+      });
+    })();
+
+    (async function () {
+      if (!window.AppStore || !window.AppStore.refreshCurrentUser) return;
+      const user = await window.AppStore.refreshCurrentUser();
+      if (!user) return;
+      const sessionNote = document.getElementById('sessionNote');
+      const sessionText = document.getElementById('sessionText');
+      const continueLink = document.getElementById('continueLink');
+      const logoutHere = document.getElementById('logoutHere');
+      sessionNote.classList.add('show');
+      sessionText.textContent = '当前账号：' + (user.username || '未命名用户') + '，当前身份：' + window.AppStore.roleLabel(user.activeRole) + '。';
+      continueLink.href = user.homePath || '/workspace.html';
+      logoutHere.addEventListener('click', async function (e) {
+        e.preventDefault();
+        await window.AppStore.logout();
+        sessionNote.classList.remove('show');
+      });
+    })();
+
+  </script>
+  <script src="/auth-hero.js?v=20260919w"></script>
+
+</body>
+</html>

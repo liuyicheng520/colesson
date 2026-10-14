@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账号开通中心</title>
+  <link rel="stylesheet" href="/auth-pages.css?v=20260919w" />
+  <link rel="stylesheet" href="/auth-hero.css?v=20260919w" />
+</head>
+<body class="auth-body">
+  <main class="auth-shell">
+    <section class="hero-panel">
+      <div>
+        <div class="hero-deco" aria-hidden="true">
+          <i class="hero-orb orb-a"></i>
+          <i class="hero-orb orb-b"></i>
+          <i class="hero-orb orb-c"></i>
+          <i class="hero-dots"></i>
+          <i class="hero-glow"></i>
+        </div>
+        <div class="hero-header">
+          <div class="hero-brand">
+            <div class="hero-logo" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path d="M12 3l7 4v5c0 5-3.4 8.2-7 9-3.6-.8-7-4-7-9V7l7-4Z"/>
+                <path d="M12 8v8"/>
+                <path d="M8 12h8"/>
+              </svg>
+            </div>
+            <div class="hero-brand-copy">
+              <strong>智课共生</strong>
+            </div>
+          </div>
+          <div class="hero-status">账号开通中心</div>
+        </div>
+
+        <div class="hero-copy">
+          <h1 aria-label="开通智课共生，选择你的身份。">
+            <span class="line" aria-hidden="true"><span class="ch">开</span><span class="ch">通</span><span class="ch">智</span><span class="ch">课</span><span class="ch">共</span><span class="ch">生</span><span class="ch">，</span></span>
+            <span class="line grad" style="--n:7" aria-hidden="true"><span class="ch gc" style="--i:0">选</span><span class="ch gc" style="--i:1">择</span><span class="ch gc" style="--i:2">你</span><span class="ch gc" style="--i:3">的</span><span class="ch gc" style="--i:4">身</span><span class="ch gc" style="--i:5">份</span><span class="ch gc" style="--i:6">。</span></span>
+          </h1>
+          <p>统一开通入口，一次填写进入对应身份空间。</p>
+          <div class="hero-stats" aria-label="开通概览">
+            <div class="stat"><strong>教师</strong><span>备课与课堂</span></div>
+            <i class="divider" aria-hidden="true"></i>
+            <div class="stat"><strong>学生</strong><span>学习与问答</span></div>
+            <i class="divider" aria-hidden="true"></i>
+            <div class="stat"><strong>授权</strong><span>管理账号另批</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="hero-list">
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path d="M4 7.5 12 4l8 3.5L12 11 4 7.5Z"/>
+              </svg>
+            </div>
+            <div>
+              <strong>教师开通</strong>
+              <span>用于教师侧工作区访问。</span>
+            </div>
+          </div>
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v15H7.5A2.5 2.5 0 0 0 5 21V6.5Z"/>
+                <path d="M9 9h6"/>
+              </svg>
+            </div>
+            <div>
+              <strong>学生开通</strong>
+              <span>用于学生侧学习空间访问。</span>
+            </div>
+          </div>
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path d="M12 3l7 4v5c0 5-3.4 8.2-7 9-3.6-.8-7-4-7-9V7l7-4Z"/>
+              </svg>
+            </div>
+            <div>
+              <strong>管理员授权</strong>
+              <span>管理员账号仅支持授权分配。</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-foot">© 2026 智课共生 · AI 互动智课生成与实时问答系统</div>
+      </div>
+    </section>
+
+    <section class="panel-zone">
+      <div class="panel-toolbar">
+        <a class="toolbar-link" href="#" data-lang="zh">中文</a>
+        <a class="toolbar-link" href="#" data-lang="en">EN</a>
+        <a class="toolbar-link" href="#" data-help>开通说明</a>
+      </div>
+
+      <div class="panel-card portal">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">账号开通中心</h2>
+            <p class="panel-desc">选择需要开通的身份类型。</p>
+          </div>
+        </div>
+
+        <div id="authMessage" class="msg" role="status" aria-live="polite"></div>
+
+        <div class="panel-body">
+          <div class="choice-grid choice-grid-2">
+            <a class="choice-card role-teacher" href="/teacher/register.html">
+              <div class="choice-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                  <path d="M4 7.5 12 4l8 3.5L12 11 4 7.5Z"/>
+                  <path d="M7 9.2V14c0 1.8 2.2 3.5 5 3.5s5-1.7 5-3.5V9.2"/>
+                </svg>
+              </div>
+              <strong>开通教师账号</strong>
+              <p>教师工作区</p>
+              <span>开通后进入教师侧空间。</span>
+            </a>
+            <a class="choice-card role-student" href="/student/register.html">
+              <div class="choice-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                  <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v15H7.5A2.5 2.5 0 0 0 5 21V6.5Z"/>
+                  <path d="M9 9h6"/>
+                  <path d="M9 12h6"/>
+                </svg>
+              </div>
+              <strong>开通学生账号</strong>
+              <p>学生学习空间</p>
+              <span>开通后进入学生侧空间。</span>
+            </a>
+          </div>
+
+          <div class="support-bar">
+            <div class="support-copy">管理员身份仅支持授权分配。</div>
+            <div class="support-actions">
+              <a class="toolbar-link" href="/login.html">返回认证中心</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/help-modal.js?v=20260925a" data-help-modal="1"></script>
+  <script src="/app.js"></script>
+  <script>
+    (function () {
+      const msg = document.getElementById('authMessage');
+      document.querySelectorAll('[data-feedback], [data-lang]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          const text = item.getAttribute('data-feedback')
+            || (item.getAttribute('data-lang') === 'en' ? 'English UI is being prepared.' : '当前为中文界面。');
+          if (msg) {
+            msg.className = 'msg ok';
+            msg.textContent = text;
+          }
+        });
+      });
+    })();
+  </script>
+  <script src="/auth-hero.js?v=20260919w"></script>
+</body>
+</html>
