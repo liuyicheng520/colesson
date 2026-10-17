@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>历史记录 - 智课共生</title>
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+<link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .hero-copy { max-width: 760px; }
+    .hero-copy p { color: var(--sub); line-height: 1.7; margin-top: 8px; }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .toolbar-row input[type="search"] {
+      width: min(280px, 100%);
+      border-radius: 999px;
+      padding: 9px 14px;
+    }
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--sub);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .chip.active {
+      background: linear-gradient(135deg, #3b82f6, #1f66ff);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 8px 16px var(--brand-glow);
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 18px;
+      display: grid;
+      gap: 6px;
+    }
+    .summary-card strong {
+      font-family: var(--font-display);
+      color: var(--brand-strong);
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
+    .summary-card span { color: var(--sub); font-size: 12px; font-weight: 650; }
+
+    .history-panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      border-radius: 18px;
+    }
+    .panel-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 0;
+      position: relative;
+      padding-left: 18px;
+    }
+    .history-list::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, #9bc5bf, #d5e0db);
+      border-radius: 999px;
+    }
+
+    .history-item {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(165deg, #ffffff 0%, #f7faff 100%);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .history-item:hover {
+      transform: translateX(2px);
+      box-shadow: var(--shadow);
+    }
+    .history-item::before {
+      content: "";
+      position: absolute;
+      left: -17px;
+      top: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-soft);
+    }
+    .history-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .history-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      color: var(--text);
+      flex-wrap: wrap;
+    }
+    .history-type {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid #bfdbfe;
+      background: var(--brand-soft);
+      color: var(--brand-strong);
+      font-size: 12px;
+      padding: 4px 9px;
+      font-weight: 700;
+    }
+    .history-type.is-auth { background: #eef4ff; border-color: #d5e2ff; color: #3557b8; }
+    .history-type.is-project { background: var(--accent-soft); border-color: #f5d0b0; color: #a15a22; }
+    .history-type.is-publish { background: #e8f8ef; border-color: #bfe8cf; color: #1a7a4a; }
+    .history-time { color: #64748b; font-size: 12px; }
+    .history-detail { color: var(--sub); line-height: 1.8; font-size: 14px; }
+
+    .empty-state {
+      border: 1px dashed #c9d8d2;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4faf8 100%);
+      padding: 36px 24px;
+      text-align: center;
+      color: var(--sub);
+    }
+    .empty-state strong {
+      display: block;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .confirm-clear {
+      border: 1px solid #f5d0b0;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: #8a4b16;
+      padding: 10px 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .confirm-clear.show { display: flex; }
+    .confirm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .summary-row { grid-template-columns: 1fr; }
+      .history-list { padding-left: 0; }
+      .history-list::before, .history-item::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="topbar">
+        <div class="hero-copy">
+          <div class="brand-title">历史记录</div>
+          <p>回看登录、项目创建与智课发布等关键操作，支持按类型筛选与关键词搜索。</p>
+        </div>
+        <button id="clearHistoryBtn" class="btn ghost" type="button">清空我的历史</button>
+      </section>
+
+      <div id="clearConfirm" class="confirm-clear">
+        <span>清空后当前账号的本地历史记录将无法恢复。</span>
+        <div class="confirm-actions">
+          <button id="cancelClearBtn" class="btn ghost" type="button">取消</button>
+          <button id="confirmClearBtn" class="btn" type="button">确认清空</button>
+        </div>
+      </div>
+
+      <section class="summary-row">
+        <div class="summary-card"><strong id="summaryTotal">0</strong><span>当前筛选记录</span></div>
+        <div class="summary-card"><strong id="summaryLatest">--</strong><span>最近操作</span></div>
+        <div class="summary-card"><strong id="summaryType">全部</strong><span>当前类型</span></div>
+      </section>
+
+      <section class="toolbar-row">
+        <div class="chip-row" id="typeChips">
+          <button class="chip active" type="button" data-type="all">全部</button>
+          <button class="chip" type="button" data-type="auth">登录与账号</button>
+          <button class="chip" type="button" data-type="project">项目管理</button>
+          <button class="chip" type="button" data-type="publish">智课发布</button>
+        </div>
+        <input id="historySearch" type="search" placeholder="搜索标题或详情…" />
+        <select id="historyType" hidden>
+          <option value="all">全部类型</option>
+          <option value="auth">登录与账号</option>
+          <option value="project">项目管理</option>
+          <option value="publish">智课发布</option>
+        </select>
+      </section>
+
+      <section class="card history-panel">
+        <div>
+          <div class="panel-title">操作时间线</div>
+          <div class="muted">默认按时间倒序，最近操作显示在最前。</div>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('history');
+
+      const historyType = document.getElementById('historyType');
+      const historyList = document.getElementById('historyList');
+      const historySearch = document.getElementById('historySearch');
+      const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+      const clearConfirm = document.getElementById('clearConfirm');
+      const cancelClearBtn = document.getElementById('cancelClearBtn');
+      const confirmClearBtn = document.getElementById('confirmClearBtn');
+      const summaryTotal = document.getElementById('summaryTotal');
+      const summaryLatest = document.getElementById('summaryLatest');
+      const summaryType = document.getElementById('summaryType');
+      const typeChips = Array.from(document.querySelectorAll('#typeChips [data-type]'));
+
+      const typeLabels = {
+        all: '全部',
+        auth: '登录与账号',
+        project: '项目管理',
+        publish: '智课发布'
+      };
+
+      function formatTime(value) {
+        if (!value) return '--';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleString('zh-CN', { hour12: false });
+      }
+
+      function render() {
+        const selected = historyType.value || 'all';
+        const q = (historySearch.value || '').trim().toLowerCase();
+        const items = (window.AppStore.getHistory() || []).filter(function (item) {
+          if (selected !== 'all' && item.type !== selected) return false;
+          if (!q) return true;
+          return String(item.title || '').toLowerCase().indexOf(q) >= 0
+            || String(item.detail || '').toLowerCase().indexOf(q) >= 0;
+        });
+
+        summaryTotal.textContent = String(items.length);
+        summaryLatest.textContent = items.length ? formatTime(items[0].ts) : '--';
+        summaryType.textContent = typeLabels[selected] || '全部';
+
+        if (!items.length) {
+          historyList.innerHTML = `
+            <div class="empty-state">
+              <strong>暂无匹配记录</strong>
+              <div>先登录、创建项目或发布智课，之后这里会自动沉淀关键操作轨迹。</div>
+            </div>`;
+          return;
+        }
+
+        historyList.innerHTML = items.map(function (item) {
+          const title = (item.title || '未命名操作').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const detail = (item.detail || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const type = typeLabels[item.type] || item.type || '操作';
+          const typeClass = item.type === 'auth' ? 'is-auth' : item.type === 'project' ? 'is-project' : item.type === 'publish' ? 'is-publish' : '';
+          return `
+            <article class="history-item">
+              <div class="history-head">
+                <div class="history-title">
+                  <span class="history-type ${typeClass}">${type}</span>
+                  <span>${title}</span>
+                </div>
+                <div class="history-time">${formatTime(item.ts)}</div>
+              </div>
+              <div class="history-detail">${detail || '无附加说明'}</div>
+            </article>`;
+        }).join('');
+      }
+
+      typeChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          const type = chip.getAttribute('data-type') || 'all';
+          historyType.value = type;
+          typeChips.forEach(function (c) { c.classList.toggle('active', c === chip); });
+          render();
+        });
+      });
+
+      historySearch.addEventListener('input', render);
+      clearHistoryBtn.addEventListener('click', function () { clearConfirm.classList.add('show'); });
+      cancelClearBtn.addEventListener('click', function () { clearConfirm.classList.remove('show'); });
+      confirmClearBtn.addEventListener('click', function () {
+        window.AppStore.clearHistory();
+        clearConfirm.classList.remove('show');
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

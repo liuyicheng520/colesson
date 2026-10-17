@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的备课 - 智课共生</title>
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+<link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .hero-copy { max-width: 720px; }
+    .hero-copy p { color: var(--sub); line-height: 1.7; margin-top: 6px; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-pill {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 4px;
+    }
+    .stat-pill strong {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--brand-strong);
+      letter-spacing: -0.02em;
+    }
+    .stat-pill span { color: var(--sub); font-size: 12px; font-weight: 650; }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .page-grid.create-collapsed {
+      grid-template-columns: 1fr;
+    }
+    #createProjectPanel.is-collapsed {
+      display: none;
+    }
+
+    .page-grid > .panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-content: start;
+    }
+
+    .panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      border-radius: 18px;
+    }
+    .panel-head h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .mode-option {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #4d5f58;
+      border-radius: 12px;
+      padding: 12px 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: .18s ease;
+    }
+    .mode-option:hover { border-color: #9bc5bf; }
+    .mode-option.active {
+      border-color: transparent;
+      background: linear-gradient(135deg, #3b82f6, #1f66ff);
+      color: #fff;
+      box-shadow: 0 8px 18px var(--brand-glow);
+    }
+
+    .special-fields {
+      display: none;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      background: var(--brand-soft);
+    }
+    .special-fields.show { display: grid; }
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .hint-list {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f7faff;
+      border: 1px dashed #c9d8d2;
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .list-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .list-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .list-tools input[type="search"] {
+      width: min(240px, 100%);
+      border-radius: 999px;
+      padding: 9px 14px;
+    }
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--sub);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .chip.active {
+      background: var(--brand-soft);
+      border-color: #9bc5bf;
+      color: var(--brand-strong);
+    }
+
+    .project-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(165deg, #ffffff 0%, #f7faff 100%);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 12px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .project-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .project-meta {
+      color: var(--sub);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      font-size: 13px;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .project-time {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      color: #64748b;
+      font-size: 12px;
+    }
+    .project-learning {
+      display: grid;
+      gap: 6px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--brand-soft);
+      border: 1px solid #bfdbfe;
+    }
+    .project-learning strong { color: var(--brand-strong); font-size: 13px; }
+    .learning-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      color: #5d6f68;
+      font-size: 12px;
+    }
+    .progress-bar {
+      height: 6px;
+      border-radius: 999px;
+      background: #dbeafe;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .progress-bar > i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b82f6, #1f66ff);
+    }
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .list-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .page-grid > .panel:first-child .hint-list {
+      margin-top: auto;
+    }
+    .empty-state {
+      flex: 1;
+      min-height: 220px;
+      border: 1px dashed #c9d8d2;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4faf8 100%);
+      padding: 36px 24px;
+      text-align: center;
+      color: var(--sub);
+      display: grid;
+      align-content: center;
+      justify-items: center;
+    }
+    .empty-state strong {
+      display: block;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .status-box { font-size: 13px; min-height: 20px; }
+    .confirm-row {
+      border: 1px solid #f5d0b0;
+      background: var(--accent-soft);
+      color: #8a4b16;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+    .confirm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 1024px) {
+      .page-grid, .stats-row, .field-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="topbar">
+        <div class="hero-copy">
+          <div class="brand-title">我的备课</div>
+          <p>一门课的可复用制课产物（课件、讲稿、讲解视频）。可绑定到多个班级复用；班级管理请去「班级中心」。</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="showCreateProjectBtn" class="btn ghost" type="button" style="display:none;">＋ 新建备课</button>
+          <a class="btn" id="openWorkspaceBtn" href="/workspace.html">打开备课台</a>
+        </div>
+      </section>
+
+      <section class="stats-row" aria-label="项目概览">
+        <div class="stat-pill"><strong id="statTotal">0</strong><span>全部项目</span></div>
+        <div class="stat-pill"><strong id="statPublished">0</strong><span>已发布</span></div>
+        <div class="stat-pill"><strong id="statDraft">0</strong><span>制作中</span></div>
+        <div class="stat-pill"><strong id="statComputer">0</strong><span>计算机专项</span></div>
+      </section>
+
+      <section class="page-grid">
+        <div class="card panel" id="createProjectPanel">
+          <div class="panel-head">
+            <h3>创建备课</h3>
+            <div class="muted">先建一门课，再进入备课台持续制作内容。</div>
+          </div>
+
+          <div class="field">
+            <label for="projectName">项目名称</label>
+            <input id="projectName" type="text" placeholder="例如：企业培训课件 2026Q2" />
+          </div>
+          <div class="field">
+            <label for="projectMeta">项目说明</label>
+            <textarea id="projectMeta" rows="5" placeholder="记录课程主题、适用对象、交付目标和补充说明。"></textarea>
+          </div>
+          <div class="field">
+            <label>教学模式</label>
+            <div class="mode-switch">
+              <button class="mode-option active" type="button" data-subject-mode="general">通用课程</button>
+              <button class="mode-option" type="button" data-subject-mode="computer">计算机专项</button>
+            </div>
+          </div>
+
+          <div id="computerFields" class="special-fields">
+            <div class="field-grid">
+              <div class="field">
+                <label for="courseType">课程类型</label>
+                <select id="courseType">
+                  <option value="java_web">Java Web</option>
+                  <option value="database">数据库原理</option>
+                  <option value="software_engineering">软件工程</option>
+                  <option value="data_structure">数据结构</option>
+                  <option value="computer_network">计算机网络</option>
+                  <option value="operating_system">操作系统</option>
+                  <option value="other">其他</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="programmingLanguage">主要语言</label>
+                <select id="programmingLanguage">
+                  <option value="Java">Java</option>
+                  <option value="SQL">SQL</option>
+                  <option value="JavaScript">JavaScript</option>
+                  <option value="Python">Python</option>
+                  <option value="Mixed">混合语言</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="teachingGoal">专项教学目标</label>
+              <textarea id="teachingGoal" rows="3" placeholder="例如：理解 Servlet 请求链路，并能根据异常日志定位常见配置问题。"></textarea>
+            </div>
+          </div>
+
+          <button id="createProjectBtn" class="btn" type="button">创建备课</button>
+          <div id="projectStatus" class="status-box muted"></div>
+          <div class="hint-list">
+            <div>建议使用「课程 / 场景 / 批次」命名，便于后续查找。</div>
+            <div>项目说明建议写清适用对象、课程目标和交付要求。</div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <div class="list-toolbar">
+            <div class="panel-head">
+              <h3>项目列表</h3>
+              <div class="muted">按状态筛选，快速进入备课台或学情分析。</div>
+            </div>
+            <div class="list-tools">
+              <input id="projectSearch" type="search" placeholder="搜索项目名称…" />
+              <button id="refreshProjectsBtn" class="btn ghost" type="button">刷新</button>
+            </div>
+          </div>
+          <div class="chip-row" id="filterChips">
+            <button class="chip active" type="button" data-filter="all">全部</button>
+            <button class="chip" type="button" data-filter="published">已发布</button>
+            <button class="chip" type="button" data-filter="draft">制作中</button>
+            <button class="chip" type="button" data-filter="computer">计算机专项</button>
+          </div>
+          <div id="projectsContainer" class="list-body"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('projects');
+
+      const projectName = document.getElementById('projectName');
+      const projectMeta = document.getElementById('projectMeta');
+      const courseType = document.getElementById('courseType');
+      const programmingLanguage = document.getElementById('programmingLanguage');
+      const teachingGoal = document.getElementById('teachingGoal');
+      const computerFields = document.getElementById('computerFields');
+      const modeOptions = Array.from(document.querySelectorAll('[data-subject-mode]'));
+      const createProjectBtn = document.getElementById('createProjectBtn');
+      const refreshProjectsBtn = document.getElementById('refreshProjectsBtn');
+      const projectStatus = document.getElementById('projectStatus');
+      const projectsContainer = document.getElementById('projectsContainer');
+      const projectSearch = document.getElementById('projectSearch');
+      const filterChips = Array.from(document.querySelectorAll('#filterChips [data-filter]'));
+      let pendingDeleteId = '';
+      let subjectMode = 'general';
+      let allProjects = [];
+      let activeFilter = 'all';
+
+      modeOptions.forEach(function (button) {
+        button.addEventListener('click', function () {
+          subjectMode = button.getAttribute('data-subject-mode') || 'general';
+          modeOptions.forEach(function (item) {
+            item.classList.toggle('active', item === button);
+          });
+          computerFields.classList.toggle('show', subjectMode === 'computer');
+        });
+      });
+
+      filterChips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          activeFilter = chip.getAttribute('data-filter') || 'all';
+          filterChips.forEach(function (c) { c.classList.toggle('active', c === chip); });
+          renderProjects(allProjects);
+        });
+      });
+
+      projectSearch.addEventListener('input', function () {
+        renderProjects(allProjects);
+      });
+
+      document.getElementById('showCreateProjectBtn').addEventListener('click', function () {
+        const panel = document.getElementById('createProjectPanel');
+        panel.dataset.forceOpen = '1';
+        syncCreatePanel(allProjects.length > 0);
+        document.getElementById('projectName').focus();
+      });
+
+      document.getElementById('openWorkspaceBtn').addEventListener('click', function (e) {
+        if (allProjects.length) return;
+        e.preventDefault();
+        const panel = document.getElementById('createProjectPanel');
+        panel.dataset.forceOpen = '1';
+        syncCreatePanel(false);
+        setStatus('请先创建一门备课，再打开备课台', 'err');
+        document.getElementById('projectName').focus();
+        notify('请先创建备课', 'err');
+      });
+
+      function formatTime(value) {
+        if (!value) return '--';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleString('zh-CN', { hour12: false });
+      }
+
+      function setStatus(text, type) {
+        projectStatus.className = 'status-box ' + (type === 'err' ? 'msg-err' : type === 'ok' ? 'msg-ok' : 'muted');
+        projectStatus.textContent = text;
+      }
+
+      function notify(text, tone) {
+        if (window.AppStore && window.AppStore.toast) window.AppStore.toast(text, tone);
+      }
+
+      function readiness(item) {
+        let score = 0;
+        if (item.pptRawText) score += 35;
+        if (item.script) score += 35;
+        if (item.published) score += 30;
+        return score;
+      }
+
+      function updateStats(items) {
+        const published = items.filter(function (i) { return !!i.published; }).length;
+        document.getElementById('statTotal').textContent = String(items.length);
+        document.getElementById('statPublished').textContent = String(published);
+        document.getElementById('statDraft').textContent = String(items.length - published);
+        document.getElementById('statComputer').textContent = String(items.filter(function (i) { return i.subjectMode === 'computer'; }).length);
+        syncCreatePanel(items.length > 0);
+      }
+
+      function syncCreatePanel(hasProjects) {
+        const panel = document.getElementById('createProjectPanel');
+        const grid = document.querySelector('.page-grid');
+        const showBtn = document.getElementById('showCreateProjectBtn');
+        if (!panel || !grid || !showBtn) return;
+        if (hasProjects && !panel.dataset.forceOpen) {
+          panel.classList.add('is-collapsed');
+          grid.classList.add('create-collapsed');
+          showBtn.style.display = '';
+        } else {
+          panel.classList.remove('is-collapsed');
+          grid.classList.remove('create-collapsed');
+          showBtn.style.display = 'none';
+        }
+      }
+
+      function filteredItems(items) {
+        const q = (projectSearch.value || '').trim().toLowerCase();
+        return items.filter(function (item) {
+          if (activeFilter === 'published' && !item.published) return false;
+          if (activeFilter === 'draft' && item.published) return false;
+          if (activeFilter === 'computer' && item.subjectMode !== 'computer') return false;
+          if (!q) return true;
+          return String(item.name || '').toLowerCase().indexOf(q) >= 0
+            || String(item.meta || '').toLowerCase().indexOf(q) >= 0;
+        });
+      }
+
+      function renderProjects(items) {
+        updateStats(items);
+        const view = filteredItems(items);
+        if (!view.length) {
+          projectsContainer.innerHTML = `
+            <div class="empty-state">
+              <strong>${items.length ? '没有符合筛选的项目' : '还没有项目'}</strong>
+              <div>${items.length ? '试试换一个筛选条件或清空搜索。' : '先创建一个项目，再把解析、讲稿、问答和数字人结果逐步收进去。'}</div>
+            </div>`;
+          return;
+        }
+
+        projectsContainer.innerHTML = view.map(function (item) {
+          const safeName = (item.name || '未命名项目').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const safeMeta = (item.meta || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const isComputer = item.subjectMode === 'computer';
+          const courseLabels = {
+            java_web: 'Java Web', database: '数据库原理', software_engineering: '软件工程',
+            data_structure: '数据结构', computer_network: '计算机网络', operating_system: '操作系统', other: '其他计算机课程'
+          };
+          const resourceCount = Array.isArray(item.resources) ? item.resources.length : 0;
+          const ready = readiness(item);
+          return `
+            <article class="project-card">
+              <div class="project-head">
+                <div>
+                  <div class="project-name">${safeName}</div>
+                  <div class="project-meta">${safeMeta || '暂无项目说明'}</div>
+                  <div class="project-tags">
+                    <span class="tag">${isComputer ? '计算机专项' : '通用课程'}</span>
+                    ${isComputer ? `<span class="tag">${courseLabels[item.courseType] || '计算机课程'}</span>` : ''}
+                    ${isComputer && item.programmingLanguage ? `<span class="tag">${String(item.programmingLanguage).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>` : ''}
+                    <span class="tag">${item.published ? '已发布' : '制作中'}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="project-time">
+                <span>创建：${formatTime(item.createdAt)}</span>
+                <span>更新：${formatTime(item.updatedAt)}</span>
+                <span>发布：${item.publishedAt ? formatTime(item.publishedAt) : '未发布'}</span>
+              </div>
+              <div class="project-learning">
+                <strong>制作完整度 ${ready}%</strong>
+                <div class="progress-bar" aria-hidden="true"><i style="width:${ready}%"></i></div>
+                <div class="learning-row">
+                  <span>学习记录：${Array.isArray(item.learningRecords) ? item.learningRecords.length : 0} 条</span>
+                  <span>讲稿：${item.script ? '已生成' : '未生成'}</span>
+                  <span>课件：${item.pptRawText ? '已解析' : '未解析'}</span>
+                  ${isComputer ? `<span>专项资料：${resourceCount} 份</span>` : ''}
+                </div>
+              </div>
+              <div class="project-actions">
+                <a class="btn ghost" href="/workspace.html?projectId=${encodeURIComponent(item.id)}">打开备课台</a>
+                ${item.published ? `<a class="btn ghost" href="/teacher-insight.html?projectId=${encodeURIComponent(item.id)}">学情分析</a>` : ''}
+                <button class="btn ghost" type="button" data-delete-id="${item.id}">删除</button>
+              </div>
+              <div class="confirm-row" data-confirm-id="${item.id}" style="display:none;">
+                <span>删除后该项目将从列表中移除，请确认是否继续。</span>
+                <div class="confirm-actions">
+                  <button class="btn ghost" type="button" data-cancel-delete="${item.id}">取消</button>
+                  <button class="btn" type="button" data-confirm-delete="${item.id}">确认删除</button>
+                </div>
+              </div>
+            </article>`;
+        }).join('');
+
+        Array.from(projectsContainer.querySelectorAll('[data-delete-id]')).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const projectId = btn.getAttribute('data-delete-id');
+            if (!projectId) return;
+            pendingDeleteId = projectId;
+            Array.from(projectsContainer.querySelectorAll('[data-confirm-id]')).forEach(function (row) {
+              row.style.display = row.getAttribute('data-confirm-id') === projectId ? 'flex' : 'none';
+            });
+          });
+        });
+        Array.from(projectsContainer.querySelectorAll('[data-cancel-delete]')).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            pendingDeleteId = '';
+            const row = btn.closest('[data-confirm-id]');
+            if (row) row.style.display = 'none';
+          });
+        });
+        Array.from(projectsContainer.querySelectorAll('[data-confirm-delete]')).forEach(function (btn) {
+          btn.addEventListener('click', async function () {
+            const projectId = btn.getAttribute('data-confirm-delete');
+            if (!projectId || pendingDeleteId !== projectId) return;
+            btn.disabled = true;
+            try {
+              await window.AppStore.removeProject(projectId);
+              setStatus('项目已删除', 'ok');
+              notify('项目已删除', 'ok');
+              pendingDeleteId = '';
+              // 删除消散（400ms，CSS mask 路线）：动画结束后再重载列表
+              const card = btn.closest('.project-card, .card');
+              if (card && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                card.classList.add('row-dissolve');
+                await new Promise(function (resolve) { setTimeout(resolve, 400); });
+              }
+              await loadProjects();
+            } catch (err) {
+              btn.disabled = false;
+              setStatus(err.message || '删除失败', 'err');
+              notify(err.message || '删除失败', 'err');
+            }
+          });
+        });
+      }
+
+      async function loadProjects() {
+        projectsContainer.innerHTML = '<div class="empty-state"><strong>加载中</strong><div>正在读取项目列表…</div></div>';
+        try {
+          allProjects = await window.AppStore.getProjects();
+          renderProjects(allProjects);
+        } catch (err) {
+          projectsContainer.innerHTML = '<div class="empty-state"><strong>加载失败</strong><div>请稍后刷新重试。</div></div>';
+          setStatus(err.message || '项目加载失败', 'err');
+          notify(err.message || '项目加载失败', 'err');
+        }
+      }
+
+      createProjectBtn.addEventListener('click', async function () {
+        const name = projectName.value.trim();
+        const meta = projectMeta.value.trim();
+        if (!name) {
+          setStatus('请先填写项目名称', 'err');
+          projectName.focus();
+          return;
+        }
+        createProjectBtn.disabled = true;
+        setStatus('正在创建备课...', '');
+        try {
+          await window.AppStore.addProject(name, meta, {
+            subjectMode: subjectMode,
+            courseType: subjectMode === 'computer' ? courseType.value : '',
+            programmingLanguage: subjectMode === 'computer' ? programmingLanguage.value : '',
+            teachingGoal: subjectMode === 'computer' ? teachingGoal.value.trim() : ''
+          });
+          projectName.value = '';
+          projectMeta.value = '';
+          teachingGoal.value = '';
+          setStatus('项目创建成功', 'ok');
+          notify('项目创建成功，已更新项目列表。', 'ok');
+          await loadProjects();
+        } catch (err) {
+          setStatus(err.message || '项目创建失败', 'err');
+          notify(err.message || '项目创建失败', 'err');
+        } finally {
+          createProjectBtn.disabled = false;
+        }
+      });
+
+      refreshProjectsBtn.addEventListener('click', loadProjects);
+      await loadProjects();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>接口集成 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .hero-copy {
+      max-width: 860px;
+    }
+
+    .hero-copy p {
+      color: var(--sub);
+      line-height: 1.8;
+      margin-top: 8px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-tags,
+    .mini-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .hero-metric {
+      border: 1px solid #e7edf8;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      box-shadow: 0 8px 20px rgba(33, 48, 84, 0.05);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .hero-metric-label {
+      color: #6a7893;
+      font-size: 12px;
+    }
+
+    .hero-metric-value {
+      color: #22385f;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .hero-metric-copy {
+      color: #6a7893;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .journey-card,
+    .entry-card,
+    .api-card,
+    .callout-card {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel h2,
+    .journey-title,
+    .entry-title,
+    .api-title {
+      font-size: 19px;
+      color: #243555;
+      font-weight: 800;
+    }
+
+    .panel p,
+    .journey-copy,
+    .entry-copy,
+    .api-copy {
+      color: #667892;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .integration-scene {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .prototype-stage {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .prototype-card,
+    .readiness-card {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .prototype-shell {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 12px;
+      border: 1px solid #e7edf8;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(33, 48, 84, 0.05);
+    }
+
+    .prototype-nav {
+      border-radius: 14px;
+      background: #203254;
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .prototype-nav strong {
+      color: #ffffff;
+      font-size: 15px;
+    }
+
+    .prototype-nav span {
+      color: #cfe0ff;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: 12px;
+    }
+
+    .prototype-nav span.active {
+      background: #2f4677;
+      border-color: #49639c;
+    }
+
+    .prototype-main {
+      display: grid;
+      gap: 12px;
+    }
+
+    .prototype-strip {
+      border: 1px solid #e9eef7;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f8fbff, #f2f6ff);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .prototype-strip strong {
+      color: #243555;
+      font-size: 18px;
+    }
+
+    .prototype-flow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .prototype-node {
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(33, 48, 84, 0.05);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .prototype-node strong {
+      color: #233a64;
+      font-size: 15px;
+    }
+
+    .prototype-node p {
+      color: #667892;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .readiness-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .readiness-item {
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      box-shadow: 0 8px 18px rgba(33, 48, 84, 0.05);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .readiness-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .readiness-item strong {
+      color: #243555;
+      font-size: 15px;
+    }
+
+    .score-chip {
+      border-radius: 999px;
+      border: 1px solid #dce7ff;
+      background: #f2f6ff;
+      color: #3559af;
+      font-size: 12px;
+      padding: 5px 9px;
+      font-weight: 700;
+    }
+
+    .entry-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      border: 1px solid #eef1f6;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(33, 48, 84, 0.05);
+    }
+
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .entry-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      background: #eef4ff;
+      color: #2f6bff;
+      border: 1px solid #dbe6ff;
+    }
+
+    .entry-steps {
+      display: grid;
+      gap: 8px;
+    }
+
+    .entry-step {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: #526480;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .entry-step strong {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #f1f6ff;
+      border: 1px solid #dce7ff;
+      color: #355ec3;
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .journey-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      box-shadow: 0 8px 18px rgba(33, 48, 84, 0.05);
+      position: relative;
+    }
+
+    .journey-card::after {
+      content: "";
+      position: absolute;
+      top: 28px;
+      right: -8px;
+      width: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, #c8d9fb, transparent);
+    }
+
+    .journey-grid .journey-card:last-child::after {
+      display: none;
+    }
+
+    .journey-index {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2f6bff, #63a4ff);
+      color: #fff;
+      display: inline-grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 8px 14px rgba(47, 107, 255, 0.22);
+    }
+
+    .journey-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .journey-badge,
+    .api-chip,
+    .scene-chip {
+      border-radius: 999px;
+      border: 1px solid #dce7ff;
+      background: #f2f6ff;
+      color: #3657a3;
+      font-size: 12px;
+      padding: 5px 9px;
+    }
+
+    .callout-card {
+      background: linear-gradient(135deg, #f8fbff, #f1f6ff);
+      border: 1px solid #dbe6fb;
+      border-radius: 14px;
+      color: #4f627d;
+      line-height: 1.8;
+    }
+
+    .callout-card strong {
+      color: #23406c;
+    }
+
+    .flow-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 200px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+    }
+
+    .flow-source {
+      font-size: 14px;
+      font-weight: 800;
+      color: #253c66;
+    }
+
+    .flow-target {
+      color: #667892;
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    .flow-mode {
+      justify-self: end;
+      text-align: right;
+      color: #51658a;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .api-card {
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(33, 48, 84, 0.05);
+    }
+
+    .api-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .api-url {
+      display: block;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #f7f9fd;
+      border: 1px solid #ebeff6;
+      color: #2b3f66;
+      word-break: break-all;
+    }
+
+    .compat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .compat-card {
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      box-shadow: 0 8px 18px rgba(33, 48, 84, 0.05);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .compat-card strong {
+      color: #233a64;
+      font-size: 16px;
+    }
+
+    .compat-card ul {
+      padding-left: 18px;
+      color: #667892;
+      line-height: 1.8;
+      font-size: 13px;
+      display: grid;
+      gap: 6px;
+    }
+
+    @media (max-width: 1200px) {
+      .hero-metrics,
+      .page-grid,
+      .prototype-stage,
+      .prototype-flow,
+      .integration-scene,
+      .journey-grid,
+      .api-grid,
+      .compat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .prototype-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-mode {
+        justify-self: start;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="topbar">
+        <div class="hero-copy">
+          <div class="brand-title">智课共生接口集成</div>
+          <p>统一说明教师入口、学生入口、异步调用方式、课程资源映射和学习数据回流，便于管理员评估系统接入状态。</p>
+          <div class="hero-tags">
+            <span class="tag">Web 嵌入</span>
+            <span class="tag">学习通入口</span>
+            <span class="tag">异步调用</span>
+            <span class="tag">教师 / 学生双视角</span>
+            <span class="tag">发布后直达学习</span>
+            <span class="tag">学情回传</span>
+          </div>
+          <div class="hero-metrics">
+            <div class="hero-metric">
+              <div class="hero-metric-label">教师入口</div>
+              <div class="hero-metric-value">1</div>
+              <div class="hero-metric-copy">课程页统一进入智课工作台，直接带入课程上下文。</div>
+            </div>
+            <div class="hero-metric">
+              <div class="hero-metric-label">学生入口</div>
+              <div class="hero-metric-value">2</div>
+              <div class="hero-metric-copy">支持课程资源入口和学习直达链接两种进入方式。</div>
+            </div>
+            <div class="hero-metric">
+              <div class="hero-metric-label">核心同步流程</div>
+              <div class="hero-metric-value">4</div>
+              <div class="hero-metric-copy">课件解析、智课发布、学习回流、学情查看形成闭环。</div>
+            </div>
+            <div class="hero-metric">
+              <div class="hero-metric-label">平台化能力</div>
+              <div class="hero-metric-value">10+</div>
+              <div class="hero-metric-copy">核心接口已形成标准化开放能力，可支持异步集成。</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn" href="/workspace.html">进入工作台</a>
+          <a class="btn ghost" href="/student.html">查看学生学习页</a>
+        </div>
+      </section>
+
+      <section class="prototype-stage">
+        <article class="card prototype-card">
+          <div>
+            <div class="journey-title">平台接入总览</div>
+            <div class="journey-copy">系统可嵌入既有课程平台，将教师制作、学生学习和学情回看挂入同一门课程的上下文中。</div>
+          </div>
+          <div class="prototype-shell">
+            <div class="prototype-nav">
+              <strong>课程平台</strong>
+              <span class="active">智课工作台</span>
+              <span>已发布智课</span>
+              <span>学生学习入口</span>
+              <span>学情查看</span>
+            </div>
+            <div class="prototype-main">
+              <div class="prototype-strip">
+                <strong>课程上下文已同步</strong>
+                <div class="journey-copy">已携带课程名称、教师身份、课程资源信息进入项目模式。教师在当前课程内直接生成智课，无需重复建立独立资源。</div>
+              </div>
+              <div class="prototype-flow">
+                <div class="prototype-node">
+                  <strong>教师工作台</strong>
+                  <p>解析 PPT、生成讲稿、配置问答与数字人，一键发布学生可学内容。</p>
+                  <span class="journey-badge">课程上下文直入</span>
+                </div>
+                <div class="prototype-node">
+                  <strong>学生学习入口</strong>
+                  <p>学生从课程资源页或学习直达链接进入，不需要理解后台制作流程。</p>
+                  <span class="journey-badge">课程资源映射</span>
+                </div>
+                <div class="prototype-node">
+                  <strong>学情回流</strong>
+                  <p>学习进度、问答行为、节点热区回传教师端，构成可追踪教学闭环。</p>
+                  <span class="journey-badge">异步行为记录</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card readiness-card">
+          <div>
+            <div class="journey-title">接入准备度</div>
+            <div class="journey-copy">从场景适配、接口能力和数据回流三个角度查看当前系统是否具备平台接入条件。</div>
+          </div>
+          <div class="readiness-grid">
+            <div class="readiness-item">
+              <div class="readiness-head">
+                <strong>场景适配性</strong>
+                <span class="score-chip">教师 / 学生双视角</span>
+              </div>
+              <div class="journey-copy">已形成教师工作台、学生学习页、学情查看页三段式闭环，能够覆盖建课、学课、回看三类场景。</div>
+            </div>
+            <div class="readiness-item">
+              <div class="readiness-head">
+                <strong>技术集成性</strong>
+                <span class="score-chip">异步调用</span>
+              </div>
+              <div class="journey-copy">已具备项目发布、学习记录回传、平台同步预留接口和接入说明，可扩展为课程资源级接入方案。</div>
+            </div>
+            <div class="readiness-item">
+              <div class="readiness-head">
+                <strong>使用建议</strong>
+                <span class="score-chip">巡检入口</span>
+              </div>
+              <div class="journey-copy">建议从本页确认接口关系，再进入教师工作台、学生学习页和学情查看页核对完整流程。</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="page-grid">
+        <article class="card panel">
+          <div>
+            <h2>场景适配说明</h2>
+            <p>系统以课程页为主要挂载位置，教师可在课程建设或资源管理场景中进入智课工作台，完成课件解析、讲稿生成、智能问答和数字人资源制作。学生则通过课程资源入口进入学生学习界面，围绕已发布智课展开学习、提问和进度续接。</p>
+          </div>
+          <div class="mini-tags">
+            <span class="scene-chip">教师入口：课程建设 / 资源管理</span>
+            <span class="scene-chip">学生入口：课程资源 / 移动学习页</span>
+            <span class="scene-chip">结果回流：学情查看 / 节点热区 / 问答记录</span>
+          </div>
+        </article>
+
+        <article class="card callout-card">
+          <div class="journey-title">流程核对建议</div>
+          <div>建议按这条线核对：<strong>教师从课程页进入工作台 → 解析课件并发布智课 → 学生通过课程直达链接学习并提问 → 系统回传学习进度和问答记录 → 教师查看学情。</strong></div>
+        </article>
+      </section>
+
+      <section class="integration-scene">
+        <article class="entry-card">
+          <div class="entry-head">
+            <div class="entry-title">教师端接入</div>
+            <div class="entry-icon">👩‍🏫</div>
+          </div>
+          <div class="entry-copy">在课程页中增加“智课工作台”入口，教师可从课程上下文直接进入项目模式，减少手动切换成本。</div>
+          <div class="entry-steps">
+            <div class="entry-step"><strong>1</strong><span>课程平台携带课程上下文、教师身份与课程标识打开工作台。</span></div>
+            <div class="entry-step"><strong>2</strong><span>工作台自动绑定项目，进入“项目模式”，支持解析、生成、发布。</span></div>
+            <div class="entry-step"><strong>3</strong><span>发布后将智课资源回写为课程资源条目，并生成学生学习直达入口。</span></div>
+          </div>
+        </article>
+
+        <article class="entry-card">
+          <div class="entry-head">
+            <div class="entry-title">学生端接入</div>
+            <div class="entry-icon">🎓</div>
+          </div>
+          <div class="entry-copy">学生无需理解后台制作流程，只需从课程页或学习通看到“已发布智课”，即可进入对应课程学习。</div>
+          <div class="entry-steps">
+            <div class="entry-step"><strong>1</strong><span>学生点击课程内的智课资源，进入带 `projectId` 的学习页。</span></div>
+            <div class="entry-step"><strong>2</strong><span>系统呈现当前项目、课程名称、学习节点，并支持中途提问。</span></div>
+            <div class="entry-step"><strong>3</strong><span>学习进度、提问记录、节点热区自动回传教师端学情页面。</span></div>
+          </div>
+        </article>
+
+        <article class="entry-card">
+          <div class="entry-head">
+            <div class="entry-title">平台侧协同</div>
+            <div class="entry-icon">🧩</div>
+          </div>
+          <div class="entry-copy">通过标准化开放接口和异步调用设计，将智课生成流程嵌入现有课程体系，而不是另起一套孤立系统。</div>
+          <div class="entry-steps">
+            <div class="entry-step"><strong>1</strong><span>平台同步课程、用户与资源上下文。</span></div>
+            <div class="entry-step"><strong>2</strong><span>智课服务返回发布状态、学习链接、资源地址与学情统计。</span></div>
+            <div class="entry-step"><strong>3</strong><span>最终在课程平台形成“课程资源 + 学习行为 + 教师回看”的闭环。</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card panel" style="margin-top:14px;">
+        <div>
+          <h2>教师 / 学生使用旅程</h2>
+          <p>这部分用于说明系统如何融入课程流程。不是单独打开一个工具页面，而是把智课能力挂进教师建课、学生学课、教师看学情这三段教学动作中。</p>
+        </div>
+
+        <div class="journey-grid">
+          <article class="journey-card">
+            <span class="journey-index">1</span>
+            <div class="journey-title">进入工作台</div>
+            <div class="journey-copy">教师在课程页点击“智课工作台”，系统携带课程标识进入绑定项目模式。</div>
+            <div class="journey-badges">
+              <span class="journey-badge">课程上下文</span>
+              <span class="journey-badge">教师身份</span>
+            </div>
+          </article>
+          <article class="journey-card">
+            <span class="journey-index">2</span>
+            <div class="journey-title">生成并发布</div>
+            <div class="journey-copy">完成课件解析、讲稿生成、问答配置和语音 / 数字人资源后，一键发布智课并生成学生学习链接。</div>
+            <div class="journey-badges">
+              <span class="journey-badge">项目模式</span>
+              <span class="journey-badge">学生直达链接</span>
+            </div>
+          </article>
+          <article class="journey-card">
+            <span class="journey-index">3</span>
+            <div class="journey-title">学生学习与续接</div>
+            <div class="journey-copy">学生从课程资源页直接进入学习页，围绕当前课程提问，并在回答后续接回讲解节点。</div>
+            <div class="journey-badges">
+              <span class="journey-badge">实时问答</span>
+              <span class="journey-badge">进度续接</span>
+            </div>
+          </article>
+          <article class="journey-card">
+            <span class="journey-index">4</span>
+            <div class="journey-title">学情回看</div>
+            <div class="journey-copy">教师返回学情页查看学习人数、节点热区、问答记录和续接行为，用于后续精准辅导。</div>
+            <div class="journey-badges">
+              <span class="journey-badge">节点热区</span>
+              <span class="journey-badge">问答记录</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel" style="margin-top:14px;">
+        <div>
+          <h2>接口调用流程</h2>
+          <p>以下流程按“平台如何调用系统”来设计，重点说明异步集成和资源回流能力。</p>
+        </div>
+        <div class="flow-list">
+          <div class="flow-row">
+            <div class="flow-source">课程页入口</div>
+            <div class="flow-target">平台传递课程标识、教师身份、资源上下文，打开智课工作台。</div>
+            <div class="flow-mode">嵌入模式<br>Web iframe / 页面跳转</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-source">智课工作台服务</div>
+            <div class="flow-target">解析课件、生成讲稿、实时问答配置、生成语音与数字人地址，保存到项目实体。</div>
+            <div class="flow-mode">服务模式<br>同步接口 + 异步任务</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-source">智课发布接口</div>
+            <div class="flow-target">返回智课标题、简介、学习链接、学情查看链接，并将其映射为课程资源项。</div>
+            <div class="flow-mode">发布模式<br>平台回写 / 资源挂载</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-source">学生学习行为</div>
+            <div class="flow-target">学生学习、提问、继续讲解等行为通过 track 接口回传，形成教师可查看的学情记录。</div>
+            <div class="flow-mode">回流模式<br>异步记录 / 持续更新</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="api-grid" style="margin-top:14px;">
+        <article class="api-card">
+          <div class="api-head">
+            <div class="api-title">核心接入接口</div>
+            <span class="tag">已实现 / 已预留</span>
+          </div>
+          <div class="api-copy">这些接口支撑“工作台接入、智课发布、学生学习、学情查看”主流程，可作为平台开放能力使用。</div>
+          <span class="api-url">POST /parse-ppt</span>
+          <span class="api-url">POST /generate-script</span>
+          <span class="api-url">POST /answer-question</span>
+          <span class="api-url">POST /projects-api/{id}/publish</span>
+          <span class="api-url">GET /published-lessons/{id}</span>
+          <span class="api-url">POST /published-lessons/{id}/track</span>
+        </article>
+
+        <article class="api-card">
+          <div class="api-head">
+            <div class="api-title">平台同步接口</div>
+            <span class="tag">平台集成预留</span>
+          </div>
+          <div class="api-copy">当前已预留课程与用户同步能力，可扩展为课程平台异步调用入口。</div>
+          <span class="api-url">POST /api/v1/platform/syncCourse</span>
+          <span class="api-url">POST /api/v1/platform/syncUser</span>
+          <span class="api-url">POST /api/v1/progress/adjust</span>
+          <span class="api-url">POST /api/v1/progress/track</span>
+          <div class="mini-tags">
+            <span class="api-chip">课程同步</span>
+            <span class="api-chip">用户同步</span>
+            <span class="api-chip">进度调整</span>
+            <span class="api-chip">学情回传</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="compat-grid" style="margin-top:14px;">
+        <article class="compat-card">
+          <strong>课程 Web 端</strong>
+          <ul>
+            <li>适合作为教师工作台入口，承载课件上传、讲稿生成与发布。</li>
+            <li>支持通过课程上下文直接进入绑定项目模式。</li>
+            <li>便于支持“从课程进入智课工作台”的企业场景适配。</li>
+          </ul>
+        </article>
+        <article class="compat-card">
+          <strong>移动学习端</strong>
+          <ul>
+            <li>适合作为学生学习入口，直接打开已发布智课。</li>
+            <li>学生只看课程、讲稿、音频、数字人和提问入口，交互更轻量。</li>
+            <li>学习行为继续回流到教师学情页，形成闭环。</li>
+          </ul>
+        </article>
+        <article class="compat-card">
+          <strong>流程核对建议</strong>
+          <ul>
+            <li>先确认“课程页进入工作台”，再检查教师端制作。</li>
+            <li>发布后检查“复制学生学习链接”和学生直达学习页。</li>
+            <li>最后切到学情查看页，确认学习数据回流。</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/admin/login';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['admin'], { loginRole: 'admin' });
+      if (!ok) return;
+      window.AppStore.mountNav('integration');
+    })();
+  </script>
+</body>
+</html>

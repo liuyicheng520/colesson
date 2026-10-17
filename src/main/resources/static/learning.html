@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学情查看 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .page-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 14px;
+    }
+
+    .context-strip {
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .context-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .context-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #243555;
+    }
+
+    .context-meta {
+      color: #667892;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .context-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .context-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid #dce7ff;
+      background: #f2f6ff;
+      color: #3d5ca3;
+      font-size: 12px;
+      padding: 5px 10px;
+      font-weight: 700;
+    }
+
+    .lesson-list,
+    .analytics-panel {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .lesson-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: grid;
+      gap: 8px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .lesson-card.active,
+    .lesson-card:hover {
+      border-color: #cfe0ff;
+      box-shadow: 0 6px 16px rgba(47, 107, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .lesson-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #243555;
+    }
+
+    .lesson-meta,
+    .lesson-desc {
+      color: #61718f;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .summary-grid,
+    .learner-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .summary-item,
+    .learner-card,
+    .timeline-box,
+    .qa-box {
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .summary-item {
+      display: grid;
+      gap: 6px;
+    }
+
+    .summary-item strong {
+      color: #24416f;
+      font-size: 20px;
+    }
+
+    .learner-card {
+      display: grid;
+      gap: 8px;
+    }
+
+    .learner-card strong {
+      color: #233a66;
+      font-size: 15px;
+    }
+
+    .detail-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      color: #667898;
+      font-size: 12px;
+    }
+
+    .tag-soft {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid #dce7ff;
+      background: #f1f6ff;
+      color: #3b5fae;
+      font-size: 12px;
+      padding: 4px 9px;
+      width: fit-content;
+    }
+
+    .timeline-box,
+    .qa-box {
+      display: grid;
+      gap: 10px;
+    }
+
+    .computer-insight {
+      display: none;
+      gap: 12px;
+      border: 1px solid #dce7fb;
+      border-radius: 14px;
+      background: #f7faff;
+      padding: 14px;
+    }
+
+    .computer-insight.show {
+      display: grid;
+    }
+
+    .computer-insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+    }
+
+    .computer-insight-item {
+      border: 1px solid #e0e9f8;
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .computer-insight-item strong {
+      color: #23406f;
+      font-size: 18px;
+    }
+
+    .section-box {
+      display: grid;
+      gap: 12px;
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .section-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      background: #fcfdff;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: .2s ease;
+    }
+
+    .section-card.hot {
+      border-color: #cfe0ff;
+      box-shadow: 0 6px 16px rgba(47, 107, 255, 0.08);
+      background: #f7faff;
+    }
+
+    .section-card strong {
+      color: #233a66;
+      font-size: 15px;
+    }
+
+    .section-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #dce6fb;
+      overflow: hidden;
+    }
+
+    .section-bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #2f6bff, #56a0ff);
+      width: 0%;
+    }
+
+    .timeline-item,
+    .qa-item {
+      border: 1px solid #e2e9f7;
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .timeline-head,
+    .qa-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #36538d;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .empty-state {
+      border: 1px dashed #cfdaf0;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbfcff 0%, #f5f8fe 100%);
+      padding: 28px;
+      text-align: center;
+      color: #60708d;
+    }
+
+    @media (max-width: 1100px) {
+      .page-grid,
+      .summary-grid,
+      .computer-insight-grid,
+      .learner-grid,
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">学情查看</div>
+          <div class="muted" style="font-size:14px;margin-top:6px;">查看已发布课程的学习进度、问答记录和节点分布，帮助教师及时判断学习情况。</div>
+        </div>
+      </section>
+
+      <section class="card context-strip">
+        <div class="context-head">
+          <div>
+            <div id="contextLessonTitle" class="context-title">当前未选择智课</div>
+            <div id="contextLessonMeta" class="context-meta">请选择一个已发布智课，查看对应课程的学习记录、问答热区和节点分布。</div>
+          </div>
+        </div>
+        <div class="context-tags">
+          <span id="contextProjectTag" class="context-tag">项目：待选择</span>
+          <span id="contextPublishTag" class="context-tag">发布状态：未选择</span>
+          <span id="contextFocusTag" class="context-tag">观察重点：学习进度与问答热区</span>
+        </div>
+      </section>
+
+      <section class="page-grid">
+        <div class="card lesson-list">
+          <div>
+            <div class="item title" style="border:none;padding:0;background:transparent;">已发布智课</div>
+            <div class="muted">选择一个已发布项目，查看对应的学习记录与问答表现。</div>
+          </div>
+          <div id="publishedList"></div>
+        </div>
+
+        <div class="card analytics-panel">
+          <div>
+            <div id="currentLessonTitle" class="lesson-title">请选择一个已发布智课</div>
+            <div id="currentLessonDesc" class="lesson-desc">这里将呈现该智课的学习人数、平均进度、问题记录和最近学习行为。</div>
+          </div>
+
+          <div id="summaryGrid" class="summary-grid">
+            <div class="summary-item">
+              <span class="muted">学习人数</span>
+              <strong id="learnerCount">0</strong>
+            </div>
+            <div class="summary-item">
+              <span class="muted">平均进度</span>
+              <strong id="avgProgress">0%</strong>
+            </div>
+            <div class="summary-item">
+              <span class="muted">问答次数</span>
+              <strong id="qaCount">0</strong>
+            </div>
+            <div class="summary-item">
+              <span class="muted">继续讲解次数</span>
+              <strong id="resumeCount">0</strong>
+            </div>
+          </div>
+
+          <div id="computerInsight" class="computer-insight">
+            <div>
+              <div class="item title" style="border:none;padding:0;background:transparent;">计算机专项学情</div>
+              <div id="computerInsightHint" class="muted">按问题类型、错误线索和提示使用情况观察实践卡点。</div>
+            </div>
+            <div class="computer-insight-grid">
+              <div class="computer-insight-item">
+                <span class="muted">代码理解问题</span>
+                <strong id="codeQuestionCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">调试问题</span>
+                <strong id="debugQuestionCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">使用分级提示</span>
+                <strong id="hintUsageCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">已解决问题</span>
+                <strong id="resolvedQuestionCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">代码提交</span>
+                <strong id="codeSubmissionCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">判题通过</span>
+                <strong id="acceptedSubmissionCount">0</strong>
+              </div>
+              <div class="computer-insight-item">
+                <span class="muted">平均得分</span>
+                <strong id="averageSubmissionScore">0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="item title" style="border:none;padding:0;background:transparent;margin-bottom:10px;">学生画像</div>
+            <div id="learnerGrid" class="learner-grid"></div>
+          </div>
+
+          <div class="section-box">
+            <div class="item title" style="border:none;padding:0;background:transparent;">节点级学习分布</div>
+            <div class="muted">按讲解节点统计学习停留与提问热度，用于发现学生集中卡点。</div>
+            <div id="sectionGrid" class="section-grid"></div>
+          </div>
+
+          <div class="timeline-box">
+            <div class="item title" style="border:none;padding:0;background:transparent;">最近学习动态</div>
+            <div id="timelineList"></div>
+          </div>
+
+          <div class="qa-box">
+            <div class="item title" style="border:none;padding:0;background:transparent;">重点问答记录</div>
+            <div id="qaList"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('learning');
+
+      const publishedList = document.getElementById('publishedList');
+      const contextLessonTitle = document.getElementById('contextLessonTitle');
+      const contextLessonMeta = document.getElementById('contextLessonMeta');
+      const contextProjectTag = document.getElementById('contextProjectTag');
+      const contextPublishTag = document.getElementById('contextPublishTag');
+      const contextFocusTag = document.getElementById('contextFocusTag');
+      const currentLessonTitle = document.getElementById('currentLessonTitle');
+      const currentLessonDesc = document.getElementById('currentLessonDesc');
+      const learnerCount = document.getElementById('learnerCount');
+      const avgProgress = document.getElementById('avgProgress');
+      const qaCount = document.getElementById('qaCount');
+      const resumeCount = document.getElementById('resumeCount');
+      const learnerGrid = document.getElementById('learnerGrid');
+      const sectionGrid = document.getElementById('sectionGrid');
+      const timelineList = document.getElementById('timelineList');
+      const qaList = document.getElementById('qaList');
+      const computerInsight = document.getElementById('computerInsight');
+      const computerInsightHint = document.getElementById('computerInsightHint');
+      const codeQuestionCount = document.getElementById('codeQuestionCount');
+      const debugQuestionCount = document.getElementById('debugQuestionCount');
+      const hintUsageCount = document.getElementById('hintUsageCount');
+      const resolvedQuestionCount = document.getElementById('resolvedQuestionCount');
+      const codeSubmissionCount = document.getElementById('codeSubmissionCount');
+      const acceptedSubmissionCount = document.getElementById('acceptedSubmissionCount');
+      const averageSubmissionScore = document.getElementById('averageSubmissionScore');
+
+      const queryProjectId = new URLSearchParams(location.search).get('projectId') || '';
+      let currentProject = null;
+
+      function notify(text, tone) {
+        if (window.AppStore && window.AppStore.toast) {
+          window.AppStore.toast(text, tone);
+        }
+      }
+
+      function escapeHtml(text) {
+        return String(text || '').replace(/[&<>"]/g, function (ch) {
+          return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch];
+        });
+      }
+
+      function formatTime(value) {
+        if (!value) return '--';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleString('zh-CN', { hour12: false });
+      }
+
+      function excludedLearnerNames(project) {
+        const set = new Set();
+        const me = window.AppStore && window.AppStore.currentUser ? window.AppStore.currentUser() : null;
+        if (me && me.username) set.add(String(me.username).trim().toLowerCase());
+        if (project && project.username) set.add(String(project.username).trim().toLowerCase());
+        return set;
+      }
+
+      function normalizeRecords(project) {
+        const excluded = excludedLearnerNames(project);
+        const records = Array.isArray(project && project.learningRecords) ? project.learningRecords.slice() : [];
+        return records.filter(function (item) {
+          const name = String((item && item.learnerUsername) || '').trim().toLowerCase();
+          if (!name) return true;
+          return !excluded.has(name);
+        }).sort(function (a, b) {
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        });
+      }
+
+      function extractSlides(rawText) {
+        const rows = String(rawText || '').split(/\r?\n/);
+        const result = [];
+        let current = null;
+        rows.forEach(function (row) {
+          const line = (row || '').trim();
+          const matched = line.match(/^===\s*第(\d+)页\s*===$/);
+          if (matched) {
+            if (current) result.push(current);
+            current = { page: Number(matched[1]), lines: [] };
+          } else if (current && line) {
+            current.lines.push(line);
+          }
+        });
+        if (current) result.push(current);
+        return result;
+      }
+
+      function buildSectionStats(project, records) {
+        const slides = extractSlides(project && project.pptRawText ? project.pptRawText : '');
+        const map = new Map();
+        slides.forEach(function (slide) {
+          map.set(`slide-${slide.page}`, {
+            id: `slide-${slide.page}`,
+            title: `第 ${slide.page} 页`,
+            subtitle: slide.lines[0] || '当前页无文本摘要',
+            visits: 0,
+            qaCount: 0,
+            avgProgress: 0,
+            progressCount: 0
+          });
+        });
+
+        records.forEach(function (item) {
+          const key = item.currentSectionId || 'full-script';
+          if (!map.has(key)) {
+            map.set(key, {
+              id: key,
+              title: key === 'full-script' ? '完整讲稿' : key,
+              subtitle: '系统记录到的讲解节点',
+              visits: 0,
+              qaCount: 0,
+              avgProgress: 0,
+              progressCount: 0
+            });
+          }
+          const section = map.get(key);
+          section.visits += 1;
+          if (item.question) section.qaCount += 1;
+          if (typeof item.progressPercent === 'number') {
+            section.avgProgress += item.progressPercent;
+            section.progressCount += 1;
+          }
+        });
+
+        return Array.from(map.values()).map(function (item) {
+          return {
+            id: item.id,
+            title: item.title,
+            subtitle: item.subtitle,
+            visits: item.visits,
+            qaCount: item.qaCount,
+            avgProgress: item.progressCount ? item.avgProgress / item.progressCount : 0
+          };
+        }).sort(function (a, b) {
+          return b.visits - a.visits || b.qaCount - a.qaCount;
+        });
+      }
+
+      function buildLearnerStats(records) {
+        const map = new Map();
+        records.forEach(function (item) {
+          const key = item.learnerUsername || 'anonymous';
+          if (!map.has(key)) {
+            map.set(key, {
+              learnerUsername: key,
+              latestAt: item.createdAt || '',
+              latestSection: item.currentSectionId || '',
+              latestProgress: typeof item.progressPercent === 'number' ? item.progressPercent : 0,
+              askCount: 0,
+              resumeCount: 0,
+              actionCount: 0
+            });
+          }
+          const stat = map.get(key);
+          stat.actionCount += 1;
+          if (item.question) stat.askCount += 1;
+          if (item.action === 'continue-lecture') stat.resumeCount += 1;
+          if ((item.createdAt || '') >= (stat.latestAt || '')) {
+            stat.latestAt = item.createdAt || '';
+            stat.latestSection = item.currentSectionId || '';
+            stat.latestProgress = typeof item.progressPercent === 'number' ? item.progressPercent : stat.latestProgress;
+          }
+        });
+        return Array.from(map.values()).sort(function (a, b) {
+          return (b.latestProgress || 0) - (a.latestProgress || 0);
+        });
+      }
+
+      function renderPublishedList(items) {
+        if (!items.length) {
+          publishedList.innerHTML = '<div class="empty-state">当前还没有已发布智课，请先在教师工作台完成发布。</div>';
+          return;
+        }
+        publishedList.innerHTML = items.map(function (item) {
+          return `
+            <article class="lesson-card ${currentProject && currentProject.id === item.id ? 'active' : ''}" data-project-id="${item.id}">
+              <div class="lesson-title">${escapeHtml(item.lessonTitle || item.name || '未命名智课')}</div>
+              <div class="lesson-meta">发布：${item.publishedAt ? formatTime(item.publishedAt) : '未发布'}</div>
+              <div class="lesson-desc">${escapeHtml(item.lessonIntro || item.summary || item.meta || '暂无课程简介')}</div>
+            </article>
+          `;
+        }).join('');
+
+        Array.from(publishedList.querySelectorAll('[data-project-id]')).forEach(function (node) {
+          node.addEventListener('click', function () {
+            const projectId = node.getAttribute('data-project-id');
+            if (projectId) loadLesson(projectId);
+          });
+        });
+      }
+
+      function renderAnalytics(project) {
+        const records = normalizeRecords(project);
+        const learners = buildLearnerStats(records);
+        const sections = buildSectionStats(project, records);
+        const totalProgress = learners.reduce(function (sum, item) {
+          return sum + (item.latestProgress || 0);
+        }, 0);
+        const questions = records.filter(function (item) { return item.question; });
+        const resumes = records.filter(function (item) { return item.action === 'continue-lecture'; });
+
+        learnerCount.textContent = String(learners.length);
+        avgProgress.textContent = learners.length ? (totalProgress / learners.length).toFixed(1) + '%' : '0%';
+        qaCount.textContent = String(questions.length);
+        resumeCount.textContent = String(resumes.length);
+
+        const computerMode = project && project.subjectMode === 'computer';
+        computerInsight.classList.toggle('show', Boolean(computerMode));
+        if (computerMode) {
+          const codeQuestions = questions.filter(function (item) { return item.questionType === 'code'; });
+          const debugQuestions = questions.filter(function (item) { return item.questionType === 'debug'; });
+          const hintUsage = questions.filter(function (item) { return item.hintLevel && item.hintLevel !== '0'; });
+          const resolved = records.filter(function (item) { return item.resolved === true; });
+          const submissions = Array.isArray(project.codeSubmissions) ? project.codeSubmissions : [];
+          const acceptedSubmissions = submissions.filter(function (item) { return item.status === 'ACCEPTED'; });
+          const submissionScore = submissions.reduce(function (sum, item) {
+            return sum + Number(item.score || 0);
+          }, 0);
+          const errorCounts = {};
+          debugQuestions.forEach(function (item) {
+            const key = item.errorType || '待进一步定位';
+            errorCounts[key] = (errorCounts[key] || 0) + 1;
+          });
+          const topError = Object.keys(errorCounts).sort(function (a, b) {
+            return errorCounts[b] - errorCounts[a];
+          })[0];
+          codeQuestionCount.textContent = String(codeQuestions.length);
+          debugQuestionCount.textContent = String(debugQuestions.length);
+          hintUsageCount.textContent = String(hintUsage.length);
+          resolvedQuestionCount.textContent = String(resolved.length);
+          codeSubmissionCount.textContent = String(submissions.length);
+          acceptedSubmissionCount.textContent = String(acceptedSubmissions.length);
+          averageSubmissionScore.textContent = submissions.length
+            ? (submissionScore / submissions.length).toFixed(1)
+            : '0';
+          computerInsightHint.textContent = topError
+            ? `当前高频错误线索：${topError}（${errorCounts[topError]} 次）`
+            : '尚未产生调试错误记录，可从学生端选择“错误调试”模式体验。';
+        }
+
+        if (!learners.length) {
+          learnerGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">当前还没有学生学习记录，发布后可从学生学习页进入体验。</div>';
+        } else {
+          learnerGrid.innerHTML = learners.map(function (item) {
+            return `
+              <article class="learner-card">
+                <strong>${escapeHtml(item.learnerUsername)}</strong>
+                <span class="tag-soft">当前进度 ${Number(item.latestProgress || 0).toFixed(1)}%</span>
+                <div class="detail-row">
+                  <span>最近节点：${escapeHtml(item.latestSection || '未记录')}</span>
+                  <span>提问次数：${item.askCount}</span>
+                  <span>继续讲解：${item.resumeCount}</span>
+                </div>
+                <div class="muted">最近学习：${formatTime(item.latestAt)}</div>
+              </article>
+            `;
+          }).join('');
+        }
+
+        if (!sections.length) {
+          sectionGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">暂无节点级学习记录。</div>';
+        } else {
+          const maxVisits = Math.max.apply(null, sections.map(function (item) { return item.visits; }).concat([1]));
+          sectionGrid.innerHTML = sections.slice(0, 9).map(function (item, idx) {
+            const percent = Math.max(12, Math.round((item.visits / maxVisits) * 100));
+            return `
+              <article class="section-card ${idx < 2 && item.visits > 0 ? 'hot' : ''}">
+                <strong>${escapeHtml(item.title)}</strong>
+                <div class="muted">${escapeHtml(item.subtitle)}</div>
+                <div class="section-bar"><span style="width:${percent}%"></span></div>
+                <div class="detail-row">
+                  <span>访问：${item.visits} 次</span>
+                  <span>提问：${item.qaCount} 次</span>
+                  <span>平均进度：${item.avgProgress.toFixed(1)}%</span>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+
+        if (!records.length) {
+          timelineList.innerHTML = '<div class="empty-state">暂无学习动态。</div>';
+        } else {
+          timelineList.innerHTML = records.slice(0, 8).map(function (item) {
+            return `
+              <article class="timeline-item">
+                <div class="timeline-head">
+                  <span>${escapeHtml(item.learnerUsername || 'anonymous')}</span>
+                  <span class="muted">${formatTime(item.createdAt)}</span>
+                </div>
+                <div class="detail-row">
+                  <span>动作：${escapeHtml(item.action || 'study')}</span>
+                  <span>节点：${escapeHtml(item.currentSectionId || '未记录')}</span>
+                  <span>进度：${Number(item.progressPercent || 0).toFixed(1)}%</span>
+                </div>
+                ${item.understandingLevel ? `<div class="muted">理解判断：${escapeHtml(item.understandingLevel)}</div>` : ''}
+              </article>
+            `;
+          }).join('');
+        }
+
+        if (!questions.length) {
+          qaList.innerHTML = '<div class="empty-state">暂无问答记录。</div>';
+        } else {
+          qaList.innerHTML = questions.slice(0, 8).map(function (item) {
+            return `
+              <article class="qa-item">
+                <div class="qa-head">
+                  <span>${escapeHtml(item.learnerUsername || 'anonymous')}</span>
+                  <span class="muted">${formatTime(item.createdAt)}</span>
+                </div>
+                <div><strong style="color:#23406f;">问：</strong>${escapeHtml(item.question || '')}</div>
+                <div><strong style="color:#23406f;">答：</strong>${escapeHtml(item.answer || '')}</div>
+                <div class="detail-row">
+                  <span>节点：${escapeHtml(item.currentSectionId || '未记录')}</span>
+                  <span>理解判断：${escapeHtml(item.understandingLevel || '未记录')}</span>
+                  ${item.questionType ? `<span>问题类型：${escapeHtml(item.questionType)}</span>` : ''}
+                  ${item.errorType ? `<span>错误线索：${escapeHtml(item.errorType)}</span>` : ''}
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+
+      async function loadLesson(projectId) {
+        try {
+          currentProject = await window.AppStore.getPublishedLesson(projectId);
+          contextLessonTitle.textContent = currentProject.lessonTitle || currentProject.name || '未命名智课';
+          contextLessonMeta.textContent = `${currentProject.lessonIntro || currentProject.summary || currentProject.meta || '暂无课程简介'}${currentProject.publishedAt ? ` · 发布时间：${formatTime(currentProject.publishedAt)}` : ''}`;
+          contextProjectTag.textContent = `项目：${currentProject.name || '未命名项目'}`;
+          contextPublishTag.textContent = `发布状态：${currentProject.published ? '已发布' : '未发布'}`;
+          contextFocusTag.textContent = '观察重点：学习进度、节点热区、问答记录';
+          currentLessonTitle.textContent = currentProject.lessonTitle || currentProject.name || '未命名智课';
+          currentLessonDesc.textContent = currentProject.lessonIntro || currentProject.summary || currentProject.meta || '暂无课程简介';
+          renderAnalytics(currentProject);
+          renderPublishedList(await window.AppStore.getPublishedLessons());
+        } catch (err) {
+          contextLessonTitle.textContent = '学情加载失败';
+          contextLessonMeta.textContent = err.message || '请稍后重试。';
+          contextProjectTag.textContent = '项目：加载失败';
+          contextPublishTag.textContent = '发布状态：异常';
+          contextFocusTag.textContent = '观察重点：请稍后重试';
+          currentLessonTitle.textContent = '学情加载失败';
+          currentLessonDesc.textContent = err.message || '请稍后重试。';
+          notify(err.message || '学情加载失败', 'err');
+        }
+      }
+
+      try {
+        const items = await window.AppStore.getPublishedLessons();
+        renderPublishedList(items);
+        if (queryProjectId) {
+          await loadLesson(queryProjectId);
+        } else if (items.length) {
+          await loadLesson(items[0].id);
+        } else {
+          contextLessonTitle.textContent = '暂无已发布智课';
+          contextLessonMeta.textContent = '教师完成发布后，这里会呈现课程学习表现、问答记录和热点节点。';
+          contextProjectTag.textContent = '项目：暂无';
+          contextPublishTag.textContent = '发布状态：暂无';
+          contextFocusTag.textContent = '观察重点：等待学生学习数据';
+          renderAnalytics(null);
+        }
+      } catch (err) {
+        contextLessonTitle.textContent = '暂无可查看内容';
+        contextLessonMeta.textContent = err.message || '请稍后重试。';
+        contextProjectTag.textContent = '项目：加载失败';
+        contextPublishTag.textContent = '发布状态：异常';
+        contextFocusTag.textContent = '观察重点：请稍后重试';
+        publishedList.innerHTML = '<div class="empty-state">已发布智课加载失败，请稍后重试。</div>';
+        currentLessonDesc.textContent = err.message || '暂无可查看内容。';
+        notify(err.message || '已发布课程加载失败', 'err');
+      }
+    })();
+  </script>
+</body>
+</html>

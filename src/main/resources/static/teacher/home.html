@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>教师首页 - 智课共生</title>
+  <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    :root {
+      --fp-nav: var(--nav-h, 64px);
+      --fp-accent: #2563eb;
+      --fp-accent-2: #0ea5e9;
+      --fp-text: #0f172a;
+      --fp-muted: #64748b;
+      --fp-font: 'Plus Jakarta Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --fp-ease: cubic-bezier(0.65, 0.05, 0.2, 1);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #f7fbff !important;
+    }
+
+    .shell {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .shell > .main {
+      max-width: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      height: calc(100vh - var(--fp-nav));
+      overflow: hidden;
+      background: transparent !important;
+    }
+
+    /* Fullpage stage — stacked panels with mixed axes */
+    .fp {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--fp-font);
+      color: var(--fp-text);
+      background:
+        radial-gradient(ellipse 70% 50% at 90% 10%, rgba(59, 130, 246, 0.14), transparent 55%),
+        radial-gradient(ellipse 60% 45% at 5% 90%, rgba(14, 165, 233, 0.1), transparent 50%),
+        #f7fbff;
+    }
+
+    .fp-track {
+      height: 100%;
+      width: 100%;
+      will-change: transform;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fp-panel {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      align-content: center;
+      padding: 0 clamp(28px, 6vw, 96px);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* Persistent ambient layer */
+    .fp-ambient {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .fp-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.5;
+      animation: fpDrift 18s ease-in-out infinite;
+    }
+    .fp-orb.a { width: 420px; height: 420px; background: #93c5fd; top: -120px; right: -80px; }
+    .fp-orb.b { width: 360px; height: 360px; background: #7dd3fc; bottom: -100px; left: -90px; animation-duration: 22s; animation-direction: reverse; }
+    .fp-orb.c { width: 260px; height: 260px; background: #bfdbfe; top: 40%; left: 45%; animation-duration: 16s; }
+
+    .fp-flow {
+      position: absolute;
+      inset: -20%;
+      background:
+        repeating-linear-gradient(
+          -18deg,
+          transparent 0 46px,
+          rgba(37, 99, 235, 0.035) 46px 47px
+        );
+      animation: fpFlow 28s linear infinite;
+      opacity: 0.7;
+    }
+
+    .fp-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.55;
+    }
+
+    .fp-inner {
+      position: relative;
+      z-index: 1;
+      max-width: min(1440px, 94vw);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .fp-dir {
+      position: fixed;
+      left: 22px;
+      bottom: 22px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .fp-dir b {
+      display: inline-grid;
+      place-items: center;
+      min-width: 28px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      font-size: 11px;
+    }
+
+    /* Side dots */
+    .fp-dots {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      display: grid;
+      gap: 12px;
+    }
+    .fp-dots button {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 0;
+      padding: 0;
+      background: rgba(37, 99, 235, 0.25);
+      cursor: pointer;
+      transition: transform .3s ease, background .3s ease, height .3s ease;
+    }
+    .fp-dots button.active {
+      background: var(--fp-accent);
+      height: 28px;
+      transform: scale(1.05);
+    }
+
+    .fp-hint {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--fp-muted);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      opacity: 0.85;
+      transition: opacity .4s ease;
+    }
+    .fp-hint.hide { opacity: 0; }
+    .fp-hint .chev {
+      width: 18px; height: 18px;
+      border-right: 2px solid #2563eb;
+      border-bottom: 2px solid #2563eb;
+      transform: rotate(45deg);
+      animation: fpBounce 1.6s ease-in-out infinite;
+    }
+
+    .fp-panel .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .fp-panel.is-active .reveal {
+      opacity: 1;
+      transform: none;
+    }
+    .fp-panel.is-active .reveal.d1 { transition-delay: .04s; }
+    .fp-panel.is-active .reveal.d2 { transition-delay: .08s; }
+    .fp-panel.is-active .reveal.d3 { transition-delay: .12s; }
+    .fp-panel.is-active .reveal.d4 { transition-delay: .16s; }
+
+    /* —— Panel 1 Hero —— */
+    .p1-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
+      gap: clamp(28px, 5vw, 80px);
+      align-items: center;
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fp-accent);
+      margin-bottom: 16px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 44px;
+      height: 2px;
+      background: currentColor;
+    }
+    .brand {
+      font-size: clamp(3rem, 6.2vw, 4.6rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1.02;
+      margin: 0 0 12px;
+    }
+    .headline {
+      font-size: clamp(1.55rem, 2.8vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin: 0 0 18px;
+      color: #1e293b;
+    }
+    .headline em {
+      font-style: normal;
+      background: linear-gradient(120deg, #2563eb, #0ea5e9 60%, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      font-size: clamp(1rem, 1.25vw, 1.12rem);
+      line-height: 1.75;
+      color: var(--fp-muted);
+      max-width: 36em;
+      margin: 0 0 28px;
+    }
+    .lead strong {
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 1.08em;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+      font-family: inherit;
+      cursor: pointer;
+      background: transparent;
+      color: inherit;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
+    }
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(37, 99, 235, 0.36);
+    }
+    .btn.ghost {
+      border-color: rgba(37, 99, 235, 0.28);
+      color: #334155;
+    }
+    .btn.ghost:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.06);
+    }
+
+    /* live chips under hero */
+    .live-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 22px;
+    }
+    .live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(37, 99, 235, 0.14);
+      font-size: 0.84rem;
+      font-weight: 650;
+      color: #334155;
+      backdrop-filter: blur(8px);
+    }
+    .live-chip .pulse {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+      animation: chipPulse 1.8s ease-out infinite;
+    }
+    .live-chip .pulse.warn { background: #0ea5e9; box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.5); }
+    .live-chip b {
+      color: #1d4ed8;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+
+    .ticker {
+      position: relative;
+      overflow: hidden;
+      margin: 18px 0 0;
+      max-width: 36em;
+      height: 34px;
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .ticker-track {
+      display: flex;
+      gap: 28px;
+      width: max-content;
+      animation: tickerMove 22s linear infinite;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      font-size: 0.82rem;
+      color: var(--fp-muted);
+      font-weight: 600;
+    }
+    .ticker-item i {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #38bdf8;
+      display: inline-block;
+      animation: fpPulse 2s ease-in-out infinite;
+    }
+
+    .orbit-stage {
+      position: relative;
+      width: min(100%, 520px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+    .orbit-wrap {
+      position: absolute;
+      inset: 8%;
+    }
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(37, 99, 235, 0.22);
+    }
+    .orbit-ring.a { inset: 0; animation: fpSpin 18s linear infinite; border-color: rgba(37,99,235,.38); }
+    .orbit-ring.b { inset: 11%; border-style: dashed; animation: fpSpin 12s linear infinite reverse; }
+    .orbit-ring.c { inset: 22%; animation: fpSpin 9s linear infinite; border-color: rgba(14,165,233,.42); }
+    .orbit-ring.d { inset: 33%; animation: fpSpin 6s linear infinite reverse; border-color: rgba(147,197,253,.55); }
+    .orbit-core {
+      position: absolute;
+      inset: 42%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,189,248,.45), rgba(37,99,235,.12) 55%, transparent 70%);
+      box-shadow: 0 0 48px rgba(59,130,246,.35);
+      animation: fpPulse 3.4s ease-in-out infinite;
+    }
+    .orbit-core-label {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #1d4ed8;
+      z-index: 2;
+      animation: fpPulse 3.4s ease-in-out infinite;
+    }
+    .dot {
+      position: absolute;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #2563eb;
+      box-shadow: 0 0 10px rgba(59,130,246,.8);
+    }
+    .orbit-ring.a .d1 { top: 50%; left: -3.5px; margin-top: -3.5px; }
+    .orbit-ring.a .d2 { top: -3.5px; left: 50%; margin-left: -3.5px; }
+    .orbit-ring.a .d3 { top: 50%; right: -3.5px; margin-top: -3.5px; }
+    .orbit-ring.a .d4 { bottom: -3.5px; left: 50%; margin-left: -3.5px; }
+    .orbit-ring.b .d1 { top: 18%; left: 8%; width: 5px; height: 5px; background: #0ea5e9; }
+    .orbit-ring.b .d2 { bottom: 12%; right: 10%; width: 5px; height: 5px; background: #38bdf8; }
+    .orbit-ring.c .d1 { top: 50%; left: -2.5px; width: 5px; height: 5px; }
+    .orbit-ring.c .d2 { top: -2.5px; left: 40%; width: 4px; height: 4px; background: #7dd3fc; }
+
+    /* floating satellite labels around orbit */
+    .sat {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.12);
+      backdrop-filter: blur(10px);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1e293b;
+      animation: satFloat 4.5s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    .sat .n {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #2563eb;
+      font-variant-numeric: tabular-nums;
+      min-width: 1.2em;
+    }
+    .sat .sub { color: var(--fp-muted); font-weight: 600; font-size: 0.72rem; }
+    .sat.s1 { top: 6%; left: 2%; animation-delay: 0s; }
+    .sat.s2 { top: 18%; right: 0; animation-delay: .8s; }
+    .sat.s3 { bottom: 16%; left: -2%; animation-delay: 1.4s; }
+    .sat.s4 { bottom: 4%; right: 4%; animation-delay: 2s; }
+    .sat .ring {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(37, 99, 235, 0.2);
+      border-top-color: #2563eb;
+      animation: fpSpin 1.6s linear infinite;
+      flex-shrink: 0;
+    }
+    .sat.s2 .ring { animation-duration: 2.2s; border-top-color: #0ea5e9; }
+    .sat.s3 .ring { animation-duration: 1.9s; animation-direction: reverse; }
+    .sat.s4 .ring { animation-duration: 2.6s; }
+
+    .flow-rail {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 28px;
+      max-width: 36em;
+      position: relative;
+    }
+    .flow-rail::before {
+      content: '';
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 14px;
+      height: 2px;
+      background: linear-gradient(90deg, #93c5fd, #2563eb, #7dd3fc);
+      background-size: 200% 100%;
+      animation: fpLine 5s linear infinite;
+      opacity: 0.7;
+    }
+    .flow-node {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .flow-node .dot-lg {
+      width: 12px; height: 12px;
+      margin: 8px auto 10px;
+      border-radius: 50%;
+      background: #2563eb;
+      box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+      animation: chipPulse 2.2s ease-out infinite;
+    }
+    .flow-node:nth-child(2) .dot-lg { animation-delay: .4s; background: #0ea5e9; }
+    .flow-node:nth-child(3) .dot-lg { animation-delay: .8s; background: #38bdf8; }
+    .flow-node strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 750;
+      margin-bottom: 2px;
+    }
+    .flow-node span {
+      font-size: 0.75rem;
+      color: var(--fp-muted);
+    }
+
+    /* —— Panel 2 Journey —— */
+    .p2-head { max-width: 780px; margin-bottom: 44px; }
+    .p2-head h2 {
+      font-size: clamp(1.85rem, 3.2vw, 2.55rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+    .p2-head p { margin: 0; color: var(--fp-muted); font-size: clamp(0.98rem, 1.2vw, 1.08rem); line-height: 1.7; }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      position: relative;
+    }
+    .journey::before {
+      content: '';
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 34px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #93c5fd 15%, #2563eb 50%, #7dd3fc 85%, transparent);
+      background-size: 200% 100%;
+      animation: fpLine 6s linear infinite;
+    }
+    .j-step {
+      padding: 0 22px;
+      text-align: center;
+    }
+    .j-node {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #fff;
+      background: linear-gradient(145deg, #0ea5e9, #2563eb);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+      position: relative;
+      z-index: 1;
+      animation: fpPulse 3.8s ease-in-out infinite;
+    }
+    .j-step:nth-child(2) .j-node { animation-delay: .4s; }
+    .j-step:nth-child(3) .j-node { animation-delay: .8s; }
+    .j-step h3 {
+      margin: 0 0 8px;
+      font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+      font-weight: 750;
+    }
+    .j-step p {
+      margin: 0;
+      color: var(--fp-muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+    .j-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .j-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.12);
+    }
+    .loop-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+      align-items: center;
+    }
+    .loop-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(37,99,235,.14);
+      font-size: 0.8rem;
+      font-weight: 650;
+      color: #334155;
+    }
+    .loop-pill .bar {
+      width: 42px; height: 4px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      overflow: hidden;
+    }
+    .loop-pill .bar i {
+      display: block;
+      height: 100%;
+      width: 40%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #0ea5e9, #2563eb);
+      animation: barSlide 2.4s ease-in-out infinite;
+    }
+    .loop-pill:nth-child(2) .bar i { animation-delay: .4s; }
+    .loop-pill:nth-child(3) .bar i { animation-delay: .8s; }
+
+    /* —— Panel 3 Pulse / stats —— */
+    .p3-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: clamp(28px, 4vw, 56px);
+      align-items: center;
+    }
+    .pulse-board {
+      position: relative;
+      padding: 8px 0;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .metric {
+      text-decoration: none;
+      color: inherit;
+      padding: 12px 0;
+      border-top: 2px solid rgba(37, 99, 235, 0.16);
+    }
+    .metric strong {
+      display: block;
+      font-size: clamp(2.2rem, 3.6vw, 2.9rem);
+      font-weight: 800;
+      color: #1d4ed8;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .metric span {
+      font-size: 0.88rem;
+      color: var(--fp-muted);
+      letter-spacing: 0.04em;
+    }
+    .continue-block {
+      padding: 28px 0 0;
+    }
+    .continue-block h3 {
+      margin: 0 0 8px;
+      font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+      font-weight: 750;
+    }
+    .continue-block p {
+      margin: 0 0 18px;
+      color: var(--fp-muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+    .spark-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 36px;
+      margin-top: 22px;
+    }
+    .spark-row span {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, #60a5fa, #2563eb);
+      opacity: 0.75;
+      transform-origin: bottom;
+      animation: sparkBeat 1.8s ease-in-out infinite;
+    }
+    .spark-row span:nth-child(1) { height: 40%; animation-delay: 0s; }
+    .spark-row span:nth-child(2) { height: 70%; animation-delay: .15s; }
+    .spark-row span:nth-child(3) { height: 55%; animation-delay: .3s; }
+    .spark-row span:nth-child(4) { height: 90%; animation-delay: .45s; }
+    .spark-row span:nth-child(5) { height: 62%; animation-delay: .6s; }
+    .spark-row span:nth-child(6) { height: 78%; animation-delay: .75s; }
+    .spark-row span:nth-child(7) { height: 48%; animation-delay: .9s; }
+    .spark-caption {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--fp-muted);
+      font-weight: 650;
+    }
+    .act-list {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 20px;
+    }
+    .act-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: #475569;
+      font-weight: 600;
+    }
+    .act-item i {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+      animation: chipPulse 2s ease-out infinite;
+    }
+    .act-item:nth-child(2) i { background: #0ea5e9; animation-delay: .3s; }
+    .act-item:nth-child(3) i { background: #38bdf8; animation-delay: .6s; }
+    .wave {
+      position: absolute;
+      right: -8%;
+      bottom: 8%;
+      width: 55%;
+      height: 120px;
+      opacity: 0.35;
+      background:
+        radial-gradient(ellipse 60% 80% at 30% 50%, rgba(37,99,235,.25), transparent 70%),
+        radial-gradient(ellipse 50% 70% at 70% 60%, rgba(14,165,233,.2), transparent 70%);
+      filter: blur(8px);
+      animation: fpDrift 12s ease-in-out infinite reverse;
+      pointer-events: none;
+    }
+
+    /* —— Panel 4 Destinations —— */
+    .fp-panel[data-panel="3"] {
+      padding: clamp(40px, 7vh, 72px) clamp(48px, 10vw, 140px);
+      align-content: center;
+    }
+    .fp-panel[data-panel="3"] .fp-inner {
+      max-width: min(1080px, 86vw);
+    }
+    .fp-panel[data-panel="3"] .eyebrow {
+      margin-bottom: 20px;
+    }
+    .fp-panel[data-panel="3"] .dest-meta {
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    .dest-list {
+      display: grid;
+      gap: 0;
+      margin-top: 40px;
+      border-top: 1px solid rgba(37, 99, 235, 0.14);
+    }
+    .dest {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: center;
+      padding: 32px 12px;
+      border-bottom: 1px solid rgba(37, 99, 235, 0.12);
+      text-decoration: none;
+      color: inherit;
+      transition: padding .3s ease, background .3s ease;
+      position: relative;
+    }
+    .dest::before {
+      content: '';
+      position: absolute;
+      left: -20px; right: -20px; top: 0; bottom: 0;
+      background: linear-gradient(90deg, rgba(239,246,255,.95), transparent 72%);
+      opacity: 0;
+      transition: opacity .3s ease;
+      z-index: -1;
+      border-radius: 14px;
+    }
+    .dest:hover { padding-left: 20px; }
+    .dest:hover::before { opacity: 1; }
+    .dest .no {
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: #93c5fd;
+      letter-spacing: 0.06em;
+    }
+    .dest h3 {
+      margin: 0 0 6px;
+      font-size: clamp(1.2rem, 1.7vw, 1.4rem);
+      font-weight: 750;
+    }
+    .dest p {
+      margin: 0;
+      color: var(--fp-muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .dest .go {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #2563eb;
+      white-space: nowrap;
+      transition: transform .25s ease;
+    }
+    .dest:hover .go { transform: translateX(8px); }
+    .dest-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .dest .hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      font-weight: 650;
+      color: #64748b;
+    }
+    .dest .hint em {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #0ea5e9;
+      display: inline-block;
+      font-style: normal;
+      animation: fpPulse 2s ease-in-out infinite;
+    }
+    .dest:nth-child(2) .hint em { animation-delay: .3s; }
+    .dest:nth-child(3) .hint em { animation-delay: .6s; }
+    .dest:nth-child(4) .hint em { animation-delay: .9s; }
+
+    @keyframes fpSpin { to { transform: rotate(360deg); } }
+    @keyframes fpPulse {
+      0%, 100% { transform: scale(1); opacity: .9; }
+      50% { transform: scale(1.07); opacity: 1; }
+    }
+    @keyframes chipPulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+    @keyframes satFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes tickerMove {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes barSlide {
+      0%, 100% { transform: translateX(0); width: 35%; }
+      50% { transform: translateX(140%); width: 55%; }
+    }
+    @keyframes sparkBeat {
+      0%, 100% { transform: scaleY(0.85); opacity: .65; }
+      50% { transform: scaleY(1.15); opacity: 1; }
+    }
+    @keyframes fpDrift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-18px, 14px); }
+    }
+    @keyframes fpFlow {
+      to { transform: translate3d(-8%, 4%, 0); }
+    }
+    @keyframes fpLine {
+      to { background-position: 200% 0; }
+    }
+    @keyframes fpBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: .5; }
+      50% { transform: rotate(45deg) translateY(6px); opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .p1-grid, .p3-wrap { grid-template-columns: 1fr; }
+      .orbit-stage { width: min(340px, 86vw); margin: 20px auto 0; }
+      .sat { padding: 8px 10px; font-size: 0.75rem; }
+      .sat .n { font-size: 0.95rem; }
+      .flow-rail { max-width: 100%; }
+      .journey { grid-template-columns: 1fr; gap: 28px; }
+      .journey::before { display: none; }
+      .metric-row { grid-template-columns: 1fr; }
+      .fp-dots { right: 10px; }
+      .fp-dir { left: 12px; bottom: 56px; }
+      .dest { grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; padding: 22px 4px; }
+      .fp-panel[data-panel="3"] {
+        padding: 28px clamp(20px, 5vw, 40px) 64px;
+      }
+      .fp-panel[data-panel="3"] .fp-inner { max-width: 100%; }
+      .brand { font-size: clamp(2.8rem, 12vw, 3.6rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fp-track { transition: none !important; }
+      .fp-orb, .orbit-ring, .orbit-core, .orbit-core-label, .fp-flow, .j-node, .wave, .fp-hint .chev,
+      .sat, .sat .ring, .live-chip .pulse, .flow-node .dot-lg, .ticker-track,
+      .loop-pill .bar i, .spark-row span, .act-item i, .dest .hint em {
+        animation: none !important;
+      }
+      .fp-panel .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <div class="fp" id="fpRoot">
+        <div class="fp-ambient" aria-hidden="true">
+          <div class="fp-flow"></div>
+          <div class="fp-orb a"></div>
+          <div class="fp-orb b"></div>
+          <div class="fp-orb c"></div>
+          <canvas class="fp-canvas" id="fpCanvas"></canvas>
+        </div>
+
+        <div class="fp-track" id="fpTrack">
+          <section class="fp-panel is-active" data-panel="0">
+            <div class="fp-inner p1-grid">
+              <div>
+                <div class="eyebrow reveal">教师端 · 今日工作台</div>
+                <h1 class="brand reveal d1">智课共生</h1>
+                <p class="headline reveal d2">继续你的<em>教学闭环</em></p>
+                <p class="lead reveal d3">
+                  <strong id="homeGreeting">欢迎回来</strong><br />
+                  <span id="homeLine">备课、成课、班级发布与学情回看，收成一条会持续动起来的教学闭环。</span>
+                </p>
+                <div class="live-row reveal d3">
+                  <span class="live-chip"><span class="pulse"></span>在线就绪</span>
+                  <span class="live-chip"><span class="pulse warn"></span>备课 <b id="chipProjects">0</b> 门</span>
+                  <span class="live-chip"><span class="pulse warn"></span>班级 <b id="chipClasses">0</b> 个</span>
+                  <span class="live-chip"><span class="pulse warn"></span>已发布 <b id="chipPublished">0</b></span>
+                </div>
+                <div class="actions reveal d4">
+                  <a class="btn primary" id="heroContinue" href="/workspace.html">继续备课台 →</a>
+                  <a class="btn ghost" href="/classes.html">班级中心</a>
+                  <button class="btn ghost" type="button" data-goto="2">看进度</button>
+                </div>
+                <div class="flow-rail reveal d4">
+                  <div class="flow-node"><div class="dot-lg"></div><strong>备课</strong><span>工作台成型</span></div>
+                  <div class="flow-node"><div class="dot-lg"></div><strong>成课</strong><span>按班发布</span></div>
+                  <div class="flow-node"><div class="dot-lg"></div><strong>回看</strong><span>学情迭代</span></div>
+                </div>
+                <div class="ticker reveal d4" aria-hidden="true">
+                  <div class="ticker-track" id="tickerTrack">
+                    <span class="ticker-item"><i></i>多智能体正在协同备课</span>
+                    <span class="ticker-item"><i></i>班级空间可一键发布智课</span>
+                    <span class="ticker-item"><i></i>学情回流，下一堂改哪里更清楚</span>
+                    <span class="ticker-item"><i></i>讲稿 · 讲解视频 · 作业同属一课</span>
+                    <span class="ticker-item"><i></i>多智能体正在协同备课</span>
+                    <span class="ticker-item"><i></i>班级空间可一键发布智课</span>
+                    <span class="ticker-item"><i></i>学情回流，下一堂改哪里更清楚</span>
+                    <span class="ticker-item"><i></i>讲稿 · 讲解视频 · 作业同属一课</span>
+                  </div>
+                </div>
+              </div>
+              <div class="orbit-stage reveal d2">
+                <div class="sat s1"><span class="ring"></span><span><span class="n" id="satProjects">0</span><br /><span class="sub">备课项目</span></span></div>
+                <div class="sat s2"><span class="ring"></span><span><span class="n" id="satClasses">0</span><br /><span class="sub">班级空间</span></span></div>
+                <div class="sat s3"><span class="ring"></span><span><span class="n" id="satPublished">0</span><br /><span class="sub">已发布</span></span></div>
+                <div class="sat s4"><span class="ring"></span><span><span class="n" id="satPulse">··</span><br /><span class="sub">教学脉搏</span></span></div>
+                <div class="orbit-wrap" aria-hidden="true">
+                  <div class="orbit-ring a">
+                    <span class="dot d1"></span><span class="dot d2"></span>
+                    <span class="dot d3"></span><span class="dot d4"></span>
+                  </div>
+                  <div class="orbit-ring b">
+                    <span class="dot d1"></span><span class="dot d2"></span>
+                  </div>
+                  <div class="orbit-ring c">
+                    <span class="dot d1"></span><span class="dot d2"></span>
+                  </div>
+                  <div class="orbit-ring d"></div>
+                  <div class="orbit-core"></div>
+                  <div class="orbit-core-label">闭环</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="fp-panel" data-panel="1">
+            <div class="fp-inner">
+              <div class="p2-head">
+                <div class="eyebrow reveal">教学闭环</div>
+                <h2 class="reveal d1">一堂课怎么<br />从想法走到学情</h2>
+                <p class="reveal d2">顺着流动路径，把备课、发布、回看连成整体。</p>
+              </div>
+              <div class="journey">
+                <div class="j-step reveal d1">
+                  <div class="j-node">01</div>
+                  <h3>备课</h3>
+                  <p>课件、讲稿与讲解视频在工作台里一次成型，多智能体帮你把难点讲透。</p>
+                  <div class="j-tags"><span class="j-tag">多智能体</span><span class="j-tag">讲稿</span><span class="j-tag">视频</span></div>
+                </div>
+                <div class="j-step reveal d2">
+                  <div class="j-node">02</div>
+                  <h3>成课</h3>
+                  <p>项目收口后按班发布，学生进班就能学；作业与资料同属一个班级空间。</p>
+                  <div class="j-tags"><span class="j-tag">按班发布</span><span class="j-tag">作业</span><span class="j-tag">资料</span></div>
+                </div>
+                <div class="j-step reveal d3">
+                  <div class="j-node">03</div>
+                  <h3>回看</h3>
+                  <p>学情回来告诉你下一堂该补哪里——再回到工作台，迭代比重做更快。</p>
+                  <div class="j-tags"><span class="j-tag">掌握度</span><span class="j-tag">迭代</span><span class="j-tag">回流</span></div>
+                </div>
+              </div>
+              <div class="loop-strip reveal d4">
+                <span class="loop-pill"><span class="bar"><i></i></span>备课推进中</span>
+                <span class="loop-pill"><span class="bar"><i></i></span>班级同步</span>
+                <span class="loop-pill"><span class="bar"><i></i></span>学情回流</span>
+              </div>
+              <div class="actions reveal d4" style="margin-top:28px;">
+                <a class="btn primary" href="/workspace.html">去备课</a>
+                <a class="btn ghost" href="/classes.html">去班级中心</a>
+                <button class="btn ghost" type="button" data-goto="2">看脉搏</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="fp-panel" data-panel="2">
+            <div class="fp-inner p3-wrap">
+              <div class="pulse-board">
+                <div class="eyebrow reveal">此刻进度</div>
+                <h2 class="reveal d1" style="font-size:clamp(1.85rem,3.2vw,2.55rem);font-weight:800;letter-spacing:-.03em;margin:0;">
+                  一眼看见<br />你的制课脉搏
+                </h2>
+                <p class="reveal d2" style="margin:12px 0 0;color:var(--fp-muted);line-height:1.7;max-width:30em;font-size:clamp(0.98rem,1.2vw,1.08rem);">
+                  数字清晰呈现；点进去就能继续。没有多余的统计墙，只留真正有用的节奏。
+                </p>
+                <div class="metric-row reveal d3">
+                  <a class="metric" href="/projects.html">
+                    <strong id="statProjects">0</strong>
+                    <span>我的项目</span>
+                  </a>
+                  <a class="metric" href="/projects.html">
+                    <strong id="statPublished">0</strong>
+                    <span>已发布智课</span>
+                  </a>
+                  <a class="metric" href="/classes.html">
+                    <strong id="statClasses">—</strong>
+                    <span>班级空间</span>
+                  </a>
+                </div>
+                <div class="spark-row reveal d4" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="spark-caption reveal d4">近七日制课节奏（示意）</div>
+                <div class="wave" aria-hidden="true"></div>
+              </div>
+              <div class="continue-block reveal d2">
+                <div class="eyebrow">继续</div>
+                <h3 id="continueTitle">还没有课程项目</h3>
+                <p id="continueMeta">先开一门课，滚轮再往下就能看到能力入口。</p>
+                <div class="act-list" id="actList">
+                  <div class="act-item"><i></i><span id="act1">工作台待命，可随时开新课</span></div>
+                  <div class="act-item"><i></i><span id="act2">班级空间可发布智课与作业</span></div>
+                  <div class="act-item"><i></i><span id="act3">学情回来后再迭代下一堂</span></div>
+                </div>
+                <a class="btn primary" id="continueLink" href="/projects.html">管理我的项目 →</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="fp-panel" data-panel="3">
+            <div class="fp-inner">
+              <div class="eyebrow reveal">去哪做</div>
+              <h2 class="reveal d1" style="font-size:clamp(1.85rem,3.2vw,2.55rem);font-weight:800;letter-spacing:-.03em;margin:0 0 8px;">
+                一体化入口
+              </h2>
+              <p class="reveal d2" style="margin:0;color:var(--fp-muted);max-width:36em;line-height:1.7;font-size:clamp(0.98rem,1.2vw,1.08rem);">
+                列表像轨道——悬停前移，点一下进入场景。
+              </p>
+              <div class="dest-meta reveal d2">
+                <span class="live-chip"><span class="pulse"></span>入口在线</span>
+                <span class="live-chip"><span class="pulse warn"></span>常用 4 站</span>
+                <span class="live-chip"><span class="pulse warn"></span>一键直达</span>
+              </div>
+              <div class="dest-list">
+                <a class="dest reveal d1" href="/workspace.html">
+                  <div class="no">01</div>
+                  <div>
+                    <h3>备课台</h3>
+                    <p>上传课件，生成讲稿与讲解视频</p>
+                    <div class="hint"><em></em>多智能体协同</div>
+                  </div>
+                  <span class="go">进入 →</span>
+                </a>
+                <a class="dest reveal d2" href="/projects.html">
+                  <div class="no">02</div>
+                  <div>
+                    <h3>我的备课</h3>
+                    <p>制课产物库，复用到多个班级</p>
+                    <div class="hint"><em></em>项目可复用</div>
+                  </div>
+                  <span class="go">打开 →</span>
+                </a>
+                <a class="dest reveal d3" href="/classes.html">
+                  <div class="no">03</div>
+                  <div>
+                    <h3>班级中心</h3>
+                    <p>发布智课、作业、成员与签到</p>
+                    <div class="hint"><em></em>教学运营</div>
+                  </div>
+                  <span class="go">管理 →</span>
+                </a>
+                <a class="dest reveal d4" href="/teacher-insight.html">
+                  <div class="no">04</div>
+                  <div>
+                    <h3>学情分析</h3>
+                    <p>看懂掌握度，下一堂改哪里</p>
+                    <div class="hint"><em></em>数据回流</div>
+                  </div>
+                  <span class="go">查看 →</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <nav class="fp-dots" id="fpDots" aria-label="页面分区"></nav>
+        <div class="fp-dir" id="fpDir"><b id="fpDirBadge">↓</b><span id="fpDirText">滚轮 · 上下切换</span></div>
+        <div class="fp-hint" id="fpHint">
+          <span>滚动切换</span>
+          <span class="chev"></span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('home');
+
+      const user = window.AppStore.currentUser() || {};
+      const name = user.username || '老师';
+      const hour = new Date().getHours();
+      const greet = hour < 12 ? '上午好' : hour < 18 ? '下午好' : '晚上好';
+      document.getElementById('homeGreeting').textContent = greet + '，' + name;
+      document.getElementById('homeLine').textContent = hour < 12
+        ? '上午适合把今天要讲的，先在工作台里过一遍。滚轮向下，整页丝滑切换。'
+        : hour < 18
+          ? '没讲完的课，现在补上刚刚好。滚轮向下切换场景。'
+          : '看一眼学情，下一堂课就有方向。滚轮向下继续探索。';
+
+      let projectCount = 0;
+      let classCount = 0;
+      let publishedCount = 0;
+      let latestProject = null;
+
+      function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      }
+      function syncHeroStats() {
+        const p = String(projectCount);
+        const c = String(classCount);
+        const pub = String(publishedCount);
+        setText('statProjects', p);
+        setText('statClasses', c);
+        setText('statPublished', pub);
+        setText('chipProjects', p);
+        setText('chipClasses', c);
+        setText('chipPublished', pub);
+        setText('satProjects', p);
+        setText('satClasses', c);
+        setText('satPublished', pub);
+        setText('satPulse', projectCount + classCount > 0 ? 'ON' : '··');
+      }
+
+      try {
+        const projects = await window.AppStore.getProjects();
+        const list = projects || [];
+        projectCount = list.length;
+        latestProject = list.slice().sort(function (a, b) {
+          return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+        })[0] || null;
+        if (latestProject && latestProject.id) {
+          setText('continueTitle', '继续备课：' + (latestProject.lessonTitle || latestProject.name || '未命名项目'));
+          setText('continueMeta',
+            (latestProject.published ? '已发布' : '未发布')
+            + (latestProject.updatedAt ? ' · 最近更新 ' + String(latestProject.updatedAt).replace('T', ' ').slice(0, 16) : ''));
+          const link = document.getElementById('continueLink');
+          if (link) {
+            link.href = '/workspace.html?projectId=' + encodeURIComponent(latestProject.id);
+            link.textContent = '继续备课台 →';
+          }
+          const hero = document.getElementById('heroContinue');
+          if (hero) {
+            hero.href = '/workspace.html?projectId=' + encodeURIComponent(latestProject.id);
+          }
+        }
+      } catch (e) {
+        projectCount = 0;
+      }
+      try {
+        const lessons = await window.AppStore.getPublishedLessons();
+        publishedCount = (lessons || []).length;
+      } catch (e) {
+        publishedCount = 0;
+      }
+      try {
+        const resp = await fetch('/api/v1/classes', { credentials: 'same-origin' });
+        const payload = await resp.json().catch(function () { return {}; });
+        const items = (payload.data && payload.data.items) || [];
+        classCount = items.length;
+      } catch (e) {
+        classCount = 0;
+      }
+      syncHeroStats();
+
+      /* 老用户：首屏文案更贴近「继续工作」 */
+      if (projectCount > 0 || classCount > 0) {
+        setText('homeLine', projectCount + ' 门备课 · ' + classCount + ' 个班级 · 从上次停下的地方继续');
+        const contHref = latestProject && latestProject.id
+          ? '/workspace.html?projectId=' + encodeURIComponent(latestProject.id)
+          : '/workspace.html';
+        const hero = document.getElementById('heroContinue');
+        if (hero) hero.href = contHref;
+      }
+
+      /* 进度页动态提示随数据变化 */
+      if (latestProject && latestProject.id) {
+        setText('act1', '最近项目：' + (latestProject.lessonTitle || latestProject.name || '未命名'));
+      } else {
+        setText('act1', '还没有项目 —— 去备课台开一门');
+      }
+      setText('act2', classCount > 0
+        ? ('已有 ' + classCount + ' 个班级空间可发布')
+        : '班级空间待创建，发布后学生才能学');
+      setText('act3', publishedCount > 0
+        ? ('已发布 ' + publishedCount + ' 门智课，可去看学情')
+        : '发布智课后，学情会回到这里');
+
+      /* 卫星数字轻微跳动，增强「活着」的感觉 */
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const pulseEl = document.getElementById('satPulse');
+        const marks = ['ON', '··', 'ON', '▶'];
+        let pi = 0;
+        window.setInterval(function () {
+          if (!pulseEl || document.hidden) return;
+          pi = (pi + 1) % marks.length;
+          pulseEl.textContent = marks[pi];
+        }, 1600);
+      }
+
+      /* —— Fullpage: vertical track, wheel = next/prev page —— */
+      const track = document.getElementById('fpTrack');
+      const panels = Array.prototype.slice.call(document.querySelectorAll('.fp-panel'));
+      const dotsBox = document.getElementById('fpDots');
+      const hint = document.getElementById('fpHint');
+      const dirBadge = document.getElementById('fpDirBadge');
+      const dirText = document.getElementById('fpDirText');
+      const total = panels.length;
+      let index = 0;
+      let locked = false;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const LOCK_MS = reduceMotion ? 0 : 420;
+
+      panels.forEach(function (_, i) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', '第 ' + (i + 1) + ' 屏');
+        b.addEventListener('click', function () { goTo(i); });
+        dotsBox.appendChild(b);
+      });
+
+      function syncUI() {
+        track.style.transform = 'translate3d(0, ' + (-index * 100) + '%, 0)';
+        panels.forEach(function (p, i) {
+          p.classList.toggle('is-active', i === index);
+        });
+        Array.prototype.forEach.call(dotsBox.children, function (d, i) {
+          d.classList.toggle('active', i === index);
+        });
+        hint.classList.toggle('hide', index >= total - 1);
+        if (dirBadge && dirText) {
+          if (index >= total - 1) {
+            dirBadge.textContent = '↑';
+            dirText.textContent = '滚轮 · 回到上一屏';
+          } else {
+            dirBadge.textContent = '↓';
+            dirText.textContent = '滚轮 · 上下切换';
+          }
+        }
+      }
+
+      function goTo(i) {
+        if (i < 0 || i >= total || i === index) return;
+        if (locked) return;
+        index = i;
+        locked = true;
+        syncUI();
+        window.setTimeout(function () { locked = false; }, LOCK_MS);
+      }
+
+      function onWheel(e) {
+        e.preventDefault();
+        if (locked) return;
+        if (e.deltaY > 12) goTo(index + 1);
+        else if (e.deltaY < -12) goTo(index - 1);
+      }
+
+      const root = document.getElementById('fpRoot');
+      root.addEventListener('wheel', onWheel, { passive: false });
+
+      let touchY = null;
+      root.addEventListener('touchstart', function (e) {
+        touchY = e.touches[0].clientY;
+      }, { passive: true });
+      root.addEventListener('touchend', function (e) {
+        if (touchY == null || locked) return;
+        const dy = touchY - e.changedTouches[0].clientY;
+        touchY = null;
+        if (Math.abs(dy) < 40) return;
+        if (dy > 0) goTo(index + 1);
+        else goTo(index - 1);
+      }, { passive: true });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+          e.preventDefault();
+          goTo(index + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          e.preventDefault();
+          goTo(index - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goTo(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goTo(total - 1);
+        }
+      });
+
+      document.querySelectorAll('[data-goto]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          goTo(Number(el.getAttribute('data-goto')) || 0);
+        });
+      });
+
+      if (isReturning) {
+        index = 2;
+      }
+      syncUI();
+
+      /* floating particles */
+      const canvas = document.getElementById('fpCanvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let raf = 0;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = root.clientWidth * dpr;
+        canvas.height = root.clientHeight * dpr;
+        canvas.style.width = root.clientWidth + 'px';
+        canvas.style.height = root.clientHeight + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function spawn() {
+        particles = [];
+        const n = Math.min(48, Math.floor(root.clientWidth / 28));
+        for (let i = 0; i < n; i++) {
+          particles.push({
+            x: Math.random() * root.clientWidth,
+            y: Math.random() * root.clientHeight,
+            r: 1 + Math.random() * 2.2,
+            vx: -0.15 + Math.random() * 0.3,
+            vy: -0.25 + Math.random() * 0.15,
+            a: 0.15 + Math.random() * 0.35,
+          });
+        }
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, root.clientWidth, root.clientHeight);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -10) p.x = root.clientWidth + 10;
+          if (p.x > root.clientWidth + 10) p.x = -10;
+          if (p.y < -10) p.y = root.clientHeight + 10;
+          if (p.y > root.clientHeight + 10) p.y = -10;
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(37, 99, 235,' + p.a + ')';
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // soft links
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < 140 * 140) {
+              const alpha = 0.08 * (1 - Math.sqrt(d2) / 140);
+              ctx.strokeStyle = 'rgba(14, 165, 233,' + alpha + ')';
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        raf = requestAnimationFrame(tick);
+      }
+
+      if (!reduceMotion) {
+        resize();
+        spawn();
+        tick();
+        window.addEventListener('resize', function () {
+          resize();
+          spawn();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

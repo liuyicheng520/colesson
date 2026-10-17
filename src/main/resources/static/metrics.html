@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>运营看板 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .hero-copy { max-width: 860px; }
+    .hero-copy p { color: var(--sub); line-height: 1.7; margin-top: 8px; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .metric-card { padding: 18px; background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%); }
+    .metric-label { font-size: 12px; color: #73819a; margin-bottom: 10px; }
+    .metric-value { font-size: 34px; font-weight: 800; color: #20345e; line-height: 1; }
+    .metric-sub { margin-top: 10px; color: #62728e; font-size: 13px; line-height: 1.7; }
+
+    .layout-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
+    .panel { padding: 18px; display: grid; gap: 14px; }
+    .panel h2 { font-size: 19px; color: #243555; }
+    .panel p { color: #6a7893; line-height: 1.7; }
+
+    .bars { display: grid; gap: 12px; }
+    .bar-row { display: grid; grid-template-columns: 118px 1fr auto; gap: 12px; align-items: center; }
+    .bar-name { font-size: 13px; font-weight: 700; color: #2a3f6c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { height: 10px; border-radius: 999px; background: #edf2fb; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2f6bff, #5e9cff); }
+    .bar-value { font-size: 13px; color: #5b6c8d; min-width: 34px; text-align: right; }
+
+    .source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .source-card { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: #fcfdff; }
+    .source-card strong { display: block; color: #243555; margin-bottom: 4px; }
+    .source-card span { color: #5b6c8d; font-size: 13px; }
+
+    .stat-list { display: grid; gap: 10px; }
+    .stat-item { display: flex; justify-content: space-between; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: #fcfdff; font-size: 14px; }
+    .stat-item strong { color: #243555; }
+
+    .callout { border: 1px solid #dbe6fb; border-radius: 14px; background: linear-gradient(135deg, #f8fbff, #f0f5ff); padding: 16px; color: #506380; line-height: 1.8; }
+
+    .api-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .api-chip { border-radius: 999px; background: #f1f6ff; border: 1px solid #d9e5ff; color: #3559af; font-size: 12px; padding: 6px 10px; }
+
+    .timeline { display: grid; gap: 12px; }
+    .timeline-item { border-left: 3px solid #bdd0ff; padding-left: 14px; }
+    .timeline-item strong { display: block; color: #23406d; margin-bottom: 4px; }
+
+    .loading-tip { color: #6a7893; font-size: 13px; }
+
+    .ops-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .ops-card { padding: 16px; display: grid; gap: 8px; }
+    .ops-card span { color: #73819a; font-size: 12px; }
+    .ops-card strong { color: #20345e; font-size: 30px; line-height: 1; }
+    .ops-card small { color: #62728e; line-height: 1.6; }
+    .admin-table-wrap { overflow-x: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    .admin-table th,
+    .admin-table td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; font-size: 13px; color: #42526b; vertical-align: top; }
+    .admin-table th { color: #243555; background: #f8fafc; font-weight: 800; }
+    .admin-table td strong { color: #243555; }
+    .status-dot { display: inline-flex; align-items: center; gap: 6px; }
+    .status-dot::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: #a9b4c5; }
+    .status-dot.ok::before { background: #17b26a; }
+
+    @media (max-width: 1200px) {
+      .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ops-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .layout-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+      .ops-grid { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 88px 1fr auto; }
+      .source-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="topbar">
+        <div class="hero-copy">
+          <div class="brand-title">智课共生运营看板</div>
+          <p>统一查看课程样本、解析质量、问答服务和内容来源，帮助管理员快速判断系统运行状态。</p>
+          <div class="hero-tags">
+            <span class="tag">课程样本</span>
+            <span class="tag">解析质量</span>
+            <span class="tag">问答服务</span>
+            <span class="tag">学习数据</span>
+            <span class="tag">接口状态</span>
+          </div>
+        </div>
+        <a class="btn" href="/admin/home.html">返回管理首页</a>
+      </section>
+
+      <section class="metrics-grid">
+        <article class="card metric-card">
+          <div class="metric-label">当前样本台账</div>
+          <div class="metric-value" id="metricSampleTotal">--</div>
+          <div class="metric-sub" id="metricSampleSub">--</div>
+        </article>
+        <article class="card metric-card">
+          <div class="metric-label">解析覆盖 / 成功率</div>
+          <div class="metric-value" id="metricParseRate">--</div>
+          <div class="metric-sub" id="metricParseSub">--</div>
+        </article>
+        <article class="card metric-card">
+          <div class="metric-label">平均解析耗时</div>
+          <div class="metric-value" id="metricParseAvg">--</div>
+          <div class="metric-sub" id="metricParseLatencySub">--</div>
+        </article>
+        <article class="card metric-card">
+          <div class="metric-label">平均问答耗时</div>
+          <div class="metric-value" id="metricQaAvg">--</div>
+          <div class="metric-sub" id="metricQaSub">--</div>
+        </article>
+      </section>
+
+      <section class="ops-grid">
+        <article class="card ops-card">
+          <span>账号总数</span>
+          <strong id="opsUserCount">--</strong>
+          <small id="opsRoleCount">正在读取账号角色</small>
+        </article>
+        <article class="card ops-card">
+          <span>项目总数</span>
+          <strong id="opsProjectCount">--</strong>
+          <small id="opsTeacherCount">正在读取教师项目</small>
+        </article>
+        <article class="card ops-card">
+          <span>已发布课程</span>
+          <strong id="opsPublishedCount">--</strong>
+          <small>可供学生端学习</small>
+        </article>
+        <article class="card ops-card">
+          <span>学习记录</span>
+          <strong id="opsLearningCount">--</strong>
+          <small>来自学生学习页回传</small>
+        </article>
+      </section>
+
+      <section class="layout-grid" style="margin-bottom:14px;">
+        <article class="card panel">
+          <div>
+            <h2>账号列表</h2>
+            <p>只读查看当前系统账号与角色分布。</p>
+          </div>
+          <div class="admin-table-wrap" id="adminUsersTable"><div class="loading-tip">正在加载账号...</div></div>
+        </article>
+
+        <article class="card panel">
+          <div>
+            <h2>项目与课程</h2>
+            <p>查看教师项目、发布状态和学习记录数量。</p>
+          </div>
+          <div class="admin-table-wrap" id="adminProjectsTable"><div class="loading-tip">正在加载项目...</div></div>
+        </article>
+      </section>
+
+      <section class="card panel" style="margin-bottom:14px;">
+        <div>
+          <h2>最近学习记录</h2>
+          <p>按时间倒序查看最近的学生学习与提问行为。</p>
+        </div>
+        <div class="admin-table-wrap" id="adminLearningTable"><div class="loading-tip">正在加载学习记录...</div></div>
+      </section>
+
+      <section class="layout-grid">
+        <article class="card panel">
+          <div>
+            <h2>课程样本分布</h2>
+            <p>按当前样本台账自动汇总，便于确认课程类型覆盖情况。</p>
+          </div>
+          <div class="bars" id="categoryBars"><div class="loading-tip">加载中...</div></div>
+          <div class="callout" id="coverageCallout">加载中...</div>
+        </article>
+
+        <article class="card panel">
+          <div>
+            <h2>服务指标</h2>
+            <p>查看解析与问答服务的关键运行指标。</p>
+          </div>
+          <div class="stat-list" id="statList"><div class="loading-tip">加载中...</div></div>
+        </article>
+      </section>
+
+      <section class="layout-grid" style="margin-top:14px;">
+        <article class="card panel">
+          <div>
+            <h2>内容来源</h2>
+            <p>按课程来源聚合，帮助管理员了解内容接入结构。</p>
+          </div>
+          <div class="source-grid" id="sourceGrid"><div class="loading-tip">加载中...</div></div>
+
+          <div class="api-list">
+            <span class="api-chip">/auth/register</span>
+            <span class="api-chip">/auth/login</span>
+            <span class="api-chip">/projects-api</span>
+            <span class="api-chip">/parse-ppt</span>
+            <span class="api-chip">/generate-script</span>
+            <span class="api-chip">/answer-question</span>
+            <span class="api-chip">/qa/search</span>
+            <span class="api-chip">/generate-audio</span>
+            <span class="api-chip">/api/v1/progress/track</span>
+            <span class="api-chip">/api/v1/platform/syncCourse</span>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div>
+            <h2>管理关注项</h2>
+            <p>围绕课程生产、学习使用和服务稳定性进行日常巡检。</p>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <strong>1. 课件结构化解析</strong>
+              确认课件文本与页面结构可被稳定读取。
+            </div>
+            <div class="timeline-item">
+              <strong>2. 讲稿生成与实时问答</strong>
+              关注讲稿生成、学生提问和回答质量。
+            </div>
+            <div class="timeline-item">
+              <strong>3. 数据更新</strong>
+              样本台账、解析报告和问答报告统一汇总。
+            </div>
+            <div class="timeline-item">
+              <strong>4. 运营跟踪</strong>
+              持续观察课程内容、学习记录和服务表现。
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    function fmtPercent(v) {
+      const num = Number(v || 0);
+      return (num * 100).toFixed(2).replace(/\.00$/, '') + '%';
+    }
+
+    function fmtMs(v) {
+      const num = Number(v || 0);
+      return num.toFixed(2).replace(/\.00$/, '') + ' ms';
+    }
+
+    function mapToSortedEntries(mapObj) {
+      return Object.entries(mapObj || {}).sort(function (a, b) { return b[1] - a[1]; });
+    }
+
+    function renderBars(containerId, entries) {
+      const root = document.getElementById(containerId);
+      if (!root) return;
+      if (!entries.length) {
+        root.innerHTML = '<div class="loading-tip">暂无数据</div>';
+        return;
+      }
+      const max = Math.max.apply(null, entries.map(function (e) { return Number(e[1] || 0); })) || 1;
+      root.innerHTML = entries.map(function (e) {
+        const name = e[0];
+        const val = Number(e[1] || 0);
+        const width = Math.max(6, (val / max) * 100).toFixed(2);
+        return '<div class="bar-row">'
+          + '<div class="bar-name" title="' + escapeHtml(name) + '">' + escapeHtml(name) + '</div>'
+          + '<div class="bar-track"><div class="bar-fill" style="width:' + width + '%"></div></div>'
+          + '<div class="bar-value">' + val + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
+    function renderStats(inventory, parse, qa) {
+      const statList = document.getElementById('statList');
+      if (!statList) return;
+      const rows = [
+        ['样本台账总量', String(inventory.summary.coursewareCount)],
+        ['解析覆盖进度', String(parse.okCount) + ' / ' + String(inventory.summary.coursewareCount)],
+        ['解析平均耗时', fmtMs(parse.latencyMs.avg)],
+        ['解析 P50 / P90', fmtMs(parse.latencyMs.p50) + ' / ' + fmtMs(parse.latencyMs.p90)],
+        ['解析最大耗时', fmtMs(parse.latencyMs.max)],
+        ['问答评测样本数', String(qa.sample_size)],
+        ['问答请求成功率', fmtPercent(qa.ok_rate)],
+        ['问答平均耗时', fmtMs(qa.latency_ms.avg)],
+        ['问答 P90 / 最大耗时', fmtMs(qa.latency_ms.p90) + ' / ' + fmtMs(qa.latency_ms.max)],
+        ['问答精确匹配率', fmtPercent(qa.dataset_answer_exact_rate)]
+      ];
+      statList.innerHTML = rows.map(function (row) {
+        return '<div class="stat-item"><span>' + row[0] + '</span><strong>' + row[1] + '</strong></div>';
+      }).join('');
+    }
+
+    function renderSources(parse) {
+      const root = document.getElementById('sourceGrid');
+      if (!root) return;
+      const counts = {};
+      (parse.details || []).forEach(function (item) {
+        const key = item.source || '未标注来源';
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      const entries = mapToSortedEntries(counts);
+      if (!entries.length) {
+        root.innerHTML = '<div class="loading-tip">暂无来源数据</div>';
+        return;
+      }
+      root.innerHTML = entries.map(function (e) {
+        return '<div class="source-card"><strong>' + e[0] + '</strong><span>样本数：' + e[1] + '</span></div>';
+      }).join('');
+    }
+
+    function setTopCards(inventory, parse, qa) {
+      const total = Number((inventory.summary || {}).coursewareCount || 0);
+      const parseOk = Number(parse.okCount || 0);
+      const parseRate = Number(parse.successRate || 0);
+
+      document.getElementById('metricSampleTotal').textContent = String(total);
+      document.getElementById('metricSampleSub').textContent = '工科 ' + (inventory.summary.categoryDistribution['工科'] || 0)
+        + ' / 文科 ' + (inventory.summary.categoryDistribution['文科'] || 0)
+        + ' / 理科 ' + (inventory.summary.categoryDistribution['理科'] || 0);
+
+      document.getElementById('metricParseRate').textContent = fmtPercent(parseRate);
+      document.getElementById('metricParseSub').textContent = '解析覆盖 ' + parseOk + ' / ' + total;
+
+      document.getElementById('metricParseAvg').innerHTML = String(Number(parse.latencyMs.avg || 0).toFixed(2).replace(/\.00$/, '')) + '<span style="font-size:16px;">ms</span>';
+      document.getElementById('metricParseLatencySub').textContent = 'P90 ' + fmtMs(parse.latencyMs.p90) + '，最大 ' + fmtMs(parse.latencyMs.max);
+
+      document.getElementById('metricQaAvg').innerHTML = String(Number(qa.latency_ms.avg || 0).toFixed(2).replace(/\.00$/, '')) + '<span style="font-size:16px;">ms</span>';
+      document.getElementById('metricQaSub').textContent = '成功率 ' + fmtPercent(qa.ok_rate) + '，样本 ' + qa.sample_size;
+
+      const callout = document.getElementById('coverageCallout');
+      callout.textContent = '当前解析覆盖进度为 ' + parseOk + ' / ' + total
+        + '，解析成功率 ' + fmtPercent(parseRate)
+        + '；问答服务成功率 ' + fmtPercent(qa.ok_rate)
+        + '，可作为当前运行状态参考。';
+    }
+
+    async function loadReports() {
+      const [inventoryRes, parseRes, qaRes] = await Promise.all([
+        fetch('/reports/samples/sample_inventory.json', { cache: 'no-store' }),
+        fetch('/reports/evaluation/parse_benchmark_report_full.json', { cache: 'no-store' }),
+        fetch('/reports/evaluation/eval_answer_question_report.json', { cache: 'no-store' })
+      ]);
+
+      if (!inventoryRes.ok || !parseRes.ok || !qaRes.ok) {
+        throw new Error('报告文件读取失败');
+      }
+
+      return Promise.all([inventoryRes.json(), parseRes.json(), qaRes.json()]);
+    }
+
+    function notify(text, tone) {
+      if (window.AppStore && window.AppStore.toast) {
+        window.AppStore.toast(text, tone);
+      }
+    }
+
+    function escapeHtml(text) {
+      return String(text || '').replace(/[&<>"']/g, function (ch) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+      });
+    }
+
+    async function requestJson(url) {
+      const response = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
+      const payload = await response.json().catch(function () {
+        return { code: 1, message: '服务返回格式异常' };
+      });
+      if (!response.ok || payload.code !== 0) {
+        throw new Error(payload.message || '请求失败');
+      }
+      return payload.data || {};
+    }
+
+    function roleLabel(role) {
+      if (window.AppStore && window.AppStore.roleLabel) return window.AppStore.roleLabel(role);
+      return role || '-';
+    }
+
+    function formatTime(value) {
+      if (!value) return '--';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString('zh-CN', { hour12: false });
+    }
+
+    function renderAdminTable(rootId, headers, rows, emptyText) {
+      const root = document.getElementById(rootId);
+      if (!root) return;
+      if (!rows.length) {
+        root.innerHTML = '<div class="loading-tip">' + escapeHtml(emptyText || '暂无数据') + '</div>';
+        return;
+      }
+      root.innerHTML = '<table class="admin-table"><thead><tr>'
+        + headers.map(function (item) { return '<th>' + escapeHtml(item) + '</th>'; }).join('')
+        + '</tr></thead><tbody>'
+        + rows.join('')
+        + '</tbody></table>';
+    }
+
+    function renderAdminOverview(data) {
+      const summary = data.summary || {};
+      const users = Array.isArray(data.users) ? data.users : [];
+      const projects = Array.isArray(data.projects) ? data.projects : [];
+      const records = Array.isArray(data.recentLearningRecords) ? data.recentLearningRecords : [];
+      const roleCounts = summary.roleCounts || {};
+      const teacherProjectCounts = summary.teacherProjectCounts || {};
+
+      document.getElementById('opsUserCount').textContent = String(summary.userCount || 0);
+      document.getElementById('opsProjectCount').textContent = String(summary.projectCount || 0);
+      document.getElementById('opsPublishedCount').textContent = String(summary.publishedCount || 0);
+      document.getElementById('opsLearningCount').textContent = String(summary.learningRecordCount || 0);
+      document.getElementById('opsRoleCount').textContent = Object.keys(roleCounts).length
+        ? Object.keys(roleCounts).map(function (key) { return roleLabel(key) + ' ' + roleCounts[key]; }).join(' / ')
+        : '暂无角色数据';
+      document.getElementById('opsTeacherCount').textContent = Object.keys(teacherProjectCounts).length
+        ? '有项目教师 ' + Object.keys(teacherProjectCounts).length + ' 人'
+        : '暂无教师项目';
+
+      renderAdminTable('adminUsersTable', ['账号', '角色', '默认入口'], users.map(function (item) {
+        const roles = Array.isArray(item.roles) ? item.roles.map(roleLabel).join(' / ') : '-';
+        return '<tr><td><strong>' + escapeHtml(item.username) + '</strong></td><td>' + escapeHtml(roles) + '</td><td>' + escapeHtml(item.homePath || '-') + '</td></tr>';
+      }), '暂无账号');
+
+      renderAdminTable('adminProjectsTable', ['项目', '教师', '状态', '学习记录', '更新时间'], projects.slice(0, 12).map(function (item) {
+        return '<tr>'
+          + '<td><strong>' + escapeHtml(item.name || item.lessonTitle || '未命名项目') + '</strong></td>'
+          + '<td>' + escapeHtml(item.username || '-') + '</td>'
+          + '<td><span class="status-dot ' + (item.published ? 'ok' : '') + '">' + (item.published ? '已发布' : '制作中') + '</span></td>'
+          + '<td>' + Number(item.learningRecordCount || 0) + '</td>'
+          + '<td>' + escapeHtml(formatTime(item.updatedAt)) + '</td>'
+          + '</tr>';
+      }), '暂无项目');
+
+      renderAdminTable('adminLearningTable', ['课程', '学生', '节点', '进度', '动作', '时间'], records.map(function (item) {
+        return '<tr>'
+          + '<td><strong>' + escapeHtml(item.projectName || '-') + '</strong></td>'
+          + '<td>' + escapeHtml(item.learnerUsername || '-') + '</td>'
+          + '<td>' + escapeHtml(item.currentSectionId || '-') + '</td>'
+          + '<td>' + Number(item.progressPercent || 0).toFixed(1) + '%</td>'
+          + '<td>' + escapeHtml(item.action || '-') + (item.question ? '<br><span class="loading-tip">问：' + escapeHtml(item.question).slice(0, 80) + '</span>' : '') + '</td>'
+          + '<td>' + escapeHtml(formatTime(item.createdAt)) + '</td>'
+          + '</tr>';
+      }), '暂无学习记录');
+    }
+
+    async function loadAdminOverview() {
+      try {
+        renderAdminOverview(await requestJson('/admin-api/overview?projectLimit=20&learningLimit=12'));
+      } catch (err) {
+        const msg = err && err.message ? err.message : '管理员概览加载失败';
+        document.getElementById('adminUsersTable').innerHTML = '<div class="loading-tip">' + escapeHtml(msg) + '</div>';
+        document.getElementById('adminProjectsTable').innerHTML = '<div class="loading-tip">' + escapeHtml(msg) + '</div>';
+        document.getElementById('adminLearningTable').innerHTML = '<div class="loading-tip">' + escapeHtml(msg) + '</div>';
+        notify(msg, 'err');
+      }
+    }
+
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/admin/login';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['admin'], { loginRole: 'admin' });
+      if (!ok) return;
+      window.AppStore.mountNav('metrics');
+      loadAdminOverview();
+
+      try {
+        const [inventory, parse, qa] = await loadReports();
+        setTopCards(inventory, parse, qa);
+        renderBars('categoryBars', mapToSortedEntries((inventory.summary || {}).categoryDistribution || {}));
+        renderStats(inventory, parse, qa);
+        renderSources(parse);
+      } catch (err) {
+        const msg = '读取运营报告失败：' + (err && err.message ? err.message : String(err));
+        const safeMsg = escapeHtml(msg);
+        document.getElementById('categoryBars').innerHTML = '<div class="loading-tip">' + safeMsg + '</div>';
+        document.getElementById('statList').innerHTML = '<div class="loading-tip">' + safeMsg + '</div>';
+        document.getElementById('sourceGrid').innerHTML = '<div class="loading-tip">' + safeMsg + '</div>';
+        document.getElementById('coverageCallout').textContent = msg;
+        notify(msg, 'err');
+      }
+    })();
+  </script>
+</body>
+</html>

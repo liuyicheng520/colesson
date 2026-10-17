@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>加入班级 · 学生端 - 智课共生</title>
+  <link rel="stylesheet" href="/auth-pages.css?v=20260919w" />
+  <link rel="stylesheet" href="/auth-hero.css?v=20260919w" />
+  <style>
+    .join-panel .panel-card {
+      max-width: 520px;
+      margin: 0 auto;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      padding: 8px 4px 24px;
+    }
+    .join-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #6b7f9e;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .join-kicker i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1f66ff;
+      box-shadow: 0 0 0 4px rgba(31, 102, 255, 0.12);
+    }
+    .join-title {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 3.2vw, 34px);
+      letter-spacing: -0.03em;
+      color: #15233d;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+    .join-lead {
+      margin: 0 0 22px;
+      max-width: 36em;
+      color: #6a7a94;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .invite-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 22px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%);
+      border: 1px solid #dce7f8;
+    }
+    .invite-banner .label {
+      font-size: 12px;
+      font-weight: 650;
+      color: #6b7f9e;
+    }
+    .invite-banner .code {
+      margin-top: 4px;
+      font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: #1a4db8;
+    }
+    .invite-banner .copy-hint {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: #8a9bb5;
+    }
+    .progress-line {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 0 0 28px;
+      padding: 0 4px;
+    }
+    .progress-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 72px;
+      color: #9aa8c0;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .progress-node .dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid #d5dfef;
+      background: #fff;
+      color: #8a9bb5;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .progress-node.is-active { color: #1f4fad; }
+    .progress-node.is-active .dot {
+      border-color: #1f66ff;
+      background: #1f66ff;
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(31, 102, 255, 0.22);
+    }
+    .progress-node.is-done { color: #0f7a52; }
+    .progress-node.is-done .dot {
+      border-color: #0f9961;
+      background: #0f9961;
+      color: #fff;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 2px;
+      margin: 0 6px 22px;
+      background: #e3eaf5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #1f66ff, #58a3ff);
+      transition: width .35s ease;
+    }
+    .progress-bar.is-half > i { width: 50%; }
+    .progress-bar.is-full > i { width: 100%; }
+    .note {
+      display: none;
+      margin: 0 0 18px;
+      padding: 0;
+      color: #5d6f8c;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .note.show { display: block; }
+    .note strong { color: #243b63; font-weight: 700; }
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .action-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 18px 16px;
+      border-radius: 18px;
+      border: 1px solid #e1e9f5;
+      background: #fff;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 10px 22px rgba(28, 48, 90, 0.04);
+    }
+    .action-card:hover {
+      transform: translateY(-2px);
+      border-color: #b9cef3;
+      box-shadow: 0 16px 28px rgba(28, 48, 90, 0.08);
+    }
+    .action-card.primary {
+      border-color: transparent;
+      background: linear-gradient(145deg, #2a6fff 0%, #1f66ff 55%, #1858e0 100%);
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(31, 102, 255, 0.22);
+    }
+    .action-card.primary:hover {
+      box-shadow: 0 18px 32px rgba(31, 102, 255, 0.28);
+    }
+    .action-card .eyebrow {
+      font-size: 11px;
+      font-weight: 650;
+      opacity: 0.72;
+      letter-spacing: 0.04em;
+    }
+    .action-card .name {
+      font-size: 16px;
+      font-weight: 740;
+      letter-spacing: -0.01em;
+    }
+    .action-card .desc {
+      font-size: 12px;
+      line-height: 1.5;
+      opacity: 0.78;
+    }
+    .logout-row {
+      display: none;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #e8eef7;
+    }
+    .logout-row.show { display: block; }
+    .logout-row button {
+      border: 0;
+      background: transparent;
+      color: #7a8aa6;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+    }
+    .logout-row button:hover { color: #1f66ff; }
+    .join-form .field { margin-bottom: 14px; }
+    .join-form label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #516584;
+    }
+    .code-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+    .join-submit {
+      width: 100%;
+      margin-top: 6px;
+      text-align: center;
+      justify-content: center;
+    }
+    .demo-code {
+      min-height: 1.2em;
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0d6b42;
+    }
+    .form-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #8a9bb5;
+    }
+    .form-foot a {
+      color: #1f66ff;
+      text-decoration: none;
+      font-weight: 650;
+    }
+    @media (max-width: 640px) {
+      .action-grid { grid-template-columns: 1fr; }
+      .invite-banner { flex-direction: column; align-items: flex-start; }
+      .progress-node { min-width: 56px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body class="auth-body">
+  <main class="auth-shell">
+    <section class="hero-panel">
+      <div>
+        <div class="hero-deco" aria-hidden="true">
+          <i class="hero-orb orb-a"></i>
+          <i class="hero-orb orb-b"></i>
+          <i class="hero-orb orb-c"></i>
+          <i class="hero-dots"></i>
+          <i class="hero-glow"></i>
+        </div>
+        <div class="hero-header">
+          <div class="hero-brand">
+            <div class="hero-logo" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v15H7.5A2.5 2.5 0 0 0 5 21V6.5Z"/>
+                <path d="M9 9h6"/>
+                <path d="M9 12h6"/>
+              </svg>
+            </div>
+            <div class="hero-brand-copy">
+              <strong>智课共生</strong>
+            </div>
+          </div>
+          <div class="hero-status">学生端</div>
+        </div>
+        <div class="hero-copy">
+          <h1 aria-label="加入班级，开始学习。">
+            <span class="line" aria-hidden="true"><span class="ch">加</span><span class="ch">入</span><span class="ch">班</span><span class="ch">级</span><span class="ch">，</span></span>
+            <span class="line grad" style="--n:5" aria-hidden="true"><span class="ch gc" style="--i:0">开</span><span class="ch gc" style="--i:1">始</span><span class="ch gc" style="--i:2">学</span><span class="ch gc" style="--i:3">习</span><span class="ch gc" style="--i:4">。</span></span>
+          </h1>
+          <p>老师把智课发到班级后，学生用邀请码入班即可学习。先确认学生身份，再完成入班验证。</p>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-list">
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 7.5 12 4l8 3.5L12 11 4 7.5Z"/><path d="M6 10.2v5.3c0 2.2 2.7 3.8 6 3.8s6-1.6 6-3.8v-5.3"/></svg>
+            </div>
+            <div>
+              <strong>班级专属智课</strong>
+              <span>入班后才能看到本班发布内容。</span>
+            </div>
+          </div>
+          <div class="hero-item">
+            <div class="hero-item-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M8 7V5.8A2.8 2.8 0 0 1 10.8 3h2.4A2.8 2.8 0 0 1 16 5.8V7"/></svg>
+            </div>
+            <div>
+              <strong>邀请码验证</strong>
+              <span>使用老师分享的邀请码完成加入。</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-foot">© 2026 智课共生</div>
+      </div>
+    </section>
+
+    <section class="panel-zone join-panel">
+      <div class="panel-toolbar">
+        <a class="toolbar-link" href="/student/course-center">课程中心</a>
+        <a class="toolbar-link" href="#" data-help>帮助</a>
+      </div>
+
+      <div class="panel-card">
+        <div class="join-kicker"><i></i>Join Class</div>
+        <h2 class="join-title">加入班级</h2>
+        <p class="join-lead">用学生账号登录，验证邀请码后进入班级学习。</p>
+
+        <div id="inviteBanner" class="invite-banner" style="display:none;">
+          <div>
+            <div class="label">老师分享的邀请码</div>
+            <div id="inviteChipText" class="code">------</div>
+          </div>
+          <div class="copy-hint">入班时自动填入</div>
+        </div>
+
+        <div class="progress-line" aria-label="进度">
+          <div id="step1" class="progress-node is-active"><span class="dot">1</span><span>认证</span></div>
+          <div id="bar1" class="progress-bar"><i></i></div>
+          <div id="step2" class="progress-node"><span class="dot">2</span><span>入班</span></div>
+          <div id="bar2" class="progress-bar"><i></i></div>
+          <div id="step3" class="progress-node"><span class="dot">3</span><span>学习</span></div>
+        </div>
+
+        <p id="note" class="note" role="status" aria-live="polite"></p>
+
+        <div id="guestBox">
+          <div class="action-grid">
+            <a id="goRegister" class="action-card primary" href="#">
+              <span class="eyebrow">新同学</span>
+              <span class="name">开通学生账号</span>
+              <span class="desc">注册后自动回到本页继续入班</span>
+            </a>
+            <a id="goLogin" class="action-card" href="#">
+              <span class="eyebrow">已有账号</span>
+              <span class="name">学生登录</span>
+              <span class="desc">登录完成后继续加入班级</span>
+            </a>
+          </div>
+          <div id="logoutRow" class="logout-row">
+            <button id="logoutBtn" type="button">退出当前非学生账号</button>
+          </div>
+        </div>
+
+        <div id="joinBox" style="display:none;">
+          <form id="joinForm" class="auth-form join-form" novalidate>
+            <div class="field">
+              <label for="inviteInput">班级邀请码</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M8 7V5.8A2.8 2.8 0 0 1 10.8 3h2.4A2.8 2.8 0 0 1 16 5.8V7"/></svg>
+                <input id="inviteInput" name="invite" type="text" maxlength="12" autocomplete="off" placeholder="6 位邀请码" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="emailInput">邮箱</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="m4 8 8 5 8-5"/></svg>
+                <input id="emailInput" name="email" type="email" autocomplete="email" placeholder="用于接收验证码" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="codeInput">验证码</label>
+              <div class="code-row">
+                <div class="input-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3v10"/><path d="m8.5 9.5 3.5 3.5 3.5-3.5"/><path d="M5 17.5h14"/></svg>
+                  <input id="codeInput" name="code" type="text" maxlength="8" autocomplete="one-time-code" placeholder="邮箱验证码" />
+                </div>
+                <button id="sendCodeBtn" class="btn ghost" type="button">获取验证码</button>
+              </div>
+            </div>
+            <div id="demoHint" class="demo-code"></div>
+            <button id="joinBtn" class="btn primary join-submit" type="submit">验证并加入班级</button>
+            <div class="form-foot">
+              <span>加入后进入班级空间学习智课</span>
+              <a href="/student/course-center">先去课程中心</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/help-modal.js?v=20260925a" data-help-modal="1"></script>
+  <script src="/app.js?v=20261104c"></script>
+  <script src="/auth-hero.js?v=20260919w"></script>
+  <script>
+    (async function () {
+      const params = new URLSearchParams(location.search);
+      const invite = (params.get('invite') || '').trim().toUpperCase();
+      const classId = (params.get('classId') || '').trim();
+      const projectId = (params.get('projectId') || '').trim();
+      const returnHere = '/student/join.html?' + params.toString();
+
+      const note = document.getElementById('note');
+      const guestBox = document.getElementById('guestBox');
+      const joinBox = document.getElementById('joinBox');
+      const inviteInput = document.getElementById('inviteInput');
+      const emailInput = document.getElementById('emailInput');
+      const codeInput = document.getElementById('codeInput');
+      const demoHint = document.getElementById('demoHint');
+      const goRegister = document.getElementById('goRegister');
+      const goLogin = document.getElementById('goLogin');
+      const logoutRow = document.getElementById('logoutRow');
+      const inviteBanner = document.getElementById('inviteBanner');
+      const inviteChipText = document.getElementById('inviteChipText');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const bar1 = document.getElementById('bar1');
+      const bar2 = document.getElementById('bar2');
+
+      inviteInput.value = invite;
+      goRegister.href = '/student/register.html?returnTo=' + encodeURIComponent(returnHere);
+      goLogin.href = '/student/login.html?returnTo=' + encodeURIComponent(returnHere);
+
+      if (invite) {
+        inviteBanner.style.display = 'flex';
+        inviteChipText.textContent = invite;
+      }
+
+      function setNote(text) {
+        if (!text) {
+          note.classList.remove('show');
+          note.textContent = '';
+          return;
+        }
+        note.classList.add('show');
+        note.innerHTML = text;
+      }
+
+      function setSteps(phase) {
+        [step1, step2, step3].forEach(function (el) {
+          el.classList.remove('is-active', 'is-done');
+        });
+        bar1.classList.remove('is-half', 'is-full');
+        bar2.classList.remove('is-half', 'is-full');
+        if (phase === 'auth') {
+          step1.classList.add('is-active');
+        } else if (phase === 'join') {
+          step1.classList.add('is-done');
+          step2.classList.add('is-active');
+          bar1.classList.add('is-full');
+        } else if (phase === 'done') {
+          step1.classList.add('is-done');
+          step2.classList.add('is-done');
+          step3.classList.add('is-active');
+          bar1.classList.add('is-full');
+          bar2.classList.add('is-full');
+        }
+      }
+
+      async function api(url, options) {
+        const resp = await fetch(url, Object.assign({
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        }, options || {}));
+        const payload = await resp.json().catch(function () { return {}; });
+        if (!resp.ok || (payload && payload.code && payload.code !== 0)) {
+          throw new Error((payload && (payload.message || payload.msg)) || ('HTTP ' + resp.status));
+        }
+        return payload.data || {};
+      }
+
+      function hasStudentRole(user) {
+        if (!user) return false;
+        if (String(user.activeRole || '').toLowerCase() === 'student') return true;
+        const roles = user.roles || [];
+        return Array.isArray(roles) && roles.some(function (r) {
+          return String(r).toLowerCase() === 'student';
+        });
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', async function () {
+        if (window.AppStore && window.AppStore.logout) {
+          await window.AppStore.logout();
+        }
+        location.href = goLogin.href;
+      });
+
+      const user = window.AppStore && window.AppStore.refreshCurrentUser
+        ? await window.AppStore.refreshCurrentUser()
+        : null;
+      const isStudent = hasStudentRole(user);
+
+      if (!user || !isStudent) {
+        guestBox.style.display = '';
+        joinBox.style.display = 'none';
+        setSteps('auth');
+        if (user && !isStudent) {
+          logoutRow.classList.add('show');
+          setNote('当前是 <strong>教师/管理员</strong> 会话。请退出后用学生账号登录，或右侧开通一个学生账号。');
+        } else {
+          logoutRow.classList.remove('show');
+          setNote('还没有学生会话。开通或登录后会自动回到这里，继续加入班级。');
+        }
+        return;
+      }
+
+      guestBox.style.display = 'none';
+      joinBox.style.display = '';
+      setSteps('join');
+      setNote('已登录学生账号 <strong>' + (user.username || '') + '</strong>，填写邮箱验证码即可入班。');
+
+      document.getElementById('sendCodeBtn').addEventListener('click', async function () {
+        const code = inviteInput.value.trim();
+        const email = emailInput.value.trim();
+        if (!code || !email) {
+          setNote('请填写邀请码和邮箱。');
+          return;
+        }
+        this.disabled = true;
+        try {
+          const data = await api('/api/v1/classes/join/request-code', {
+            method: 'POST',
+            body: JSON.stringify({ inviteCode: code, email: email })
+          });
+          demoHint.textContent = data.hint || '验证码已发送，请注意查收';
+          if (data.demoCode) {
+            demoHint.textContent = '演示验证码：' + data.demoCode;
+            codeInput.value = data.demoCode;
+          }
+          setNote('验证码已就绪，确认后即可加入班级。');
+        } catch (e) {
+          setNote(e.message || '获取验证码失败');
+        } finally {
+          this.disabled = false;
+        }
+      });
+
+      document.getElementById('joinForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const code = inviteInput.value.trim();
+        const email = emailInput.value.trim();
+        const otp = codeInput.value.trim();
+        if (!code || !email || !otp) {
+          setNote('请填写邀请码、邮箱与验证码。');
+          return;
+        }
+        const joinBtn = document.getElementById('joinBtn');
+        joinBtn.disabled = true;
+        try {
+          const data = await api('/api/v1/classes/join', {
+            method: 'POST',
+            body: JSON.stringify({ inviteCode: code, email: email, emailCode: otp })
+          });
+          const cid = (data.class && data.class.id) || classId;
+          setSteps('done');
+          setNote('已加入班级，正在进入…');
+          if (cid) {
+            location.replace('/student/class/' + encodeURIComponent(cid));
+          } else if (projectId) {
+            location.replace('/student.html?projectId=' + encodeURIComponent(projectId));
+          } else {
+            location.replace('/student/course-center');
+          }
+        } catch (err) {
+          setNote(err.message || '加入失败');
+          joinBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

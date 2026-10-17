@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人中心 - 智课共生</title>
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+<link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .center-grid {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .content-stack {
+      display: grid;
+      height: 100%;
+      min-height: 100%;
+    }
+
+    .section-card[hidden] {
+      display: none !important;
+    }
+
+    .section-card:not([hidden]) {
+      height: 100%;
+      min-height: 520px;
+    }
+
+    .profile-card {
+      height: 100%;
+      align-content: start;
+      padding: 22px 18px;
+      border-radius: 18px;
+      display: grid;
+      gap: 14px;
+      text-align: center;
+      background:
+        linear-gradient(165deg, rgba(31, 102, 255, 0.1), rgba(255,255,255,0.96) 42%),
+        #fff;
+    }
+
+    .avatar {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(145deg, #3b82f6, #1f66ff);
+      box-shadow: 0 14px 28px rgba(31, 102, 255, 0.28);
+    }
+
+    .profile-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .role-line {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .side-links {
+      display: grid;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .side-links a,
+    .side-links button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .side-links a:hover,
+    .side-links button:hover,
+    .side-links a.active {
+      border-color: #9bc5bf;
+      background: var(--brand-soft);
+      color: var(--brand-strong);
+    }
+
+    .content-stack {
+      display: grid;
+      height: 100%;
+    }
+
+    .section-card {
+      padding: 18px;
+      border-radius: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-card h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .local-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: middle;
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
+
+    .section-desc {
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: -6px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f7faff;
+      display: grid;
+      gap: 4px;
+    }
+
+    .stat strong {
+      font-size: 24px;
+      color: var(--brand-strong);
+      font-family: var(--font-display);
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 650;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--sub);
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--sub);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--brand-soft);
+      border-color: #9bc5bf;
+      color: var(--brand-strong);
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-row strong {
+      display: block;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .toggle-row span {
+      font-size: 12px;
+      color: var(--sub);
+    }
+
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch i {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #cfdcd6;
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .switch i::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transition: .2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    }
+
+    .switch input:checked + i {
+      background: #1f66ff;
+    }
+
+    .switch input:checked + i::after {
+      transform: translateX(18px);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .status-line {
+      min-height: 20px;
+      font-size: 13px;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f7faff;
+      border: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .info-item span {
+      color: var(--sub);
+    }
+
+    .info-item strong {
+      color: var(--text);
+      text-align: right;
+      word-break: break-all;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quick-grid a {
+      display: grid;
+      gap: 4px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .quick-grid a:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+      border-color: #9bc5bf;
+    }
+
+    .quick-grid b {
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .quick-grid span {
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .center-grid,
+      .form-grid,
+      .stats-row,
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">个人中心</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">管理教师资料、教学偏好、账号安全与快捷入口。</p>
+        </div>
+        <a class="btn ghost" href="/teacher/home.html">返回首页</a>
+      </section>
+
+      <div class="center-grid">
+        <aside class="card profile-card">
+          <div class="avatar" id="avatarText">师</div>
+          <div>
+            <h2 id="displayTitle">教师</h2>
+            <div class="muted" id="usernameText">-</div>
+          </div>
+          <div class="role-line" id="roleTags"></div>
+          <div class="side-links">
+            <a href="#sec-overview" class="active">账号总览</a>
+            <a href="#sec-profile">资料设置</a>
+            <a href="#sec-teaching">教学偏好</a>
+            <a href="#sec-security">账号安全</a>
+            <a href="/history.html">历史记录</a>
+            <a href="#sec-notify">通知偏好</a>
+            <a href="#sec-data">数据与快捷入口</a>
+            <button type="button" id="sideLogoutBtn">退出登录</button>
+          </div>
+        </aside>
+
+        <div class="content-stack">
+          <section class="card section-card" id="sec-overview">
+            <h3>账号总览</h3>
+            <p class="section-desc">当前登录身份与教学数据速览。</p>
+            <div class="stats-row">
+              <div class="stat"><strong id="statProjects">0</strong><span>我的项目</span></div>
+              <div class="stat"><strong id="statPublished">0</strong><span>已发布智课</span></div>
+              <div class="stat"><strong id="statHistory">0</strong><span>历史操作</span></div>
+              <div class="stat"><strong id="statLoginDays">1</strong><span>本机使用天数</span></div>
+            </div>
+            <div class="info-list">
+              <div class="info-item"><span>登录账号</span><strong id="infoUsername">-</strong></div>
+              <div class="info-item"><span>当前身份</span><strong id="infoRole">-</strong></div>
+              <div class="info-item"><span>拥有角色</span><strong id="infoRoles">-</strong></div>
+              <div class="info-item"><span>本次登录时间</span><strong id="infoLoginAt">-</strong></div>
+            </div>
+          </section>
+
+          <section class="card section-card" id="sec-profile">
+            <h3>资料设置 <span class="local-badge" title="仅保存在当前浏览器">仅本机</span></h3>
+            <p class="section-desc">展示名、单位与联系方式会保存在<strong>本机浏览器</strong>，不会同步到服务器账号；改密请走下方「账号安全」服务端接口。</p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="displayName">展示名称</label>
+                <input id="displayName" type="text" placeholder="例如：刘老师" />
+              </div>
+              <div class="field">
+                <label for="jobTitle">职称 / 头衔</label>
+                <input id="jobTitle" type="text" placeholder="例如：讲师 / 副教授" />
+              </div>
+              <div class="field">
+                <label for="orgName">学校 / 机构</label>
+                <input id="orgName" type="text" placeholder="例如：智课共生示范校" />
+              </div>
+              <div class="field">
+                <label for="department">院系 / 教研组</label>
+                <input id="department" type="text" placeholder="例如：计算机学院" />
+              </div>
+              <div class="field">
+                <label for="email">邮箱</label>
+                <input id="email" type="email" placeholder="name@school.edu" />
+              </div>
+              <div class="field">
+                <label for="phone">手机号</label>
+                <input id="phone" type="tel" placeholder="可选" />
+              </div>
+              <div class="field full">
+                <label for="bio">个人简介</label>
+                <textarea id="bio" rows="3" placeholder="简要介绍教学方向、擅长课程或教研兴趣。"></textarea>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn ghost" type="button" id="resetProfileBtn">恢复默认</button>
+              <button class="btn" type="button" id="saveProfileBtn">保存资料</button>
+            </div>
+            <div id="profileStatus" class="status-line muted"></div>
+          </section>
+
+          <section class="card section-card" id="sec-teaching">
+            <h3>教学偏好</h3>
+            <p class="section-desc">用于首页推荐与新建项目时的默认选项。</p>
+            <div class="field">
+              <label>擅长学科</label>
+              <div class="chip-group" id="subjectChips">
+                <button type="button" class="chip" data-value="通用课程">通用课程</button>
+                <button type="button" class="chip" data-value="计算机">计算机</button>
+                <button type="button" class="chip" data-value="数学">数学</button>
+                <button type="button" class="chip" data-value="英语">英语</button>
+                <button type="button" class="chip" data-value="物理">物理</button>
+                <button type="button" class="chip" data-value="思政">思政</button>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="defaultMode">默认教学模式</label>
+                <select id="defaultMode">
+                  <option value="general">通用课程</option>
+                  <option value="computer">计算机专项</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="gradeLevel">主要学段</label>
+                <select id="gradeLevel">
+                  <option value="college">高校</option>
+                  <option value="vocational">高职 / 职教</option>
+                  <option value="senior">高中</option>
+                  <option value="training">企业培训</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="teachingGoalPref">常用教学目标模板</label>
+                <textarea id="teachingGoalPref" rows="3" placeholder="例如：掌握核心概念，并能完成一次课堂练习与随堂反馈。"></textarea>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" id="saveTeachingBtn">保存教学偏好</button>
+            </div>
+            <div id="teachingStatus" class="status-line muted"></div>
+          </section>
+
+          <section class="card section-card" id="sec-security">
+            <h3>账号安全</h3>
+            <p class="section-desc">修改登录密码；修改成功后建议重新登录一次。</p>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="oldPassword">当前密码</label>
+                <input id="oldPassword" type="password" autocomplete="current-password" />
+              </div>
+              <div class="field">
+                <label for="newPassword">新密码</label>
+                <input id="newPassword" type="password" autocomplete="new-password" placeholder="至少 6 位" />
+              </div>
+              <div class="field">
+                <label for="confirmPassword">确认新密码</label>
+                <input id="confirmPassword" type="password" autocomplete="new-password" />
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" id="changePasswordBtn">修改密码</button>
+            </div>
+            <div id="securityStatus" class="status-line muted"></div>
+            <div style="border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px;">
+              <h3 style="font-size:15px;">忘记当前密码</h3>
+              <p class="section-desc">提交后由管理员在「重置队列」审核，不会直接改掉密码。</p>
+              <div class="field">
+                <label for="resetReason">申请说明</label>
+                <input id="resetReason" type="text" placeholder="例如：忘记原密码，请重置" />
+              </div>
+              <div class="actions">
+                <button class="btn ghost" type="button" id="requestResetBtn">提交重置申请</button>
+              </div>
+              <div id="resetStatus" class="status-line muted"></div>
+            </div>
+          </section>
+
+          <section class="card section-card" id="sec-notify">
+            <h3>通知与工作台偏好</h3>
+            <p class="section-desc">这些开关保存在本机浏览器，影响提示与默认跳转。</p>
+            <div class="toggle-row">
+              <div>
+                <strong>登录成功提示</strong>
+                <span>登录后显示简短成功提示</span>
+              </div>
+              <label class="switch"><input id="prefToastLogin" type="checkbox" checked /><i></i></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <strong>发布成功提醒</strong>
+                <span>智课发布完成后弹出提醒</span>
+              </div>
+              <label class="switch"><input id="prefToastPublish" type="checkbox" checked /><i></i></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <strong>进入工作台前确认绑定项目</strong>
+                <span>未绑定项目时优先引导去「我的项目」</span>
+              </div>
+              <label class="switch"><input id="prefBindHint" type="checkbox" checked /><i></i></label>
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" id="saveNotifyBtn">保存偏好</button>
+            </div>
+            <div id="notifyStatus" class="status-line muted"></div>
+          </section>
+
+          <section class="card section-card" id="sec-data">
+            <h3>数据与快捷入口</h3>
+            <p class="section-desc">导出本机教师资料备份，或一键进入常用页面。</p>
+            <div class="quick-grid">
+              <a href="/workspace.html"><b>备课台</b><span>解析课件、生成讲稿与数字人播报</span></a>
+              <a href="/projects.html"><b>我的项目</b><span>创建、筛选与管理课程项目</span></a>
+              <a href="/teacher-insight.html"><b>学生学情分析</b><span>查看进度、风险与问答情况</span></a>
+              <a href="/history.html"><b>历史记录</b><span>回看登录、创建与发布轨迹</span></a>
+            </div>
+            <div class="actions" style="justify-content:flex-start;margin-top:4px;">
+              <button class="btn ghost" type="button" id="exportProfileBtn">导出资料 JSON</button>
+              <button class="btn ghost" type="button" id="clearLocalProfileBtn">清空本机资料</button>
+              <a class="btn ghost" href="/login.html">切换身份</a>
+            </div>
+            <div id="dataStatus" class="status-line muted"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('center');
+
+      document.querySelectorAll('.side-links a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          const id = link.getAttribute('href').slice(1);
+          document.querySelectorAll('.content-stack .section-card').forEach(function (section) {
+            section.hidden = section.id !== id;
+          });
+          document.querySelectorAll('.side-links a[href^="#"]').forEach(function (item) {
+            item.classList.toggle('active', item === link);
+          });
+        });
+      });
+      document.querySelectorAll('.content-stack .section-card').forEach(function (section) {
+        section.hidden = section.id !== 'sec-overview';
+      });
+
+      const user = window.AppStore.currentUser() || {};
+      const username = user.username || 'teacher';
+      const PROFILE_KEY = 'ai_teacher_teacher_profile_v1:' + username;
+      const FIRST_SEEN_KEY = 'ai_teacher_teacher_first_seen_v1:' + username;
+
+      const defaults = {
+        displayName: username,
+        jobTitle: '',
+        orgName: '',
+        department: '',
+        email: '',
+        phone: '',
+        bio: '',
+        subjects: ['通用课程'],
+        defaultMode: 'general',
+        gradeLevel: 'college',
+        teachingGoalPref: '',
+        prefToastLogin: true,
+        prefToastPublish: true,
+        prefBindHint: true
+      };
+
+      function loadProfile() {
+        try {
+          const raw = localStorage.getItem(PROFILE_KEY);
+          if (!raw) return Object.assign({}, defaults);
+          return Object.assign({}, defaults, JSON.parse(raw));
+        } catch (e) {
+          return Object.assign({}, defaults);
+        }
+      }
+
+      function saveProfile(data) {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+      }
+
+      function ensureFirstSeen() {
+        if (!localStorage.getItem(FIRST_SEEN_KEY)) {
+          localStorage.setItem(FIRST_SEEN_KEY, new Date().toISOString());
+        }
+        const first = new Date(localStorage.getItem(FIRST_SEEN_KEY));
+        const days = Math.max(1, Math.ceil((Date.now() - first.getTime()) / 86400000));
+        document.getElementById('statLoginDays').textContent = String(days);
+      }
+
+      function setStatus(id, text, type) {
+        const el = document.getElementById(id);
+        el.className = 'status-line ' + (type === 'err' ? 'msg-err' : type === 'ok' ? 'msg-ok' : 'muted');
+        el.textContent = text || '';
+      }
+
+      function fillForm(profile) {
+        document.getElementById('displayName').value = profile.displayName || '';
+        document.getElementById('jobTitle').value = profile.jobTitle || '';
+        document.getElementById('orgName').value = profile.orgName || '';
+        document.getElementById('department').value = profile.department || '';
+        document.getElementById('email').value = profile.email || '';
+        document.getElementById('phone').value = profile.phone || '';
+        document.getElementById('bio').value = profile.bio || '';
+        document.getElementById('defaultMode').value = profile.defaultMode || 'general';
+        document.getElementById('gradeLevel').value = profile.gradeLevel || 'college';
+        document.getElementById('teachingGoalPref').value = profile.teachingGoalPref || '';
+        document.getElementById('prefToastLogin').checked = !!profile.prefToastLogin;
+        document.getElementById('prefToastPublish').checked = !!profile.prefToastPublish;
+        document.getElementById('prefBindHint').checked = !!profile.prefBindHint;
+
+        Array.from(document.querySelectorAll('#subjectChips .chip')).forEach(function (chip) {
+          const value = chip.getAttribute('data-value');
+          chip.classList.toggle('active', (profile.subjects || []).indexOf(value) >= 0);
+        });
+
+        const shown = profile.displayName || username;
+        document.getElementById('displayTitle').textContent = shown;
+        document.getElementById('usernameText').textContent = '@' + username;
+        document.getElementById('avatarText').textContent = String(shown).slice(0, 1) || '师';
+      }
+
+      function collectProfile() {
+        const subjects = Array.from(document.querySelectorAll('#subjectChips .chip.active')).map(function (c) {
+          return c.getAttribute('data-value');
+        });
+        return {
+          displayName: document.getElementById('displayName').value.trim() || username,
+          jobTitle: document.getElementById('jobTitle').value.trim(),
+          orgName: document.getElementById('orgName').value.trim(),
+          department: document.getElementById('department').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          bio: document.getElementById('bio').value.trim(),
+          subjects: subjects.length ? subjects : ['通用课程'],
+          defaultMode: document.getElementById('defaultMode').value,
+          gradeLevel: document.getElementById('gradeLevel').value,
+          teachingGoalPref: document.getElementById('teachingGoalPref').value.trim(),
+          prefToastLogin: document.getElementById('prefToastLogin').checked,
+          prefToastPublish: document.getElementById('prefToastPublish').checked,
+          prefBindHint: document.getElementById('prefBindHint').checked,
+          updatedAt: new Date().toISOString()
+        };
+      }
+
+      // overview
+      document.getElementById('infoUsername').textContent = username;
+      document.getElementById('infoRole').textContent = window.AppStore.roleLabel(user.activeRole);
+      document.getElementById('infoRoles').textContent = (user.roles || []).map(window.AppStore.roleLabel).join('、') || '-';
+      document.getElementById('infoLoginAt').textContent = user.loginAt
+        ? new Date(user.loginAt).toLocaleString('zh-CN', { hour12: false })
+        : '-';
+      document.getElementById('roleTags').innerHTML = (user.roles || [user.activeRole || 'teacher']).map(function (role) {
+        return '<span class="tag">' + window.AppStore.roleLabel(role) + '</span>';
+      }).join('');
+
+      ensureFirstSeen();
+      fillForm(loadProfile());
+
+      try {
+        const projects = await window.AppStore.getProjects();
+        document.getElementById('statProjects').textContent = String((projects || []).length);
+        document.getElementById('statPublished').textContent = String((projects || []).filter(function (p) { return !!p.published; }).length);
+      } catch (e) {
+        document.getElementById('statProjects').textContent = '—';
+        document.getElementById('statPublished').textContent = '—';
+      }
+      try {
+        document.getElementById('statHistory').textContent = String((window.AppStore.getHistory() || []).length);
+      } catch (e) {
+        document.getElementById('statHistory').textContent = '—';
+      }
+
+      Array.from(document.querySelectorAll('#subjectChips .chip')).forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chip.classList.toggle('active');
+        });
+      });
+
+      document.getElementById('saveProfileBtn').addEventListener('click', function () {
+        const next = Object.assign(loadProfile(), collectProfile());
+        saveProfile(next);
+        fillForm(next);
+        setStatus('profileStatus', '资料已保存到本机', 'ok');
+        window.AppStore.toast('教师资料已保存', 'ok');
+      });
+
+      document.getElementById('resetProfileBtn').addEventListener('click', function () {
+        fillForm(defaults);
+        setStatus('profileStatus', '已恢复默认内容，点击保存后生效', '');
+      });
+
+      document.getElementById('saveTeachingBtn').addEventListener('click', function () {
+        const next = Object.assign(loadProfile(), collectProfile());
+        saveProfile(next);
+        setStatus('teachingStatus', '教学偏好已保存', 'ok');
+        window.AppStore.toast('教学偏好已保存', 'ok');
+      });
+
+      document.getElementById('saveNotifyBtn').addEventListener('click', function () {
+        const next = Object.assign(loadProfile(), collectProfile());
+        saveProfile(next);
+        setStatus('notifyStatus', '通知偏好已保存', 'ok');
+        window.AppStore.toast('通知偏好已保存', 'ok');
+      });
+
+      document.getElementById('changePasswordBtn').addEventListener('click', async function () {
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (!oldPassword || !newPassword) {
+          setStatus('securityStatus', '请填写当前密码与新密码', 'err');
+          return;
+        }
+        if (newPassword.length < 6) {
+          setStatus('securityStatus', '新密码至少 6 位', 'err');
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          setStatus('securityStatus', '两次输入的新密码不一致', 'err');
+          return;
+        }
+        const btn = document.getElementById('changePasswordBtn');
+        btn.disabled = true;
+        setStatus('securityStatus', '正在修改密码…', '');
+        try {
+          await window.AppStore.changePassword(oldPassword, newPassword);
+          document.getElementById('oldPassword').value = '';
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+          setStatus('securityStatus', '密码修改成功', 'ok');
+          window.AppStore.toast('密码修改成功', 'ok');
+        } catch (err) {
+          setStatus('securityStatus', err.message || '修改失败', 'err');
+          window.AppStore.toast(err.message || '修改失败', 'err');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      document.getElementById('requestResetBtn').addEventListener('click', async function () {
+        const reason = document.getElementById('resetReason').value.trim() || '教师申请重置密码';
+        const btn = document.getElementById('requestResetBtn');
+        btn.disabled = true;
+        try {
+          const res = await fetch('/auth/password-reset-request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, roleHint: 'teacher', reason: reason, contact: '' })
+          });
+          const payload = await res.json();
+          if (payload.code !== 0) throw new Error(payload.message || '提交失败');
+          document.getElementById('resetReason').value = '';
+          setStatus('resetStatus', '申请已提交，等待管理员处理', 'ok');
+        } catch (err) {
+          setStatus('resetStatus', err.message || '提交失败', 'err');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      document.getElementById('exportProfileBtn').addEventListener('click', function () {
+        const blob = new Blob([JSON.stringify({
+          username: username,
+          exportedAt: new Date().toISOString(),
+          profile: loadProfile()
+        }, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'teacher-profile-' + username + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        setStatus('dataStatus', '已导出本机教师资料', 'ok');
+      });
+
+      document.getElementById('clearLocalProfileBtn').addEventListener('click', function () {
+        localStorage.removeItem(PROFILE_KEY);
+        fillForm(defaults);
+        setStatus('dataStatus', '已清空本机资料设置', 'ok');
+      });
+
+      async function doLogout() {
+        const loginPath = window.AppStore.roleLoginPath(user.activeRole || 'teacher');
+        await window.AppStore.logout();
+        location.href = loginPath;
+      }
+      document.getElementById('sideLogoutBtn').addEventListener('click', doLogout);
+    })();
+  </script>
+</body>
+</html>

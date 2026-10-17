@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>教师工作台 - 智课共生</title>
+  <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --line: #e8edf5;
+      --text: #1f2937;
+      --sub: #7a8699;
+      --brand: #2f6bff;
+      --brand-soft: #eef3ff;
+      --ok: #17b26a;
+      --err: #ef4444;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 3px solid rgba(47, 107, 255, 0.28);
+      outline-offset: 3px;
+    }
+
+    .app {
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 18px;
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      border-bottom: 1px solid #e5e6eb;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .workflow-badge {
+      margin-left: auto;
+      border: 1px solid #e5e6eb;
+      background: #f7f8fa;
+      color: #4b5563;
+      border-radius: 999px;
+      font-size: 12px;
+      padding: 6px 12px;
+      font-weight: 600;
+    }
+
+    .home-back-btn {
+      margin-left: 12px;
+      border: 1px solid #bfdbfe;
+      background: #e8f0ff;
+      color: #1554d4;
+      border-radius: 999px;
+      font-size: 12px;
+      padding: 7px 14px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+
+    .home-back-btn:hover {
+      background: #dbeafe;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(31, 102, 255, 0.16);
+      color: #1554d4;
+    }
+
+    .account-entry {
+      position: relative;
+      margin-left: 10px;
+    }
+
+    .account-trigger {
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #374151;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .account-trigger:hover {
+      border-color: #cfd6e3;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+
+    .account-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2f6bff, #61a1ff);
+      color: #fff;
+      display: inline-grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 6px 12px rgba(47, 107, 255, 0.24);
+    }
+
+    .account-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 220px;
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid #dce6f6;
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: 0 18px 36px rgba(25, 39, 70, 0.14);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 12;
+    }
+
+    .account-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .account-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #21365f;
+      padding: 4px 6px 10px;
+      border-bottom: 1px solid #edf2fb;
+      margin-bottom: 8px;
+    }
+
+    .account-action {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 10px 10px;
+      border-radius: 10px;
+      color: #42536f;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color .18s ease, color .18s ease;
+    }
+
+    .account-action:hover {
+      background: #f5f8ff;
+      color: #1f4bc0;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 8px 16px rgba(47, 107, 255, 0.18);
+      background: #2563eb;
+    }
+
+    .brand-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #333333;
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .publish-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #29467d;
+    }
+
+    .publish-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .publish-grid textarea,
+    .publish-grid input {
+      min-width: 0;
+    }
+
+    .publish-grid textarea {
+      grid-column: 1 / -1;
+      min-height: 74px;
+      resize: vertical;
+    }
+
+    .publish-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .publish-link-box {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      border: 1px solid #e5edf9;
+      background: #f7faff;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .publish-link-box.show {
+      display: flex;
+    }
+
+    .publish-link-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4d6186;
+      white-space: nowrap;
+    }
+
+    .publish-link-input {
+      flex: 1;
+      min-width: 260px;
+      border: 1px solid #dce6f3;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 9px 10px;
+      color: #34445f;
+      font-size: 12px;
+    }
+
+    .progress-item {
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      color: #666666;
+      transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+    }
+
+    .progress-item strong {
+      display: block;
+      color: #333333;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .progress-item.active {
+      border-color: #cfe0ff;
+      background: #f5f9ff;
+      color: #4b5563;
+      box-shadow: none;
+    }
+
+    .progress-item.active strong {
+      color: #2f6bff;
+    }
+
+    .progress-item.done {
+      border-color: #f0f0f0;
+      background: #ffffff;
+      color: #666666;
+    }
+
+    .layout {
+      --left-panel-width: minmax(360px, 420px);
+      display: grid;
+      grid-template-columns: var(--left-panel-width) minmax(520px, 2fr);
+      gap: 18px;
+      align-items: start;
+      position: relative;
+      transition: grid-template-columns .45s cubic-bezier(.2,.75,.2,1);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #f0f0f0;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    aside.card {
+      position: sticky;
+      top: 16px;
+    }
+
+    .card-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 750;
+      color: #2c3b59;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #2f6bff, #6aa7ff);
+      box-shadow: none;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--sub);
+      margin-top: 4px;
+    }
+
+    .left-body,
+    .right-body {
+      padding: 18px;
+    }
+
+    .right-body {
+      position: relative;
+    }
+
+    .upload {
+      border: 2px dashed #bed0ff;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at top, rgba(113, 162, 255, 0.16), transparent 36%),
+        linear-gradient(180deg, #f9fbff, #f3f7ff);
+      padding: 28px 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+      min-height: 250px;
+      display: grid;
+      align-content: center;
+    }
+
+    .upload:hover,
+    .upload.dragover {
+      border-color: var(--brand);
+      background: #eef4ff;
+      transform: translateY(-1px);
+    }
+
+    .upload.drag-intent {
+      border-color: #5c88ff;
+      border-width: 3px;
+      background: linear-gradient(180deg, #edf4ff, #e8f0ff);
+      animation: uploadPulse 1s ease infinite;
+      box-shadow: 0 0 0 4px rgba(47, 107, 255, 0.1);
+    }
+
+    @keyframes uploadPulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(47, 107, 255, 0.08); }
+      50% { box-shadow: 0 0 0 8px rgba(47, 107, 255, 0.18); }
+    }
+
+    .upload .big {
+      font-size: 20px;
+      font-weight: 650;
+      color: #244a9c;
+      margin: 10px 0 6px;
+    }
+
+    .upload .small {
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .computer-resource-panel {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid #dce7fb;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #f9fbff, #f4f8ff);
+      padding: 14px;
+    }
+
+    .computer-resource-panel.show {
+      display: block;
+    }
+
+    .lab-task-panel {
+      display: none;
+      margin-top: 14px;
+      border: 1px solid #dce7fb;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #f9fbff, #f4f8ff);
+      padding: 14px;
+    }
+
+    .lab-task-panel.show {
+      display: block;
+    }
+
+    .lab-task-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .lab-task-item {
+      border: 1px solid #e1e9f7;
+      border-radius: 11px;
+      background: #fff;
+      padding: 11px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .computer-resource-head,
+    .computer-resource-actions,
+    .qa-mode-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .computer-resource-head {
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .computer-resource-actions select,
+    .qa-mode-bar select {
+      border: 1px solid #d9e2f3;
+      border-radius: 10px;
+      background: #fff;
+      color: #40516f;
+      padding: 9px 10px;
+      outline: none;
+    }
+
+    .computer-resource-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .computer-resource-item {
+      border: 1px solid #e1e9f7;
+      border-radius: 11px;
+      background: #fff;
+      padding: 10px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .computer-resource-item.active {
+      border-color: #8fb0ff;
+      box-shadow: inset 0 0 0 1px rgba(47, 107, 255, 0.08);
+    }
+
+    .computer-resource-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .resource-name {
+      color: #2d477b;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .resource-summary {
+      color: #6d7d98;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .resource-link {
+      border: 0;
+      background: transparent;
+      color: #2f6bff;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2f6bff, #4380ff);
+      color: #fff;
+      font-weight: 650;
+      font-size: 14px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(47, 107, 255, 0.24);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 1;
+      color: #96a3ba;
+      background: linear-gradient(135deg, #e6ebf4, #dfe6f2);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn.ghost:disabled {
+      color: #b0b7c3;
+      background: #f3f4f6;
+      border-color: #e5e7eb;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn.pulse {
+      animation: btnPulse 1.2s ease infinite;
+    }
+
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(47, 107, 255, 0.25); }
+      50% { box-shadow: 0 0 0 8px rgba(47, 107, 255, 0.12); }
+    }
+
+    .btn.ghost {
+      background: #f0f5ff;
+      color: #355ec3;
+      border: 1px solid #d8e4ff;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px 0 12px;
+    }
+
+    .outline {
+      border: 1px solid #e5ebf5;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fcfdff, #f8fbff);
+      max-height: 480px;
+      overflow-y: auto;
+      padding: 6px;
+    }
+
+    .outline-item {
+      border: 1px solid #edf1f9;
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 6px;
+      overflow: hidden;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .outline-item.active {
+      border-color: #89a9ff;
+      box-shadow: inset 0 0 0 1px #89a9ff;
+    }
+
+    .outline-toggle {
+      width: 100%;
+      border: 0;
+      background: #fff;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #2e4269;
+    }
+
+    .outline-toggle:hover {
+      background: #f6f9ff;
+    }
+
+    .outline-content {
+      border-top: 1px solid #edf1f9;
+      padding: 10px;
+      color: #5f6f8f;
+      font-size: 12px;
+      line-height: 1.65;
+      display: none;
+    }
+    .outline-content > div { margin: 4px 0; }
+    .outline-vision {
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-weight: 600;
+    }
+    .outline-media { color: #6d28d9; }
+    .outline-vision-summary {
+      margin: 0 0 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .outline-item.open .outline-content {
+      display: block;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      padding: 14px 18px 0;
+      background: linear-gradient(180deg, #fbfcff, #f7faff);
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      border-radius: 10px 10px 0 0;
+      background: #eef3ff;
+      color: #4062aa;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .tab.active {
+      background: #fff;
+      border-color: var(--line);
+      border-bottom-color: #fff;
+      color: #1e3d89;
+    }
+
+    .tab.locked {
+      cursor: not-allowed;
+      background: #f3f5fa;
+      color: #9aa6bd;
+      border-color: transparent;
+      opacity: 0.9;
+    }
+
+    .tab.unlock-pulse {
+      animation: unlockPulse 1.4s ease 2;
+    }
+
+    @keyframes unlockPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(47, 107, 255, 0); }
+      50% { box-shadow: 0 0 0 7px rgba(47, 107, 255, 0.14); }
+    }
+
+    .panel {
+      display: none;
+      padding: 18px;
+      min-height: 560px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* 问答 / 语音讲解：与讲稿区一样占满右侧可用宽度 */
+    #qaPanel,
+    #voicePanel {
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+
+    #qaPanel .interrupt-panel,
+    #qaPanel .qa-toolbar,
+    #qaPanel .qa-mode-bar,
+    #qaPanel .chat-shell,
+    #qaPanel .chat-box,
+    #qaPanel .input-row,
+    #qaPanel #questionInput,
+    #qaPanel #answerLoading {
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+
+    #qaPanel .chat-shell {
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    #qaPanel .chat-box {
+      min-height: 220px;
+      max-height: 78vh;
+      height: min(48vh, 520px);
+      margin-bottom: 0;
+      resize: none;
+    }
+
+    /* 宽屏下气泡用更满的横向空间，贴近讲稿编辑区观感 */
+    #qaPanel .bubble {
+      max-width: min(960px, 92%);
+    }
+
+    #qaPanel .chat-resize-handle {
+      height: 10px;
+      margin-top: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, #c9d8f5 18%, #c9d8f5 82%, transparent);
+      cursor: ns-resize;
+      position: relative;
+      user-select: none;
+      touch-action: none;
+    }
+
+    #qaPanel .chat-resize-handle::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 3px;
+      width: 42px;
+      height: 4px;
+      margin-left: -21px;
+      border-radius: 999px;
+      background: #8aa6d8;
+    }
+
+    #qaPanel .chat-resize-handle:hover,
+    #qaPanel .chat-resize-handle.is-dragging {
+      background: linear-gradient(90deg, transparent, #9db6e8 18%, #9db6e8 82%, transparent);
+    }
+
+    #qaPanel .qa-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    #qaPanel .qa-toolbar .prompt-tags {
+      margin-bottom: 0;
+      flex: 1 1 280px;
+    }
+
+    #qaPanel .qa-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    #qaPanel .qa-actions .btn-mini {
+      border: 1px solid #d7e3f7;
+      background: #f7faff;
+      color: #45628f;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    #qaPanel .qa-actions .btn-mini:hover {
+      background: #eef4ff;
+      border-color: #b9ccef;
+    }
+
+    #qaPanel .qa-actions .btn-mini.is-active {
+      background: #e8f0ff;
+      border-color: #8fb0e8;
+      color: #2f5cb8;
+    }
+
+    #qaPanel .qa-msg-count {
+      font-size: 12px;
+      color: #7a8aa5;
+      min-width: 42px;
+    }
+
+    #qaPanel .msg-meta-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    #qaPanel .msg-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    #qaPanel .msg-action {
+      border: none;
+      background: transparent;
+      color: #5b7ab0;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    #qaPanel .msg-action:hover {
+      text-decoration: underline;
+    }
+
+    #qaPanel .msg.user .msg-action {
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    #qaPanel .input-row {
+      width: 100%;
+      grid-template-columns: 1fr auto auto;
+      align-items: end;
+    }
+
+    #qaPanel #questionInput {
+      min-height: 44px;
+      max-height: 140px;
+      resize: vertical;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font: inherit;
+      line-height: 1.5;
+    }
+
+    #voicePanel .voice-cards,
+    #voicePanel .seg,
+    #voicePanel #cloudAudioUrl,
+    #voicePanel .controls,
+    #voicePanel #audioResult,
+    #voicePanel #playerCard {
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+
+    #voicePanel #cloudAudioUrl {
+      display: block;
+    }
+
+    .workspace-context {
+      margin-bottom: 14px;
+      border: 1px solid #f0f0f0;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .context-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+    }
+
+    .project-context-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .project-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6e80a2;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    .project-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .project-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #223b69;
+    }
+
+    .project-name-input {
+      flex: 1 1 220px;
+      min-width: 160px;
+      max-width: 520px;
+      border: 1px solid transparent;
+      background: transparent;
+      border-radius: 10px;
+      padding: 4px 8px;
+      font: inherit;
+      font-size: 18px;
+      font-weight: 800;
+      color: #223b69;
+      outline: none;
+    }
+
+    .project-name-input:hover {
+      border-color: #d7e3fb;
+      background: #f8fbff;
+    }
+
+    .project-name-input:focus {
+      border-color: #8fb0e8;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.12);
+    }
+
+    .project-name-input:disabled {
+      opacity: 0.72;
+      cursor: default;
+    }
+
+    .project-rename-hint {
+      font-size: 12px;
+      color: #7a8aa5;
+      white-space: nowrap;
+    }
+
+    .project-meta {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #7384a3;
+      max-width: 780px;
+    }
+
+    .project-bind-hint {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #dbe7ff;
+      background: linear-gradient(180deg, #f8fbff, #f4f8ff);
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .project-bind-hint.show {
+      display: flex;
+    }
+
+    .project-bind-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .project-bind-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #23457f;
+      margin-bottom: 4px;
+    }
+
+    .project-bind-desc {
+      font-size: 12px;
+      color: #6e82a8;
+      line-height: 1.6;
+    }
+
+    .project-bind-btn {
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .context-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .project-mode {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .project-mode.project {
+      border-color: #d6e4ff;
+      background: #f5f9ff;
+      color: #2f6bff;
+    }
+
+    .project-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: #48608f;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #edf3ff;
+      border: 1px solid #d8e5ff;
+      white-space: nowrap;
+    }
+
+    .project-status.ok {
+      color: #136f49;
+      background: #ebfbf3;
+      border-color: #ccefdc;
+    }
+
+    .project-status.warn {
+      color: #8c5d15;
+      background: #fff7e8;
+      border-color: #f5dfb5;
+    }
+
+    .panel-footer-rail {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .publish-box {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .publish-box::before {
+      content: "STEP 4";
+      width: fit-content;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #f5f9ff;
+      color: #355dbc;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .work-panel-zone {
+      position: relative;
+      border-radius: 12px;
+      transition: opacity .35s ease, filter .35s ease;
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .work-panel-zone.locked {
+      filter: grayscale(0.15);
+      opacity: 0.96;
+    }
+
+    .panel-lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(214, 224, 241, 0.55);
+      border-radius: 12px;
+      backdrop-filter: blur(3px);
+      cursor: not-allowed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .5s ease, visibility .5s ease;
+      z-index: 4;
+    }
+
+    .lock-card {
+      width: min(560px, calc(100% - 40px));
+      border: 1px solid #bae0ff;
+      border-radius: 14px;
+      background: #f8fbff;
+      box-shadow: none;
+      padding: 22px 24px;
+      text-align: left;
+    }
+
+    .lock-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #335bb7;
+      background: #edf3ff;
+      margin-bottom: 14px;
+    }
+
+    .lock-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #edf3ff;
+      color: #2f6bff;
+      margin-bottom: 14px;
+      font-size: 22px;
+    }
+
+    .lock-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #223864;
+      margin-bottom: 8px;
+    }
+
+    .lock-copy {
+      font-size: 14px;
+      line-height: 1.75;
+      color: #6d7e9c;
+      margin-bottom: 16px;
+    }
+
+    .lock-ghost {
+      display: grid;
+      gap: 10px;
+    }
+
+    .lock-line {
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #eef3fc 10%, #e4ebf9 38%, #eef3fc 65%);
+      background-size: 220% 100%;
+      animation: wave 1.5s linear infinite;
+    }
+
+    .lock-line.short {
+      width: 62%;
+    }
+
+    .work-panel-zone.unlocked .panel-lock-overlay {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-skeleton {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
+      display: none;
+      background: linear-gradient(90deg, #f4f7fc 25%, #e9effc 40%, #f4f7fc 65%);
+      background-size: 240% 100%;
+      animation: wave 1.2s ease infinite;
+      color: transparent;
+      user-select: none;
+    }
+
+    .editor-skeleton {
+      border: 1px solid #dce5f5;
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .editor-skeleton .line {
+      height: 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #f1f4fb 20%, #e5ebf8 40%, #f1f4fb 60%);
+      background-size: 240% 100%;
+      animation: wave 1.1s linear infinite;
+    }
+
+    .editor-skeleton .line:last-child {
+      width: 72%;
+      margin-bottom: 0;
+    }
+
+    @keyframes wave {
+      from { background-position: 100% 50%; }
+      to { background-position: 0 50%; }
+    }
+
+    .editor-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .icon-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #4e5f81;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .icon-btn:hover { background: #f5f8ff; }
+
+    .editor {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      min-height: 380px;
+      max-height: 520px;
+      overflow: auto;
+      padding: 12px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .editor h3 { margin: 8px 0; color: #2b4483; }
+    .editor ul { padding-left: 18px; }
+
+    .empty-state {
+      min-height: 320px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #70809c;
+      background:
+        radial-gradient(circle at top, rgba(93, 138, 255, 0.12), transparent 34%),
+        linear-gradient(180deg, #fbfcff, #f8fbff);
+    }
+
+    .empty-state.compact {
+      min-height: 240px;
+    }
+
+    .empty-shell {
+      max-width: 460px;
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+    }
+
+    .empty-illustration {
+      width: 104px;
+      height: 104px;
+      border-radius: 28px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(47, 107, 255, 0.12), rgba(93, 171, 255, 0.2));
+      box-shadow: inset 0 0 0 1px rgba(137, 169, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .empty-illustration::before,
+    .empty-illustration::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2f6bff, #78bcff);
+      opacity: 0.92;
+    }
+
+    .empty-illustration::before {
+      width: 56px;
+      height: 56px;
+      left: 18px;
+      top: 16px;
+      filter: blur(0.5px);
+    }
+
+    .empty-illustration::after {
+      width: 26px;
+      height: 26px;
+      right: 16px;
+      bottom: 16px;
+      box-shadow: 0 0 0 8px rgba(120, 188, 255, 0.12);
+    }
+
+    .empty-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #223864;
+    }
+
+    .empty-copy {
+      font-size: 14px;
+      line-height: 1.75;
+      color: #7384a3;
+    }
+
+    .empty-tips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .empty-tip {
+      border-radius: 999px;
+      border: 1px solid #dbe7fb;
+      background: #f4f8ff;
+      color: #4a67a6;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .prompt-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .qa-mode-bar {
+      justify-content: space-between;
+      border: 1px solid #dce7fb;
+      background: #f7faff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      color: #53698f;
+      font-size: 13px;
+    }
+
+    .prompt-tag {
+      background: #f1f6ff;
+      border: 1px solid #dce7ff;
+      color: #3b5fae;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fcfdff;
+      height: 410px;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .msg {
+      display: flex;
+      margin: 10px 0;
+    }
+
+    .msg.user { justify-content: flex-end; }
+    .bubble {
+      max-width: 78%;
+      border-radius: 14px;
+      padding: 10px 12px;
+      line-height: 1.7;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #2f6bff, #4e8aff);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg.ai .bubble {
+      background: #fff;
+      color: #334361;
+      border: 1px solid #e6edf9;
+      border-bottom-left-radius: 4px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input[type='text'] {
+      width: 100%;
+      border: 1px solid #d9e2f3;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input[type='text']:focus {
+      border-color: #86a8ff;
+      box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.12);
+    }
+
+    .voice-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .voice-card {
+      border: 1px solid #dce6fb;
+      border-radius: 10px;
+      background: #f7faff;
+      padding: 10px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .voice-card:hover { transform: translateY(-1px); }
+    .voice-card.active {
+      border-color: #4b7dff;
+      background: #edf3ff;
+      box-shadow: inset 0 0 0 1px #4b7dff;
+    }
+
+    .voice-name { font-weight: 700; font-size: 13px; color: #2d467f; }
+    .voice-desc { font-size: 12px; color: #6e7fa0; margin-top: 4px; }
+
+    .seg {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 10px 0;
+      background: #f2f6ff;
+      border: 1px solid #dce6fb;
+      border-radius: 10px;
+      padding: 5px;
+    }
+
+    .seg button {
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 12px;
+      color: #3a568f;
+      cursor: pointer;
+    }
+
+    .seg button.active {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(42, 72, 145, 0.12);
+      font-weight: 700;
+    }
+
+    .player {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .lecture-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      border: 1px solid #dce7fb;
+      border-radius: 10px;
+      background: #f7faff;
+      padding: 9px 10px;
+      margin-bottom: 10px;
+      color: #304b82;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .lecture-status .muted {
+      font-weight: 600;
+    }
+
+    .interrupt-panel {
+      border: 1px solid #dce7fb;
+      border-radius: 10px;
+      background: #f8fbff;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      color: #40577f;
+    }
+
+    .interrupt-panel.interrupted {
+      border-color: #9eb9ff;
+      background: #eef4ff;
+      box-shadow: inset 3px 0 0 #2f6bff;
+    }
+
+    .interrupt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #29467d;
+    }
+
+    .interrupt-detail {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #64748b;
+    }
+
+    .player-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .range {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .msg-ok { color: var(--ok); font-weight: 700; margin-bottom: 8px; }
+    .msg-err { color: var(--err); font-weight: 700; margin-bottom: 8px; }
+
+    .muted { color: var(--sub); font-size: 12px; }
+
+    .tab-lock-hint {
+      border: 1px dashed #d6deec;
+      background: #f7f9fd;
+      color: #71809c;
+      font-size: 13px;
+      border-radius: 10px;
+      padding: 9px 10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .focus-chip {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #dbe6fb;
+      background: #f4f8ff;
+      color: #34589f;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .slide-nav {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .slide-nav .icon-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .slide-preview {
+      margin-top: 10px;
+      border: 1px solid #d7e3fb;
+      background: linear-gradient(180deg, #f8fbff, #f3f8ff);
+      border-radius: 12px;
+      padding: 10px;
+      color: #39527f;
+      font-size: 13px;
+      line-height: 1.6;
+      max-height: 120px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    /* 收起资料区：改为单列，避免 0px 列 + gap 仍占位导致问答区偏窄 */
+    .layout.collapsed-left {
+      --left-panel-width: 0px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .layout > aside.card {
+      transition: transform .45s cubic-bezier(.2,.75,.2,1), opacity .3s ease;
+      transform: translateX(0);
+      opacity: 1;
+      will-change: transform;
+    }
+
+    .layout.collapsed-left > aside.card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: min(420px, 92vw);
+      transform: translateX(calc(-100% - 14px));
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .expand-fab {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%) translateX(-8px);
+      z-index: 8;
+      border: 1px solid #cad8f3;
+      background: #fff;
+      border-radius: 999px;
+      color: #36579f;
+      padding: 9px 10px;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(24, 32, 51, 0.12);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .layout.collapsed-left .expand-fab {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    @media (max-width: 1100px) {
+      .brand {
+        flex-wrap: wrap;
+      }
+      .brand-title {
+        flex: 1 1 240px;
+        min-width: 0;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .layout.collapsed-left {
+        grid-template-columns: 1fr;
+      }
+      .layout.collapsed-left > aside.card {
+        display: none;
+      }
+      .expand-fab {
+        display: none;
+      }
+      .panel { min-height: auto; }
+      .voice-cards { grid-template-columns: 1fr 1fr; }
+      .input-row { grid-template-columns: 1fr; }
+      .progress { grid-template-columns: 1fr 1fr; }
+      .account-entry {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+      }
+      .account-trigger {
+        width: 100%;
+        justify-content: center;
+      }
+      .account-menu {
+        left: 0;
+        right: auto;
+        min-width: min(260px, calc(100vw - 48px));
+      }
+      .project-context {
+        align-items: flex-start;
+      }
+
+      .context-card {
+        padding: 14px;
+      }
+
+      .context-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+
+      .brand-title {
+        font-size: 22px;
+        flex-basis: calc(100% - 48px);
+      }
+
+      .workflow-badge {
+        margin-left: 48px;
+      }
+
+      .progress {
+        grid-template-columns: 1fr;
+      }
+
+      .controls,
+      .publish-actions,
+      .editor-toolbar {
+        align-items: stretch;
+      }
+
+      .controls .btn,
+      .publish-actions .btn,
+      .editor-toolbar .icon-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      .btn:hover,
+      .account-trigger:hover {
+        transform: none;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    body {
+      padding: 0 !important;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(31, 102, 255, 0.1), transparent 55%),
+        #f5f7fa !important;
+    }
+    .app {
+      padding: 16px;
+      max-width: 1480px;
+    }
+    .workspace-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+<div id="wsBoot" style="position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#f5f7fa;font-family:PingFang SC,Microsoft YaHei,sans-serif;color:#334155">
+  <div style="text-align:center;max-width:28em;padding:24px">
+    <div style="font-size:18px;font-weight:700;margin-bottom:8px">备课台加载中</div>
+    <div style="font-size:13px;color:#64748b;line-height:1.6">正在准备上传与备课区，通常几秒内完成。若超过 15 秒仍无变化，请刷新或检查网络。</div>
+  </div>
+</div>
+<script>window.addEventListener("DOMContentLoaded",function(){var el=document.getElementById("wsBoot"); if(el){ setTimeout(function(){ if(el&&el.parentNode) el.parentNode.removeChild(el); }, 50);} });</script>
+<div class="workspace-shell">
+<header id="sideNav" class="nav" role="banner"></header>
+<div class="app">
+  <div class="header card">
+    <div class="brand">
+      <img class="brand-logo" src="/brand-icon.jpg" alt="智课共生" width="38" height="38" />
+      <div class="brand-title">智课共生教师工作台</div>
+      <a class="home-back-btn" href="/teacher/home.html" title="返回教师首页">← 回首页</a>
+      <div id="workflowBadge" class="workflow-badge">待解析课件</div>
+      <div class="account-entry">
+        <button id="accountTrigger" class="account-trigger" type="button" aria-expanded="false" aria-controls="accountMenu">
+          <span id="accountAvatar" class="account-avatar">智</span>
+          <span id="accountLabel">当前账号</span>
+        </button>
+        <div id="accountMenu" class="account-menu" role="menu">
+          <div id="accountName" class="account-name">未登录</div>
+          <a href="/teacher/home.html" class="account-action" style="display:block;text-decoration:none;color:inherit;padding:8px 12px;">返回首页</a>
+          <a href="/teacher/center.html" class="account-action" style="display:block;text-decoration:none;color:inherit;padding:8px 12px;">个人中心</a>
+          <button id="switchAccountBtn" class="account-action" type="button">切换账号</button>
+          <button id="logoutBtn" class="account-action" type="button">退出登录</button>
+        </div>
+      </div>
+    </div>
+    <div class="progress">
+      <div id="step1" class="progress-item"><strong>1. 解析课件</strong>拖拽上传并提取结构</div>
+      <div id="step2" class="progress-item"><strong>2. 生成讲稿</strong>草稿生成 + 编辑导出</div>
+      <div id="step3" class="progress-item"><strong>3. 智能问答</strong>对话流 + 预设问题</div>
+      <div id="step4" class="progress-item"><strong>4. 讲解视频</strong>语音合成后生成可发布的讲解视频</div>
+    </div>
+  </div>
+
+  <div id="mainLayout" class="layout">
+    <aside class="card">
+      <div class="card-head">
+        <div>
+          <div id="leftCardTitle" class="card-title">步骤 1 · 资料区</div>
+          <div class="card-sub">上传 PPT、查看大纲、快速定位内容</div>
+        </div>
+        <button id="collapseLeftBtn" class="icon-btn" title="收起/展开资料区">收起</button>
+      </div>
+      <div class="left-body">
+        <div id="uploadArea" class="upload" role="button" tabindex="0">
+          <input id="pptFile" type="file" accept=".ppt,.pptx" hidden />
+          <div style="font-size:32px;">⭱</div>
+          <div id="uploadBigHint" class="big">拖拽 PPT 到这里，或点击选择文件</div>
+          <div id="uploadSmallHint" class="small">支持 .ppt / .pptx，建议不超过 100MB</div>
+          <div id="fileName" class="small" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="controls">
+          <button id="parseBtn" class="btn">解析 PPT</button>
+          <button id="expandAllBtn" class="btn ghost" disabled>全部展开</button>
+          <button id="collapseAllBtn" class="btn ghost" disabled>全部折叠</button>
+        </div>
+
+        <div id="parseLoading" class="loading-skeleton">正在解析课件结构...</div>
+        <div id="parseMsg" class="muted">尚未解析课件</div>
+
+        <div id="outlinePanel" class="outline" style="margin-top:10px;display:none;"></div>
+
+        <div id="computerResourcePanel" class="computer-resource-panel">
+          <div class="computer-resource-head">
+            <div>
+              <div class="card-title" style="font-size:15px;">计算机专项资料</div>
+              <div class="card-sub">代码、SQL、实验文本与错误日志</div>
+            </div>
+            <span id="resourceCountBadge" class="focus-chip">0 份</span>
+          </div>
+          <input id="computerResourceFile" type="file" accept=".java,.sql,.js,.py,.txt,.log,.xml,.json,.html,.css" hidden />
+          <div class="computer-resource-actions">
+            <select id="computerResourceType" aria-label="专项资料类型">
+              <option value="">自动识别类型</option>
+              <option value="source_code">源代码</option>
+              <option value="sql">SQL脚本</option>
+              <option value="error_log">错误日志</option>
+              <option value="lab_document">实验资料</option>
+            </select>
+            <button id="chooseComputerResourceBtn" class="btn ghost" type="button">选择资料</button>
+            <button id="uploadComputerResourceBtn" class="btn" type="button" disabled>解析并加入</button>
+          </div>
+          <div id="computerResourceHint" class="muted" style="margin-top:8px;">单个文件不超过 1MB，资料只绑定当前项目。</div>
+          <div id="computerResourceList" class="computer-resource-list"></div>
+        </div>
+
+        <div id="labTaskPanel" class="lab-task-panel">
+          <div class="computer-resource-head">
+            <div>
+              <div class="card-title" style="font-size:15px;">实践实验任务</div>
+              <div class="card-sub">生成可提交、可判题的课程实验</div>
+            </div>
+            <span id="labTaskCountBadge" class="focus-chip">0 个</span>
+          </div>
+          <button id="generateLabTaskBtn" class="btn" type="button">生成实验任务</button>
+          <div id="labTaskHint" class="muted" style="margin-top:8px;">将根据课程主要语言生成实验与隐藏测试用例。</div>
+          <div id="labTaskList" class="lab-task-list"></div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="card">
+      <div class="tabs">
+        <button class="tab active" data-tab="scriptPanel">讲稿生成</button>
+        <button class="tab locked" data-tab="qaPanel" disabled>智能问答</button>
+        <button class="tab locked" data-tab="voicePanel" disabled>语音+讲解视频</button>
+      </div>
+
+      <div class="right-body">
+        <div class="workspace-context">
+          <div class="context-card">
+            <div class="project-context-main">
+              <div class="project-label">当前项目上下文</div>
+              <div class="project-name-row">
+                <input id="projectNameInput" class="project-name-input" type="text" value="上传课件后自动建项目" disabled aria-label="项目名称" title="上传课件后自动生成，可直接修改" />
+                <span id="projectName" class="project-name" hidden>上传课件后自动建项目</span>
+                <span class="project-rename-hint">可改名</span>
+              </div>
+              <div id="projectMeta" class="project-meta">上传 PPT 后会按文件名自动创建项目并保存；名称不对可直接点上方改名。</div>
+            </div>
+            <div class="context-actions">
+              <div id="projectMode" class="project-mode">待上传课件</div>
+              <div id="projectStatus" class="project-status">等待上传</div>
+              <a href="/projects.html" class="btn ghost" style="text-decoration:none;">我的备课</a>
+            </div>
+          </div>
+        </div>
+        <div id="tabLockHint" class="tab-lock-hint">请先在左侧完成 PPT 解析，右侧操作将自动开放。</div>
+        <div id="workPanelZone" class="work-panel-zone locked">
+        <div id="scriptPanel" class="panel active">
+          <div class="card-title" style="font-size:16px;">讲稿生成器</div>
+          <div class="card-sub">独立教学口播稿（口语讲解 + 思考提问 + 互动题），不是复读 PPT；支持重生成与导出</div>
+          <div id="currentSlideHint" class="focus-chip">当前定位：未选中页（默认基于全量课件）</div>
+          <div class="slide-nav">
+            <button id="prevSlideBtn" class="icon-btn" type="button" disabled>上一页</button>
+            <button id="nextSlideBtn" class="icon-btn" type="button" disabled>下一页</button>
+            <span class="muted">快捷键：Alt + ↑ / ↓</span>
+          </div>
+          <div id="slidePreview" class="slide-preview">尚未选中页面</div>
+          <div class="controls">
+            <button id="scriptBtn" class="btn" disabled>生成讲稿</button>
+          </div>
+          <div id="scriptLoading" class="loading-skeleton">正在组织讲稿结构与表达...</div>
+          <div class="editor-toolbar">
+            <button id="copyScriptBtn" class="icon-btn" disabled>复制</button>
+            <button id="regenScriptBtn" class="icon-btn" disabled>重生成</button>
+            <button id="exportScriptBtn" class="icon-btn" disabled>导出 Word</button>
+          </div>
+          <div id="scriptResult" class="editor">
+            <div class="empty-state">
+              <div class="empty-shell">
+                <div class="empty-illustration"></div>
+                <div class="empty-title">等待生成讲稿</div>
+                <div class="empty-copy">完成左侧课件解析后，可生成结构化讲稿，并继续编辑、问答和播报。</div>
+                <div class="empty-tips">
+                  <span class="empty-tip">按页联动</span>
+                  <span class="empty-tip">Markdown 渲染</span>
+                  <span class="empty-tip">可继续问答</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="qaPanel" class="panel">
+          <div class="card-title" style="font-size:16px;">课堂问答助手</div>
+          <div class="card-sub">对话流交互，支持快捷提示词与讲解打断恢复</div>
+          <div id="computerQaModeBar" class="qa-mode-bar" style="display:none;">
+            <span>计算机专项问答策略</span>
+            <select id="computerQuestionType">
+              <option value="concept">概念解释</option>
+              <option value="code">代码理解</option>
+              <option value="debug">错误调试</option>
+            </select>
+          </div>
+          <div id="interruptPanel" class="interrupt-panel">
+            <div class="interrupt-head">
+              <span id="interruptState">讲解状态：待生成语音</span>
+              <span id="interruptPosition" class="muted">未记录打断点</span>
+            </div>
+            <div id="interruptDetail" class="interrupt-detail">播放讲解时，发送问题会自动暂停讲解并记录当前位置。</div>
+          </div>
+          <div class="qa-toolbar">
+            <div class="prompt-tags" id="qaPromptTags">
+              <button type="button" class="prompt-tag" data-prompt="总结这份课件的核心内容">总结核心</button>
+              <button type="button" class="prompt-tag" data-prompt-template="解释第{page}页的关键名词">解释当前页</button>
+              <button type="button" class="prompt-tag" data-prompt="给一个课堂提问示例">课堂提问示例</button>
+              <button type="button" class="prompt-tag" data-prompt="把这节课整理成3个记忆点">3个记忆点</button>
+              <button type="button" class="prompt-tag" data-prompt-template="围绕第{page}页设计一道随堂练习题，并给出评分要点">随堂练习</button>
+              <button type="button" class="prompt-tag" data-prompt="指出学生最容易误解的两个概念，并给出纠正说法">易错概念</button>
+            </div>
+            <div class="qa-actions">
+              <button type="button" class="btn-mini" id="qaHeightSm" data-qa-h="280">矮</button>
+              <button type="button" class="btn-mini" id="qaHeightMd" data-qa-h="420">中</button>
+              <button type="button" class="btn-mini" id="qaHeightLg" data-qa-h="580">高</button>
+              <button type="button" class="btn-mini" id="qaCopyLastBtn" title="复制最近一条 AI 回答">复制回答</button>
+              <button type="button" class="btn-mini" id="qaExportBtn" title="导出当前问答记录">导出</button>
+              <button type="button" class="btn-mini" id="qaClearBtn" title="清空问答记录">清空</button>
+              <span id="qaMsgCount" class="qa-msg-count">0 条</span>
+            </div>
+          </div>
+          <div class="chat-shell" id="chatShell">
+            <div id="chatBox" class="chat-box" aria-label="问答记录区域"></div>
+            <div id="chatResizeHandle" class="chat-resize-handle" title="上下拖动调整问答区高度" role="separator" aria-orientation="horizontal" aria-label="调整问答区高度"></div>
+          </div>
+          <div id="answerLoading" class="loading-skeleton">正在结合课件内容作答...</div>
+          <div class="input-row">
+            <textarea id="questionInput" rows="2" placeholder="输入问题，例如：这节课为什么先讲这个概念？Enter 发送，Shift+Enter 换行"></textarea>
+            <button id="answerBtn" class="btn" disabled>发送</button>
+            <button id="resumeBtn" class="btn ghost" disabled>继续讲解</button>
+          </div>
+        </div>
+
+        <div id="voicePanel" class="panel">
+          <div class="card-title" style="font-size:16px;">语音合成 + 讲解视频</div>
+          <div class="card-sub">选择风格后生成音频，并生成与学生端一致的沉浸式讲解视频</div>
+
+          <div class="voice-cards" id="voiceCards">
+            <div class="voice-card active" data-voice="gentle_female">
+              <div class="voice-name">温柔女声</div>
+              <div class="voice-desc">亲和、适合导学</div>
+            </div>
+            <div class="voice-card" data-voice="pro_male">
+              <div class="voice-name">专业男声</div>
+              <div class="voice-desc">稳重、适合理论讲解</div>
+            </div>
+            <div class="voice-card" data-voice="energetic_host">
+              <div class="voice-name">活力主持</div>
+              <div class="voice-desc">节奏快、适合导入</div>
+            </div>
+          </div>
+
+          <div class="seg" id="modeSeg">
+            <button data-mode="auto" class="active">自动</button>
+            <button data-mode="cloud">仅云端</button>
+            <button data-mode="local">仅本地</button>
+          </div>
+
+          <input id="cloudAudioUrl" type="text" value="" placeholder="云端可访问 wav 直链（https://...wav），为空会直接走本地" />
+
+          <div class="controls">
+            <button id="audioBtn" class="btn" disabled>生成讲课语音和讲解视频</button>
+          </div>
+
+          <div id="audioLoading" class="loading-skeleton">正在合成语音并生成讲解视频...</div>
+          <div id="audioResult"></div>
+        </div>
+        <div id="panelLockOverlay" class="panel-lock-overlay">
+          <div class="lock-card">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-eyebrow">流程待开启</div>
+            <div class="lock-title">先解析课件，再进入制作流程</div>
+            <div class="lock-copy">上传并解析 PPT 后，这里会依次解锁讲稿生成、智能问答和讲解视频，便于按步骤完成课程制作。</div>
+            <div class="lock-ghost">
+              <div class="lock-line"></div>
+              <div class="lock-line"></div>
+              <div class="lock-line short"></div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="panel-footer-rail">
+          <div class="publish-box">
+            <div class="publish-title">智课发布</div>
+            <div class="publish-class-panel" style="margin:8px 0 12px;padding:12px 14px;border-radius:12px;border:1px solid #c9daf7;background:linear-gradient(180deg,#f7faff 0%,#eef4ff 100%);">
+              <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                <label for="publishClassSelect" style="font-size:13px;font-weight:800;color:#1f4fad;white-space:nowrap;">① 发布到班级（必选）</label>
+                <select id="publishClassSelect" style="flex:1;min-width:200px;border:1px solid #b7ccee;border-radius:8px;padding:9px 12px;background:#fff;font-weight:600;">
+                  <option value="">请选择班级</option>
+                </select>
+                <button id="toggleCreateClassBtn" class="btn ghost" type="button">没有班级？新建</button>
+              </div>
+              <div id="createClassInlineBox" style="display:none;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;">
+                <input id="newClassNameInput" type="text" placeholder="班级名称，如 2026软件01班" style="flex:1;min-width:160px;" />
+                <input id="newClassSubjectInput" type="text" placeholder="课程/科目（可选）" style="flex:1;min-width:120px;" />
+                <button id="confirmCreateClassBtn" class="btn ghost" type="button">创建并选用</button>
+              </div>
+              <p style="margin:8px 0 0;font-size:12px;color:#5a7199;line-height:1.5;">选好班级后再点「发布智课」。学生端链接会带上该班邀请码，学生注册后加入班级才能听课。</p>
+            </div>
+            <div class="publish-grid">
+              <input id="lessonTitleInput" type="text" placeholder="课程名称 / 章节名称" />
+              <input id="lessonAudioInput" type="text" placeholder="语音地址（自动带入）" />
+              <textarea id="lessonIntroInput" placeholder="发布说明：填写课程简介、适用对象、学习目标。"></textarea>
+            </div>
+            <div class="publish-actions">
+              <div id="publishLinkBox" class="publish-link-box">
+                <span class="publish-link-label">学生端加入链接</span>
+                <input id="studentLinkInput" class="publish-link-input" type="text" readonly value="" />
+              </div>
+              <button id="publishLessonBtn" class="btn ghost" type="button" disabled>发布智课</button>
+              <button id="copyStudentLinkBtn" class="btn ghost" type="button" style="display:none;" disabled>复制学生端链接</button>
+              <a id="openStudentBtn" href="/teacher-insight.html" class="btn ghost" style="display:none;text-decoration:none;">查看学情</a>
+              <span id="publishStatus" class="muted">请选择班级并完成讲稿后，发布给学生端学习。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <button id="expandFloatBtn" class="expand-fab" type="button" title="展开资料区">></button>
+  </div>
+</div>
+</div>
+
+<script src="/app.js?v=20261104c"></script>
+<script src="/workspace.app.js?v=20261104c" defer></script>
+</body>
+</html>

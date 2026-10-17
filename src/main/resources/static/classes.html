@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>班级中心 - 智课共生</title>
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+<link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .hero-copy { max-width: 820px; }
+    .hero-copy p { color: var(--sub); line-height: 1.7; margin-top: 6px; }
+    .portal { display: grid; gap: 20px; }
+    .create-dock {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 10px; align-items: end;
+      padding: 16px 18px; border-radius: 18px; background: linear-gradient(135deg, #f8fbff, #eef6ff);
+      border: 1px solid #dbeafe;
+    }
+    .create-dock .field { margin: 0; }
+    .create-dock label { display: block; margin-bottom: 6px; color: var(--sub); font-size: 12px; font-weight: 700; }
+    .create-dock input, .create-dock textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: inherit;
+    }
+    .float-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      perspective: 900px;
+    }
+    .class-float {
+      position: relative;
+      border: 1px solid #dbe7f8;
+      border-radius: 20px;
+      padding: 18px 18px 16px;
+      background: #fff;
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.08), 0 2px 0 rgba(255,255,255,0.8) inset;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      animation: rise .45s ease both;
+      min-height: 196px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .class-float:nth-child(2n) { animation-delay: .04s; }
+    .class-float:nth-child(3n) { animation-delay: .08s; }
+    .class-float:hover {
+      transform: translateY(-6px) rotateX(2deg);
+      border-color: #93c5fd;
+      box-shadow: 0 22px 44px rgba(37, 99, 235, 0.16);
+    }
+    .class-float .accent {
+      position: absolute; inset: 0 auto auto 0; width: 100%; height: 5px;
+      border-radius: 20px 20px 0 0;
+      background: linear-gradient(90deg, var(--accent, #3b82f6), transparent);
+    }
+    .class-float h3 { margin: 8px 0 0; font-size: 18px; font-weight: 800; color: #1e293b; line-height: 1.35; }
+    .class-float .subject { color: #2563eb; font-size: 13px; font-weight: 700; }
+    .class-float .desc {
+      color: var(--sub); font-size: 12px; line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 36px;
+    }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+    .stat-pill {
+      background: #f8fbff; border: 1px solid #e5edf8; border-radius: 12px; padding: 8px 6px; text-align: center;
+    }
+    .stat-pill strong { display: block; font-size: 18px; color: #1d4ed8; line-height: 1.2; }
+    .stat-pill span { font-size: 11px; color: var(--sub); }
+    .foot-meta { display: flex; justify-content: space-between; gap: 8px; align-items: center; color: var(--sub); font-size: 12px; }
+    .code-chip {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px;
+      background: #eff6ff; color: #1d4ed8; font-weight: 700; font-size: 12px;
+    }
+    .empty-portal {
+      grid-column: 1 / -1; min-height: 220px; display: grid; place-items: center;
+      border: 1px dashed #cbd5e1; border-radius: 18px; color: var(--sub); text-align: center; padding: 28px;
+      background: #fafcff;
+    }
+    .create-toggle-row { display: flex; justify-content: flex-end; }
+    .create-dock.is-collapsed { display: none; }
+    .status-line { min-height: 20px; font-size: 13px; color: var(--sub); }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px) scale(.98); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (max-width: 900px) {
+      .create-dock { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div class="hero-copy">
+          <div class="brand-title">班级中心</div>
+          <p>每个班级是一个小窗口。点进去可：加入本班课程、发给本班上课、布置/批改作业、看学情。学生用邀请码 + 邮箱验证码进班。</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a class="btn ghost" href="/projects.html">我的备课</a>
+          <a class="btn" href="/workspace.html">去备课</a>
+        </div>
+      </section>
+
+      <section class="portal">
+        <div class="tip-banner" style="border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;background:linear-gradient(135deg,#eff6ff,#f8fbff);color:#1e3a5f;font-size:13px;line-height:1.65;">
+          <strong style="display:block;font-size:14px;color:#1d4ed8;margin-bottom:6px;">上课怎么发给学生？</strong>
+          创建班级 → 进班后把课「加入本班」→ 再点「发给本班上课」。只有本班学生能看见，不会出现在公开课程列表。
+        </div>
+        <div class="create-toggle-row" id="createToggleRow" style="display:none;">
+          <button id="showCreateBtn" class="btn ghost" type="button">＋ 新建班级</button>
+        </div>
+        <div class="card create-dock" id="createDock">
+          <div class="field">
+            <label for="className">新建班级名称</label>
+            <input id="className" type="text" placeholder="例如：新能源技术科 / 中年级电机" />
+          </div>
+          <div class="field">
+            <label for="classSubject">学科 / 课程</label>
+            <input id="classSubject" type="text" placeholder="例如：新能源技术 · Python" />
+          </div>
+          <div class="field">
+            <label for="classDesc">说明（可选）</label>
+            <input id="classDesc" type="text" placeholder="上课时间、教室、备注…" />
+          </div>
+          <button id="createClassBtn" class="btn" type="button">创建班级</button>
+        </div>
+        <div id="listStatus" class="status-line"></div>
+        <div id="floatGrid" class="float-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('classes');
+
+      const accents = ['#3b82f6', '#0ea5e9', '#14b8a6', '#8b5cf6', '#f59e0b', '#ef4444', '#22c55e'];
+      const $ = (id) => document.getElementById(id);
+
+      async function api(url, options = {}) {
+        const init = { credentials: 'same-origin', ...options };
+        if (init.body && !(init.body instanceof FormData)) {
+          init.headers = { 'Content-Type': 'application/json', ...(init.headers || {}) };
+        }
+        const resp = await fetch(url, init);
+        const payload = await resp.json().catch(() => ({}));
+        if (!resp.ok || payload.code !== 0) throw new Error(payload.message || payload.msg || ('请求失败 ' + resp.status));
+        return payload.data || {};
+      }
+      function notify(msg, type) { window.AppStore.toast(msg, type || 'ok'); }
+      function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+
+      function normalizeItems(raw) {
+        return (raw || []).map((it) => {
+          if (it && it.class) return it;
+          return { class: it, overview: {} };
+        });
+      }
+
+      function syncCreateDock(hasClasses) {
+        const dock = $('createDock');
+        const toggle = $('createToggleRow');
+        if (!dock || !toggle) return;
+        if (hasClasses) {
+          dock.classList.add('is-collapsed');
+          toggle.style.display = '';
+        } else {
+          dock.classList.remove('is-collapsed');
+          toggle.style.display = 'none';
+        }
+      }
+
+      function renderPortal(items) {
+        const box = $('floatGrid');
+        syncCreateDock(items.length > 0);
+        if (!items.length) {
+          box.innerHTML = `<div class="empty-portal">
+            <div><strong style="display:block;font-size:17px;color:var(--text);margin-bottom:8px;">还没有班级窗口</strong>
+            在上方创建「新能源技术科」「中年级电机」等班级，它们会以小窗口形式排列在这里。</div></div>`;
+          return;
+        }
+        box.innerHTML = items.map((it, idx) => {
+          const c = it.class || {};
+          const ov = it.overview || {};
+          const accent = accents[idx % accents.length];
+          const members = ov.memberCount != null ? ov.memberCount : (c.memberUsernames || []).length;
+          const hw = ov.homeworkCount != null ? ov.homeworkCount : 0;
+          const lessons = ov.classPublishedCount != null ? ov.classPublishedCount : (c.publishedProjectIds || []).length;
+          return `<button type="button" class="class-float" data-id="${escapeHtml(c.id)}" style="--accent:${accent}">
+            <span class="accent"></span>
+            <div class="subject">${escapeHtml(c.subject || '未填学科')}</div>
+            <h3>${escapeHtml(c.name || '未命名班级')}</h3>
+            <div class="desc">${escapeHtml(c.description || '点进班级：加课、发给本班上课、作业与学情。')}</div>
+            <div class="stat-row">
+              <div class="stat-pill"><strong>${members}</strong><span>学生</span></div>
+              <div class="stat-pill"><strong>${hw}</strong><span>作业</span></div>
+              <div class="stat-pill"><strong>${lessons}</strong><span>在上课</span></div>
+            </div>
+            <div class="foot-meta">
+              <span class="code-chip">邀请码 ${escapeHtml(c.inviteCode || '------')}</span>
+              <span>${escapeHtml((c.updatedAt || '').slice(0, 16) || '')}</span>
+            </div>
+          </button>`;
+        }).join('');
+        box.querySelectorAll('.class-float').forEach((el) => {
+          el.addEventListener('click', () => {
+            location.href = '/class-detail.html?id=' + encodeURIComponent(el.dataset.id);
+          });
+        });
+      }
+
+      async function loadClasses() {
+        $('listStatus').textContent = '加载中…';
+        try {
+          const data = await api('/api/v1/classes');
+          const items = normalizeItems(data.items);
+          renderPortal(items);
+          $('listStatus').textContent = `共 ${items.length} 个班级窗口`;
+        } catch (e) {
+          $('listStatus').textContent = e.message || '加载失败';
+        }
+      }
+
+      $('showCreateBtn')?.addEventListener('click', () => {
+        const dock = $('createDock');
+        if (!dock) return;
+        dock.classList.remove('is-collapsed');
+        $('createToggleRow').style.display = 'none';
+        $('className')?.focus();
+      });
+
+      $('createClassBtn').addEventListener('click', async () => {
+        if (!$('className').value.trim()) {
+          notify('请填写班级名称', 'err');
+          return;
+        }
+        try {
+          const data = await api('/api/v1/classes', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: $('className').value,
+              subject: $('classSubject').value,
+              description: $('classDesc').value,
+            }),
+          });
+          $('className').value = '';
+          $('classDesc').value = '';
+          notify('班级已创建');
+          if (data.class?.id) {
+            location.href = '/class-detail.html?id=' + encodeURIComponent(data.class.id);
+            return;
+          }
+          await loadClasses();
+        } catch (e) { notify(e.message, 'err'); }
+      });
+
+      await loadClasses();
+    })();
+  </script>
+</body>
+</html>
