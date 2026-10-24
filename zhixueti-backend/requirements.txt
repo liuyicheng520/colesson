@@ -1,0 +1,42 @@
+# EduNexus Backend Dependencies
+# Python 3.11+
+
+# Web framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20
+
+# Database
+sqlalchemy==2.0.36
+pymysql==1.1.1
+cryptography==44.0.0
+
+# Validation & settings
+pydantic==2.10.3
+pydantic-settings==2.6.1
+email-validator==2.2.0
+
+# Auth
+PyJWT==2.10.1
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+
+# Cache
+redis==5.2.1
+
+# HTTP client (LLM)
+httpx==0.28.1
+
+# Utils
+python-dotenv==1.0.1
+
+# Image processing (avatar upload)
+Pillow==11.0.0
+
+# Document parsing (tutor RAG)
+pypdf==5.1.0
+python-pptx==1.0.2
+
+# Vector knowledge base
+chromadb>=0.5.23
+fastembed>=0.4.2
