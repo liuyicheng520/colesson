@@ -1,0 +1,139 @@
+@use 'variables' as *;
+
+// ---- Element Plus 主题色对齐：解决按钮/标签/开关等 EP 组件与自定义 .btn 颜色不一致 ----
+:root {
+  --el-color-primary: #{$primary};
+  --el-color-primary-light-3: #{$primary-light};
+  --el-color-primary-light-5: #6b9cf5;
+  --el-color-primary-light-7: #a8c4f8;
+  --el-color-primary-light-8: #c7dbfa;
+  --el-color-primary-light-9: #e8f0ff;
+  --el-color-primary-dark-2: #{$primary-dark};
+}
+
+// ---- 卡片圆角统一：全部 12px（原 10/12/16 混用） ----
+.el-card,
+.resource-card,
+.class-card,
+.project-card,
+.class-window,
+[class*='panel']:not(.el-overlay) {
+  border-radius: 12px;
+}
+
+// ---- 最小字号保护：防止 11px 以下文字出现在正式 UI ----
+body {
+  font-size: 14px;
+}
+
+// ---- 焦点可见性（全站）：键盘 Tab 必须可见 ----
+/* 仅对无原生焦点样式的控件加描边；表单控件已有 border/box-shadow 焦点态，
+   再加 outline 会叠加成"双框"（输入时多出一个外圈）。 */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: $text-primary;
+  background: $bg-page;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+}
+
+.page-container {
+  padding: 20px 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.card {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  border: 1px solid $border-color;
+  transition: box-shadow 0.2s ease;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Markdown global */
+.markdown-body {
+  line-height: 1.75;
+  color: $text-primary;
+
+  h1, h2, h3 { margin: 1em 0 0.5em; font-weight: 600; }
+  p { margin: 0.75em 0; }
+  ul, ol { padding-left: 1.5em; margin: 0.5em 0; }
+  blockquote {
+    border-left: 4px solid $primary;
+    padding: 0.5em 1em;
+    background: #f8fafc;
+    margin: 1em 0;
+  }
+  pre {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 1em 0;
+  }
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.9em;
+  }
+  :not(pre) > code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #be185d;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    th, td {
+      border: 1px solid $border-color;
+      padding: 8px 12px;
+    }
+    th { background: #f8fafc; }
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* 响应式兜底：所有弹窗不超出小屏视口 */
+.el-dialog {
+  max-width: calc(100vw - 24px);
+}
+.el-message-box {
+  max-width: calc(100vw - 24px);
+}

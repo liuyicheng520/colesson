@@ -1,0 +1,366 @@
+// ============================================================================
+// 动效令牌（Motion Tokens）
+// 规范来源：P1 动效规范 / P2 方案卡
+// 约定：所有动效必须引用变量，禁止写死时长与曲线。
+// 只允许动 transform / opacity，禁止动 width / height / top / left。
+// ============================================================================
+
+:root {
+  // ---- 时长 ----
+  --dur-fast: 160ms;    // 微反馈：按钮、开关、勾选（规范 120–200ms）
+  --dur-base: 240ms;    // 元素进出：弹窗、下拉、toast（规范 200–280ms）
+  --dur-slow: 320ms;    // 页面转场（规范 280–360ms）
+  --dur-exit: 200ms;    // 退场（略快于进场，避免拖沓）
+  --dur-destroy: 400ms; // 删除/销毁类（规范 300–450ms）
+
+  // ---- 缓动 ----
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);        // 进场：快进慢停
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);         // 退场：慢起快走
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); // 位移较大（弹窗、抽屉）
+
+  // ---- 错开节奏 ----
+  --stagger-step: 30ms;  // 列表项入场错开
+  --stagger-max: 8;      // 最多前 8 项做动画，防止长列表等到 1s+
+}
+
+// ============================================================================
+// 一、页面转场（C1）：只淡入，不做左右滑动（学习场景不暗示方向层级）
+// ============================================================================
+.route-fade-enter-active {
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.route-fade-leave-active {
+  transition: opacity calc(var(--dur-base) / 2) var(--ease-in);
+}
+.route-fade-enter-from,
+.route-fade-leave-to {
+  opacity: 0;
+}
+
+// 路由切换一次性淡入（配合 keep-alive 结构，不重挂 DOM）
+.route-fade-once {
+  animation: route-fade-in var(--dur-base) var(--ease-out);
+}
+@keyframes route-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// 二、列表项入场（P2 §4）：opacity + 8px 上移，30ms 错开
+// 用法：容器加 .stagger-list，子项加 .stagger-item
+// ============================================================================
+.stagger-item {
+  animation: stagger-rise var(--dur-base) var(--ease-out) both;
+}
+// 前 8 项错开；第 9 项起不延迟，避免长列表总时长失控
+@for $i from 1 through 8 {
+  .stagger-item:nth-child(#{$i}) {
+    animation-delay: calc(var(--stagger-step) * #{$i - 1});
+  }
+}
+@keyframes stagger-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================================================
+// 三、列表加载/筛选切换（M1）：容器整体淡出 → 换数据 → 淡入
+// ============================================================================
+.list-swap-leave-active {
+  transition: opacity calc(var(--dur-fast) - 10ms) var(--ease-in);
+}
+.list-swap-enter-active {
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.list-swap-leave-to,
+.list-swap-enter-from {
+  opacity: 0;
+}
+
+// ============================================================================
+// 四、骨架屏脉冲（M1/M10）：唯一允许的无限动画，周期 1.2s（<3Hz）
+// ============================================================================
+.skeleton-pulse {
+  animation: skeleton-pulse 1.2s var(--ease-standard) infinite;
+}
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+// ============================================================================
+// 五、按钮反馈（P2 §2）：
+//   主按钮 → 涟漪；次要按钮 → 光晕脉冲；危险按钮 → 墨点渗开
+//   全部限制在按钮自身边界内，不污染整屏
+// ============================================================================
+// 点击压缩：所有按钮通用（160ms，微反馈区间）
+.btn-press:active {
+  transform: scale(0.97);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+// 主按钮涟漪：点击点扩散圆（120ms 扩散 / 240ms 淡出）
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ripple-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple-spread var(--dur-base) var(--ease-out) forwards;
+}
+@keyframes ripple-spread {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.45;
+  }
+  55% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0.18;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+// Element Plus 全局：点击压缩（160ms 微反馈）
+.el-button:not(.is-disabled):active {
+  transform: scale(0.97);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+// 主按钮：中心涟漪（CSS-only，避免逐次点击注入 DOM 带来的叠加风险）
+.el-button--primary:not(.is-text):not(.is-link) {
+  position: relative;
+  overflow: hidden;
+}
+.el-button--primary:not(.is-text):not(.is-link)::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+.el-button--primary:not(.is-text):not(.is-link):active::after {
+  animation: cta-ripple var(--dur-base) var(--ease-out);
+}
+@keyframes cta-ripple {
+  from {
+    opacity: 0.5;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+// 次要按钮光晕脉冲：整体亮度呼吸一次（240ms）
+.btn-glow-pulse {
+  animation: glow-pulse var(--dur-base) var(--ease-out);
+}
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+}
+
+// 危险按钮墨点渗开：不规则边缘晕开（300ms）
+.ink-host {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ink-dot {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(239, 68, 68, 0.28);
+  border-radius: 52% 48% 55% 45% / 47% 53% 44% 56%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ink-spread 300ms var(--ease-out) forwards;
+}
+@keyframes ink-spread {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+}
+
+// ============================================================================
+// 五·补、卡片悬停统一（M12）：transform + shadow 200ms，仅桌面
+// ============================================================================
+@media (hover: hover) and (pointer: fine) {
+  .card,
+  .resource-card,
+  .class-card,
+  .project-card {
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+    will-change: transform;
+  }
+  .card.is-hoverable:hover,
+  .resource-card:hover,
+  .class-card:hover,
+  .project-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+// ============================================================================
+// 六、表单校验失败抖动（M5）：450ms，位移 ≤6px
+// ============================================================================
+.form-shake {
+  animation: form-shake 450ms var(--ease-standard);
+}
+@keyframes form-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-6px);
+  }
+  30% {
+    transform: translateX(6px);
+  }
+  45% {
+    transform: translateX(-4px);
+  }
+  60% {
+    transform: translateX(4px);
+  }
+  80% {
+    transform: translateX(-2px);
+  }
+}
+
+// ============================================================================
+// 七、删除行消散（M7-B：CSS mask 溶解，性能最优路线）
+// 时序：收缩 80ms → 溶解 200ms → 残迹消失 120ms ≈ 400ms
+// ============================================================================
+.row-dissolve {
+  will-change: transform, opacity, mask-image;
+  animation: row-dissolve var(--dur-destroy) var(--ease-in) forwards;
+  pointer-events: none;
+}
+@keyframes row-dissolve {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    mask-image: radial-gradient(circle at center, #000 100%, #000 100%);
+  }
+  20% {
+    transform: scale(0.96);
+    opacity: 1;
+    mask-image: radial-gradient(circle at center, #000 90%, transparent 100%);
+  }
+  70% {
+    transform: scale(0.96);
+    opacity: 0.65;
+    mask-image: radial-gradient(circle at center, #000 30%, transparent 75%);
+  }
+  100% {
+    transform: scale(0.96);
+    opacity: 0;
+    mask-image: radial-gradient(circle at center, transparent 0%, transparent 60%);
+  }
+}
+
+// ============================================================================
+// 八、Element Plus 覆盖：toast / 弹窗 / 下拉（M4/M6/M8）
+// 弹窗关闭等待动画结束再卸载 —— Element Plus 的 <transition> 默认即是
+// （v-if + transition name el-fade-in-linear / dialog-fade），此处只调时长与曲线。
+// ============================================================================
+.el-message {
+  animation: msg-in var(--dur-base) var(--ease-out) !important;
+}
+@keyframes msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.el-overlay-dialog {
+  .el-dialog {
+    animation: dialog-in var(--dur-base) var(--ease-out);
+  }
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// 下拉/气泡类浮层
+.el-popper.is-light,
+.el-select-dropdown,
+.el-picker-panel {
+  animation: pop-in var(--dur-base) var(--ease-out);
+  transform-origin: top center;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ============================================================================
+// 九、可访问性总开关：所有动效在 reduced-motion 下退化为瞬时
+// ============================================================================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

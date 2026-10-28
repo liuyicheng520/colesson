@@ -1,0 +1,92 @@
+@use 'variables' as *;
+
+/* 管理端全局视觉规范 — 统一表格、按钮、卡片、导航交互 */
+.admin-layout {
+  .el-menu-item {
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 6px;
+    margin: 2px 8px;
+    width: calc(100% - 16px);
+
+    &.is-active {
+      background: rgba(37, 99, 235, 0.18) !important;
+      font-weight: 600;
+    }
+
+    &:hover:not(.is-active) {
+      background: rgba(148, 163, 184, 0.12) !important;
+    }
+  }
+
+  .header {
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+  }
+
+  .main {
+    padding: 0;
+  }
+}
+
+/* 管理端页面通用 */
+.page-container {
+  .table-wrap,
+  .tabs-panel,
+  .page-header {
+    transition: box-shadow 0.2s ease;
+  }
+
+  .table-wrap:hover,
+  .tabs-panel:hover {
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* 操作列按钮统一排布 */
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+/* 表格行悬停高亮 */
+.admin-layout .el-table {
+  --el-table-row-hover-bg-color: #f1f5f9;
+
+  .el-table__row {
+    transition: background-color 0.15s ease;
+  }
+}
+
+/* 弹窗圆角与标题 */
+.admin-layout .el-dialog {
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  .el-dialog__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid $border-color;
+    margin-right: 0;
+  }
+
+  .el-dialog__body {
+    padding: 20px;
+  }
+}
+
+/* 全屏预览抽屉 */
+.admin-preview-drawer {
+  .el-drawer__header {
+    margin-bottom: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .el-drawer__body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
