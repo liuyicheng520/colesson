@@ -1,0 +1,15 @@
+[Unit]
+Description=CoLesson host (Spring Boot + embedded zhixueti FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=__DEPLOY_DIR__
+ExecStart=/usr/bin/java -jar ${DEPLOY_DIR}/ai-teacher.jar
+Restart=always
+RestartSec=5
+SuccessExitStatus=143
+Environment=TZ=Asia/Shanghai
+
+[Install]
+WantedBy=multi-user.target
