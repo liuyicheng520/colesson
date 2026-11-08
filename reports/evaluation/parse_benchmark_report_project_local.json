@@ -1,0 +1,63 @@
+{
+  "baseUrl": "http://localhost:8081",
+  "sampleSize": 5,
+  "okCount": 5,
+  "errorCount": 0,
+  "successRate": 1.0,
+  "latencyMs": {
+    "avg": 218.9,
+    "p50": 183.38,
+    "p90": 426.27,
+    "max": 426.27
+  },
+  "thresholdCheck": {
+    "under2MinutesPerFile": true
+  },
+  "details": [
+    {
+      "source": "项目内补充PPT样本（计算机类）",
+      "file": "1_第4章_类与对象.pptx",
+      "ok": true,
+      "latencyMs": 426.27,
+      "pageMarkers": 26,
+      "rawTextLength": 3524,
+      "error": null
+    },
+    {
+      "source": "项目内补充PPT样本（计算机类）",
+      "file": "第4周 查询_副本.pptx",
+      "ok": true,
+      "latencyMs": 262.39,
+      "pageMarkers": 40,
+      "rawTextLength": 3848,
+      "error": null
+    },
+    {
+      "source": "项目内补充PPT样本（计算机类）",
+      "file": "ch2 html基础_副本.pptx",
+      "ok": true,
+      "latencyMs": 108.93,
+      "pageMarkers": 40,
+      "rawTextLength": 3500,
+      "error": null
+    },
+    {
+      "source": "项目内补充PPT样本（计算机类）",
+      "file": "6.1 触发器_副本.pptx",
+      "ok": true,
+      "latencyMs": 183.38,
+      "pageMarkers": 40,
+      "rawTextLength": 4278,
+      "error": null
+    },
+    {
+      "source": "项目内补充PPT样本（计算机类）",
+      "file": "ch1_副本.pptx",
+      "ok": true,
+      "latencyMs": 113.51,
+      "pageMarkers": 40,
+      "rawTextLength": 2462,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "baseUrl": "http://localhost:8081",
+  "sampleSize": 20,
+  "okCount": 20,
+  "errorCount": 0,
+  "successRate": 1.0,
+  "latencyMs": {
+    "avg": 96.64,
+    "p50": 109.25,
+    "p90": 184.34,
+    "max": 261.18
+  },
+  "thresholdCheck": {
+    "under2MinutesPerFile": true
+  },
+  "details": [
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/《赤壁赋》——苏轼的精神突围.pptx",
+      "ok": true,
+      "latencyMs": 113.38,
+      "pageMarkers": 32,
+      "rawTextLength": 4128,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/伟大的远征 不朽的丰碑——红军精神的时代回响.pptx",
+      "ok": true,
+      "latencyMs": 109.25,
+      "pageMarkers": 26,
+      "rawTextLength": 2655,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/八一广场：英雄城的红色心脏.pptx",
+      "ok": true,
+      "latencyMs": 121.58,
+      "pageMarkers": 28,
+      "rawTextLength": 2759,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/大学英语学习体系概览.pptx",
+      "ok": true,
+      "latencyMs": 261.18,
+      "pageMarkers": 40,
+      "rawTextLength": 498,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/宪法学概览.pptx",
+      "ok": true,
+      "latencyMs": 184.34,
+      "pageMarkers": 40,
+      "rawTextLength": 540,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/心理健康教育课程大纲.pptx",
+      "ok": true,
+      "latencyMs": 134.85,
+      "pageMarkers": 40,
+      "rawTextLength": 527,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/西方哲学史概览.pptx",
+      "ok": true,
+      "latencyMs": 140.31,
+      "pageMarkers": 40,
+      "rawTextLength": 640,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/马克思主义基本原理概览.pptx",
+      "ok": true,
+      "latencyMs": 142.65,
+      "pageMarkers": 40,
+      "rawTextLength": 576,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/高一语文《劝学》赏析.pptx",
+      "ok": true,
+      "latencyMs": 159.75,
+      "pageMarkers": 30,
+      "rawTextLength": 3527,
+      "error": null
+    },
+    {
+      "source": "ppt.zip 文科课程补充样本",
+      "file": "ppt/高中地理知识体系概览.pptx",
+      "ok": true,
+      "latencyMs": 194.6,
+      "pageMarkers": 40,
+      "rawTextLength": 532,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "PPT合集：前沿科技深度解析.pptx",
+      "ok": true,
+      "latencyMs": 42.63,
+      "pageMarkers": 12,
+      "rawTextLength": 1258,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "全球高端制造业突围之路（一）：现状与趋势.pptx",
+      "ok": true,
+      "latencyMs": 62.61,
+      "pageMarkers": 30,
+      "rawTextLength": 2950,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿1.pptx",
+      "ok": true,
+      "latencyMs": 37.62,
+      "pageMarkers": 12,
+      "rawTextLength": 1198,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿2.pptx",
+      "ok": true,
+      "latencyMs": 32.49,
+      "pageMarkers": 12,
+      "rawTextLength": 1287,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿4.pptx",
+      "ok": true,
+      "latencyMs": 33.74,
+      "pageMarkers": 10,
+      "rawTextLength": 906,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿5.pptx",
+      "ok": true,
+      "latencyMs": 34.08,
+      "pageMarkers": 12,
+      "rawTextLength": 1230,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿6.pptx",
+      "ok": true,
+      "latencyMs": 30.53,
+      "pageMarkers": 12,
+      "rawTextLength": 989,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿7.pptx",
+      "ok": true,
+      "latencyMs": 33.35,
+      "pageMarkers": 12,
+      "rawTextLength": 1270,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿8.pptx",
+      "ok": true,
+      "latencyMs": 29.96,
+      "pageMarkers": 12,
+      "rawTextLength": 1059,
+      "error": null
+    },
+    {
+      "source": "Documents(1).zip 理科科技补充样本",
+      "file": "文稿9.pptx",
+      "ok": true,
+      "latencyMs": 33.95,
+      "pageMarkers": 12,
+      "rawTextLength": 1443,
+      "error": null
+    }
+  ]
+}

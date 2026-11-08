@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1600px; height: 1000px;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background:
+      radial-gradient(1200px 600px at 15% 0%, rgba(31,102,255,.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 100%, rgba(6,182,212,.10), transparent 60%),
+      #f6f9fd;
+    color: #0f172a;
+    padding: 44px 56px;
+    display: flex; flex-direction: column;
+  }
+
+  .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px; }
+  .title { font-size: 38px; font-weight: 800; letter-spacing: -.5px; }
+  .title em { font-style: normal; color: #1f66ff; }
+  .subtitle { margin-top: 8px; font-size: 16px; color: #5a6d86; letter-spacing: .3px; }
+  .badges { display: flex; gap: 10px; }
+  .badge {
+    font-size: 13px; font-weight: 700; color: #1554d4;
+    background: #e8f0ff; border: 1px solid #c7dcff;
+    padding: 7px 14px; border-radius: 999px;
+  }
+
+  .stack { display: flex; flex-direction: column; gap: 0; }
+
+  .layer {
+    position: relative;
+    background: #fff;
+    border: 1.5px solid #dbe6f6;
+    border-radius: 18px;
+    padding: 18px 22px 20px;
+    box-shadow: 0 10px 26px rgba(20,45,90,.06);
+  }
+  .layer-tag {
+    position: absolute; left: 22px; top: -13px;
+    font-size: 12.5px; font-weight: 800; letter-spacing: .6px;
+    color: #fff; background: #1f66ff;
+    padding: 4px 12px; border-radius: 8px;
+  }
+  .layer-tag.green { background: #0e9f6e; }
+  .layer-tag.grey { background: #4b5f7a; }
+  .layer-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; padding-left: 2px; }
+  .layer-name { font-size: 20px; font-weight: 800; }
+  .layer-tech { font-size: 13px; color: #64748b; font-weight: 600; }
+  .layer-metric { margin-left: auto; font-size: 12.5px; color: #1554d4; background: #f0f6ff; border: 1px solid #d6e6ff; padding: 5px 11px; border-radius: 999px; font-weight: 700; }
+
+  .cells { display: grid; gap: 10px; }
+  .cells.c5 { grid-template-columns: repeat(5, 1fr); }
+  .cells.c4 { grid-template-columns: repeat(4, 1fr); }
+  .cells.c3 { grid-template-columns: repeat(3, 1fr); }
+
+  .cell {
+    background: #f7faff; border: 1px solid #e3ecf8; border-radius: 12px;
+    padding: 12px 12px; text-align: center;
+  }
+  .cell b { display: block; font-size: 14.5px; font-weight: 800; margin-bottom: 4px; }
+  .cell span { font-size: 11.5px; color: #6b7c93; line-height: 1.45; display: block; }
+
+  .clients { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .client {
+    background: #fff; border: 1.5px solid #dbe6f6; border-radius: 14px;
+    padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 6px 16px rgba(20,45,90,.05);
+  }
+  .client .ico {
+    width: 34px; height: 34px; border-radius: 10px; flex: none;
+    background: linear-gradient(145deg, #3b82f6, #1554d4);
+    display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 800;
+  }
+  .client b { font-size: 15px; display: block; }
+  .client span { font-size: 11.5px; color: #6b7c93; }
+
+  .arrow {
+    height: 34px; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .arrow i {
+    width: 2px; height: 22px;
+    background: linear-gradient(#b9cdea, #6f9de0);
+    position: relative;
+  }
+  .arrow i::after {
+    content: ''; position: absolute; bottom: -1px; left: -5px;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 8px solid #6f9de0;
+  }
+  .arrow em {
+    font-style: normal; font-size: 12px; color: #4a6b96; font-weight: 700;
+    background: #eef5ff; border: 1px solid #d6e6ff; border-radius: 999px;
+    padding: 4px 12px; margin-left: 14px;
+  }
+
+  .foot {
+    margin-top: 18px; display: flex; gap: 12px; align-items: stretch;
+  }
+  .note {
+    flex: 1; background: #fff; border: 1.5px dashed #cddff5; border-radius: 14px;
+    padding: 13px 16px; font-size: 12.5px; color: #3f5673; line-height: 1.6;
+  }
+  .note b { color: #0f172a; }
+  .note.accent { border-style: solid; border-color: #c7dcff; background: #f4f9ff; }
+
+  .flow {
+    margin-top: 16px;
+    background: linear-gradient(180deg, #ffffff, #f7fbff);
+    border: 1.5px solid #dbe6f6; border-radius: 16px;
+    padding: 14px 20px 16px;
+  }
+  .flow-title {
+    font-size: 12.5px; font-weight: 800; color: #1554d4; letter-spacing: .5px;
+    margin-bottom: 10px;
+  }
+  .flow-steps { display: flex; align-items: center; gap: 10px; }
+  .step {
+    flex: 1; background: #fff; border: 1px solid #e3ecf8; border-radius: 12px;
+    padding: 10px 12px; font-size: 13.5px; font-weight: 700; color: #1e2d44;
+    position: relative;
+  }
+  .step b {
+    display: inline-grid; place-items: center;
+    width: 19px; height: 19px; border-radius: 6px; margin-right: 7px;
+    background: #1f66ff; color: #fff; font-size: 11.5px;
+  }
+  .step span { display: block; margin-top: 4px; font-size: 11px; font-weight: 600; color: #7b8ca3; }
+  .sep { color: #9db7d8; font-size: 15px; font-weight: 800; }
+
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <div>
+      <div class="title">单端口同源架构：<em>一个 JAR 跑起三端</em></div>
+      <div class="subtitle">浏览器只认 8082 · 智能体层内网 8000 · 数据三层存储 · 交付即部署</div>
+    </div>
+    <div class="badges">
+      <div class="badge">JAR 58 MB</div>
+      <div class="badge">常驻约 99 MB</div>
+      <div class="badge">2 核 1.6G 可跑</div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- 三端 -->
+    <div class="clients">
+      <div class="client">
+        <div class="ico">师</div>
+        <div><b>教师端 · 多页应用</b><span>备课台 / 班级中心 / 学情</span></div>
+      </div>
+      <div class="client">
+        <div class="ico">学</div>
+        <div><b>学生端 · SPA</b><span>画像 / 资源 / 路径 / 答疑 / 数据</span></div>
+      </div>
+      <div class="client">
+        <div class="ico">管</div>
+        <div><b>管理端 · SPA</b><span>数据大盘 / 用户 / 菜单配置</span></div>
+      </div>
+    </div>
+
+    <div class="arrow"><i></i><em>同源访问 · 无跨域配置 · 统一会话 Cookie</em></div>
+
+    <!-- 宿主层 -->
+    <div class="layer">
+      <div class="layer-tag">L1 · 宿主层</div>
+      <div class="layer-head">
+        <div class="layer-name">Spring Boot 应用</div>
+        <div class="layer-tech">Java 17 · 单进程 8082</div>
+        <div class="layer-metric">常驻 47 MB</div>
+      </div>
+      <div class="cells c5">
+        <div class="cell"><b>会话与权限</b><span>Cookie 会话 · 三角色</span></div>
+        <div class="cell"><b>班级与作业</b><span>发布 / 提交 / 批改</span></div>
+        <div class="cell"><b>项目与备课</b><span>PPT 解析 / 讲稿</span></div>
+        <div class="cell"><b>静态资源</b><span>三端前端内置 JAR</span></div>
+        <div class="cell"><b>反向代理</b><span>白名单 13 组前缀</span></div>
+      </div>
+    </div>
+
+    <div class="arrow"><i></i><em>启动时自动拉起子进程 · 45 秒健康检查 · SSE 上限 310 秒</em></div>
+
+    <!-- 智能体层 -->
+    <div class="layer">
+      <div class="layer-tag green">L2 · 智能体层</div>
+      <div class="layer-head">
+        <div class="layer-name">FastAPI 智能体服务</div>
+        <div class="layer-tech">Python · 内网 127.0.0.1:8000</div>
+        <div class="layer-metric">常驻 52 MB</div>
+      </div>
+      <div class="cells c5">
+        <div class="cell"><b>画像融合</b><span>四模式 → 六维</span></div>
+        <div class="cell"><b>资源编排</b><span>8 Agent · 四阶段</span></div>
+        <div class="cell"><b>路径规划</b><span>画像裁剪节点</span></div>
+        <div class="cell"><b>答疑 RAG</b><span>检索 → 引用</span></div>
+        <div class="cell"><b>行为统计</b><span>三源合一</span></div>
+      </div>
+    </div>
+
+    <div class="arrow"><i></i><em>业务库 + 文件兜底 + 向量库</em></div>
+
+    <!-- 数据层 -->
+    <div class="layer">
+      <div class="layer-tag grey">L3 · 数据层</div>
+      <div class="layer-head">
+        <div class="layer-name">三层存储</div>
+        <div class="layer-tech">业务 · 兜底 · 向量</div>
+        <div class="layer-metric">索引 2389 块 · 检索 0.096s</div>
+      </div>
+      <div class="cells c3">
+        <div class="cell"><b>业务库</b><span>MySQL / SQLite<br/>用户 · 班级 · 作业 · 资源</span></div>
+        <div class="cell"><b>文件兜底</b><span>JSON 存储<br/>数据库不可用时自动降级</span></div>
+        <div class="cell"><b>向量库</b><span>ChromaDB 持久化<br/>增量重建 · 三级嵌入降级</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 真实请求链路 -->
+  <div class="flow">
+    <div class="flow-title">一次学生提问的真实链路</div>
+    <div class="flow-steps">
+      <div class="step"><b>1</b>学生输入问题<span>SPA · 同源</span></div>
+      <div class="sep">→</div>
+      <div class="step"><b>2</b>8082 鉴权 + 反代<span>会话 Cookie</span></div>
+      <div class="sep">→</div>
+      <div class="step"><b>3</b>8000 检索向量库<span>top-k · 0.096s</span></div>
+      <div class="sep">→</div>
+      <div class="step"><b>4</b>片段注入 Prompt<span>画像 + 约束</span></div>
+      <div class="sep">→</div>
+      <div class="step"><b>5</b>SSE 流式回传<span>带文档引用</span></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="note accent">
+      <b>分层理由：</b>Java 侧守住事务与权限边界（班级、作业、文件、会话），Python 侧承接模型生态与并发编排。跨语言只有一条通道：宿主带共享密钥调用内网接口。
+    </div>
+    <div class="note">
+      <b>运维代价（主动说明）：</b>双进程常驻约 99 MB；学生端后端随宿主启停，不额外占端口；反代白名单 + 超时上限，避免上游挂起拖死宿主线程池。
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学生学情分析 - 智课共生</title>
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="/brand-icon.jpg" />
+<link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    :root {
+      --ink-bg: #eef3f8;
+      --ink-panel: #ffffff;
+      --ink-panel-strong: rgba(255, 255, 255, 0.94);
+      --ink-line: #d7e0ec;
+      --ink-line-strong: rgba(31, 102, 255, 0.42);
+      --ink-text: #142033;
+      --ink-soft: #5a6d86;
+      --ink-dim: #8794a8;
+      --ink-blue: #1f66ff;
+      --ink-cyan: #0ea5e9;
+      --ink-green: #17b26a;
+      --ink-yellow: #d97706;
+      --ink-red: #ef4444;
+      --ink-purple: #7c3aed;
+      --ink-shadow: 0 10px 28px rgba(20, 40, 34, 0.07);
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(31, 102, 255, 0.12), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 92% 8%, rgba(196, 92, 38, 0.08), transparent 50%),
+        linear-gradient(180deg, #f7f9fc 0%, #eef3f8 42%, #e4ebf4 100%);
+      color: var(--ink-text);
+    }
+
+    .main {
+      padding: 18px 22px 28px;
+      max-width: 1320px;
+    }
+
+    .analysis-page {
+      display: grid;
+      gap: 12px;
+      min-height: calc(100vh - 28px);
+    }
+
+    .analysis-top,
+    .metric-card,
+    .panel {
+      border: 1px solid var(--ink-line);
+      background: var(--ink-panel);
+      border-radius: 16px;
+      box-shadow: var(--ink-shadow);
+      min-width: 0;
+    }
+
+    .analysis-top {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      background:
+        linear-gradient(135deg, rgba(31, 102, 255, 0.1), rgba(196, 92, 38, 0.06)),
+        var(--ink-panel-strong);
+      backdrop-filter: blur(12px);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .title-block {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .page-title {
+      color: var(--ink-text);
+      font-size: 26px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-family: var(--font-display, inherit);
+    }
+
+    .page-meta {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .action-row,
+    .filter-grid,
+    .tab-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 220px;
+    }
+
+    .field label {
+      flex: 0 0 auto;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .field select,
+    .field input,
+    .note-input {
+      width: auto;
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 38px;
+      border: 1px solid #cfdcd6;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--ink-text);
+      padding: 9px 10px;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .field select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 34px;
+      background-color: #fff;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4.2 6.1 8 9.9l3.8-3.8' stroke='%231f66ff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px 16px;
+      cursor: pointer;
+    }
+
+    .field select::-ms-expand {
+      display: none;
+    }
+    .field input:focus,
+    .note-input:focus {
+      border-color: #5fafa6;
+      box-shadow: 0 0 0 3px rgba(31, 102, 255, 0.12);
+    }
+
+    .tech-btn {
+      min-height: 38px;
+      border: 1px solid #cfdcd6;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #24463f;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .tech-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(31, 102, 255, 0.34);
+      background: #f4faf8;
+      box-shadow: 0 8px 18px rgba(31, 102, 255, 0.12);
+    }
+
+    .tech-btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #3b82f6, #1f66ff);
+      color: #ffffff;
+    }
+
+    .tech-btn.warning {
+      border-color: #f5d0b0;
+      background: #fdeedf;
+      color: #8a4b16;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric-card {
+      padding: 13px;
+      display: grid;
+      gap: 7px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      left: 13px;
+      right: 13px;
+      bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--metric-color, var(--ink-cyan)), transparent);
+      opacity: .8;
+    }
+
+    .metric-label {
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .metric-value {
+      color: #24416f;
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .metric-copy {
+      color: var(--ink-dim);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 330px;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .panel {
+      padding: 13px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      min-height: 0;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .panel-title {
+      color: #243555;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .panel-sub {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 3px;
+    }
+
+    .course-list,
+    .status-stack,
+    .detail-list,
+    .question-list,
+    .timeline-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .course-list {
+      max-height: 360px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .course-item,
+    .status-card,
+    .student-row,
+    .detail-card,
+    .question-item,
+    .timeline-item,
+    .empty-state {
+      border: 1px solid rgba(95, 161, 255, 0.18);
+      border-radius: 7px;
+      background: #ffffff;
+      min-width: 0;
+    }
+
+    .course-item {
+      width: 100%;
+      color: var(--ink-text);
+      padding: 11px;
+      display: grid;
+      gap: 6px;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .18s ease, background-color .18s ease;
+    }
+
+    .course-item:hover,
+    .course-item.active {
+      border-color: rgba(35, 215, 255, 0.58);
+      background: #f7faff;
+    }
+
+    .course-item strong {
+      font-size: 13px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .course-item span {
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .status-card {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .status-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+
+    .status-line strong {
+      color: var(--line-color, var(--ink-cyan));
+      font-size: 14px;
+    }
+
+    .mini-bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #e8eef8;
+      overflow: hidden;
+    }
+
+    .mini-bar span {
+      display: block;
+      height: 100%;
+      width: var(--value, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--line-color, var(--ink-cyan)), rgba(255,255,255,.55));
+    }
+
+    .table-panel {
+      min-height: 540px;
+    }
+
+    .student-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-row {
+      border: 1px solid rgba(95, 161, 255, 0.16);
+      background: #f5f8fe;
+      border-radius: 7px;
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .tab-btn {
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--ink-soft);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: #24436f;
+      background: #ffffff;
+      box-shadow: 0 3px 10px rgba(38, 59, 106, 0.08);
+    }
+
+    .student-table {
+      display: grid;
+      gap: 8px;
+    }
+
+    .student-header,
+    .student-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.25fr) .8fr .75fr .8fr .85fr 150px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .student-header {
+      color: var(--ink-dim);
+      font-size: 12px;
+      padding: 0 11px;
+      min-height: 30px;
+    }
+
+    .student-row {
+      min-height: 70px;
+      padding: 11px;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: border-color .18s ease, background-color .18s ease, transform .18s ease;
+    }
+
+    .student-row:hover,
+    .student-row.active {
+      transform: translateY(-1px);
+      border-color: rgba(35, 215, 255, 0.5);
+      background: #f7faff;
+    }
+
+    .student-main {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .student-name {
+      color: #243555;
+      font-size: 14px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .student-meta {
+      color: var(--ink-dim);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .badge {
+      width: fit-content;
+      max-width: 100%;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(95, 161, 255, 0.26);
+      border-radius: 999px;
+      background: #f1f6ff;
+      color: var(--badge-color, var(--ink-cyan));
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .progress-cell {
+      display: grid;
+      gap: 6px;
+    }
+
+    .progress-text {
+      color: #24416f;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .mini-btn {
+      min-height: 30px;
+      border: 1px solid rgba(95, 161, 255, 0.24);
+      border-radius: 6px;
+      background: #ffffff;
+      color: #24436f;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .mini-btn:hover {
+      border-color: rgba(35, 215, 255, 0.58);
+      background: #f7faff;
+    }
+
+    .detail-empty,
+    .empty-state {
+      color: var(--ink-soft);
+      padding: 18px;
+      text-align: center;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .student-detail {
+      display: grid;
+      gap: 12px;
+    }
+
+    .detail-profile {
+      border: 1px solid rgba(35, 215, 255, 0.22);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(36, 87, 214, 0.08), transparent 34%),
+        #ffffff;
+      padding: 13px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #04101d;
+      background: linear-gradient(135deg, #dce8ff, #ffffff);
+      font-size: 18px;
+      font-weight: 950;
+      box-shadow: 0 0 22px rgba(35, 215, 255, 0.22);
+    }
+
+    .profile-name {
+      color: #243555;
+      font-size: 18px;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-sub {
+      color: var(--ink-soft);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .ring-row {
+      display: grid;
+      grid-template-columns: 98px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .ring {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: conic-gradient(var(--ring-color, var(--ink-cyan)) var(--ring-value, 0%), #e8eef8 0);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 18px rgba(35, 215, 255, 0.16);
+    }
+
+    .ring::before {
+      content: attr(data-value);
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #24416f;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .detail-card,
+    .question-item,
+    .timeline-item {
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .detail-card strong,
+    .question-item strong,
+    .timeline-item strong {
+      color: #243555;
+      font-size: 13px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-card span,
+    .question-item span,
+    .timeline-item span {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .note-input {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .topology-panel {
+      padding: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(36, 87, 214, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(36, 87, 214, 0.035) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 255, 0.96));
+      background-size: 28px 28px, 28px 28px, auto;
+    }
+
+    .topology-head {
+      padding: 14px 15px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .topology-canvas {
+      position: relative;
+      min-height: 270px;
+      overflow: hidden;
+    }
+
+    .topology-canvas svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .topology-line {
+      stroke: rgba(36, 87, 214, 0.24);
+      stroke-width: 2;
+      stroke-dasharray: 7 9;
+      animation: topologyDash 13s linear infinite;
+    }
+
+    .topology-line.hot {
+      stroke: rgba(14, 165, 233, 0.42);
+      stroke-width: 2.5;
+    }
+
+    @keyframes topologyDash {
+      to { stroke-dashoffset: -130; }
+    }
+
+    .topology-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 132px;
+      height: 132px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(36, 87, 214, 0.34);
+      background:
+        radial-gradient(circle at 50% 42%, rgba(14, 165, 233, 0.2), transparent 54%),
+        #ffffff;
+      box-shadow: 0 18px 38px rgba(36, 87, 214, 0.16), inset 0 0 0 8px rgba(36, 87, 214, 0.04);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .topology-core strong {
+      color: #24416f;
+      font-size: 17px;
+      line-height: 1.28;
+      overflow-wrap: anywhere;
+    }
+
+    .topology-node {
+      position: absolute;
+      width: min(220px, 29%);
+      min-height: 82px;
+      border: 1px solid #dce7fb;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 26px rgba(38, 59, 106, 0.08);
+      padding: 11px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .topology-node strong {
+      color: #243555;
+      font-size: 13px;
+    }
+
+    .topology-node span {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.48;
+      overflow-wrap: anywhere;
+    }
+
+    .topology-node .node-value {
+      color: var(--node-color, var(--ink-blue));
+      font-size: 18px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .top-students { left: 5%; top: 20%; --node-color: var(--ink-green); }
+    .top-progress { right: 5%; top: 20%; --node-color: var(--ink-blue); }
+    .top-question { left: 5%; bottom: 18%; --node-color: var(--ink-purple); }
+    .top-risk { right: 5%; bottom: 18%; --node-color: var(--ink-red); }
+
+    .topology-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dot-color, var(--ink-blue));
+      box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.08);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 1320px) {
+      .work-grid {
+        grid-template-columns: 240px minmax(0, 1fr);
+      }
+
+      .detail-panel {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .filter-grid,
+      .metric-grid,
+      .work-grid,
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .student-header {
+        display: none;
+      }
+
+      .student-row {
+        grid-template-columns: 1fr;
+      }
+
+      .row-actions {
+        justify-content: flex-start;
+      }
+
+      .topology-canvas {
+        min-height: 620px;
+      }
+
+      .topology-core,
+      .topology-node {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        transform: none;
+        width: auto;
+        margin: 10px 14px;
+      }
+
+      .topology-canvas svg {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .main {
+        padding: 10px;
+      }
+
+      .page-title {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <section class="analysis-page">
+        <header class="analysis-top">
+          <div class="title-row">
+            <div class="title-block">
+              <div class="page-title">学生学情分析</div>
+              <div id="lessonSummary" class="page-meta">正在读取已发布智课与学习记录。</div>
+            </div>
+            <div class="action-row">
+              <a id="studentPreviewLink" class="tech-btn" href="/student.html">原学生预览</a>
+              <a id="learningDetailLink" class="tech-btn" href="/learning.html">原学情明细</a>
+              <button id="exportBtn" class="tech-btn" type="button">导出数据</button>
+              <button id="refreshBtn" class="tech-btn primary" type="button">刷新</button>
+            </div>
+          </div>
+
+          <div class="filter-grid">
+            <div class="field">
+              <label for="courseSelect">课程</label>
+              <select id="courseSelect"></select>
+            </div>
+            <div class="field">
+              <label for="termSelect">学期</label>
+              <select id="termSelect">
+                <option value="2025-2026 第二学期">2025-2026 第二学期</option>
+                <option value="2025-2026 第一学期">2025-2026 第一学期</option>
+                <option value="全部学期">全部学期</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="rangeSelect">时间范围</label>
+              <select id="rangeSelect">
+                <option value="all">全部</option>
+                <option value="today">今日</option>
+                <option value="week">本周</option>
+                <option value="month">本月</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="statusSelect">学生状态</label>
+              <select id="statusSelect">
+                <option value="all">全部学生</option>
+                <option value="risk">需关注</option>
+                <option value="normal">稳定学习</option>
+                <option value="high">高完成</option>
+                <option value="inactive">未学习</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="keywordInput">搜索学生</label>
+              <input id="keywordInput" type="search" placeholder="输入学生姓名" />
+            </div>
+            <button id="resetBtn" class="tech-btn" type="button">重置</button>
+          </div>
+        </header>
+
+        <section class="metric-grid">
+          <article class="metric-card" style="--metric-color: var(--ink-cyan);">
+            <span class="metric-label">学生数</span>
+            <strong id="metricStudents" class="metric-value">0</strong>
+            <span class="metric-copy">当前课程学习记录</span>
+          </article>
+          <article class="metric-card" style="--metric-color: var(--ink-green);">
+            <span class="metric-label">平均进度</span>
+            <strong id="metricProgress" class="metric-value">0%</strong>
+            <span class="metric-copy">按学生最近进度计算</span>
+          </article>
+          <article class="metric-card" style="--metric-color: var(--ink-yellow);">
+            <span class="metric-label">需关注</span>
+            <strong id="metricRisk" class="metric-value">0</strong>
+            <span class="metric-copy">低进度或理解不足</span>
+          </article>
+          <article class="metric-card" style="--metric-color: var(--ink-purple);">
+            <span class="metric-label">问答次数</span>
+            <strong id="metricQuestions" class="metric-value">0</strong>
+            <span class="metric-copy">学生提问行为</span>
+          </article>
+          <article class="metric-card" style="--metric-color: var(--ink-blue);">
+            <span class="metric-label">节点覆盖</span>
+            <strong id="metricSections" class="metric-value">0</strong>
+            <span class="metric-copy">访问过的讲解节点</span>
+          </article>
+        </section>
+
+        <section class="panel topology-panel">
+          <div class="topology-head">
+            <div>
+              <div class="panel-title">学情中控拓扑</div>
+              <div class="panel-sub">把课程、学生、节点、问答和风险状态串成一张可读关系图。</div>
+            </div>
+            <div class="topology-legend">
+              <span class="legend-item"><i class="legend-dot" style="--dot-color: var(--ink-green);"></i>学生</span>
+              <span class="legend-item"><i class="legend-dot" style="--dot-color: var(--ink-blue);"></i>进度</span>
+              <span class="legend-item"><i class="legend-dot" style="--dot-color: var(--ink-purple);"></i>问答</span>
+              <span class="legend-item"><i class="legend-dot" style="--dot-color: var(--ink-red);"></i>风险</span>
+            </div>
+          </div>
+          <div class="topology-canvas">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <line class="topology-line hot" x1="50" y1="50" x2="16" y2="30"></line>
+              <line class="topology-line" x1="50" y1="50" x2="84" y2="30"></line>
+              <line class="topology-line" x1="50" y1="50" x2="16" y2="74"></line>
+              <line class="topology-line hot" x1="50" y1="50" x2="84" y2="74"></line>
+            </svg>
+            <div class="topology-core">
+              <strong id="topologyCourse">当前课程</strong>
+            </div>
+            <article class="topology-node top-students">
+              <strong>学习学生</strong>
+              <div id="topologyStudents" class="node-value">0</div>
+              <span id="topologyStudentsText">等待学习记录回传。</span>
+            </article>
+            <article class="topology-node top-progress">
+              <strong>平均进度</strong>
+              <div id="topologyProgress" class="node-value">0%</div>
+              <span id="topologyProgressText">按学生最近学习进度计算。</span>
+            </article>
+            <article class="topology-node top-question">
+              <strong>问答热区</strong>
+              <div id="topologyQuestions" class="node-value">0</div>
+              <span id="topologyQuestionText">暂无集中提问。</span>
+            </article>
+            <article class="topology-node top-risk">
+              <strong>风险提醒</strong>
+              <div id="topologyRisk" class="node-value">0</div>
+              <span id="topologyRiskText">暂无需关注学生。</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="work-grid">
+          <aside class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">课程列表</div>
+                <div class="panel-sub">已发布智课</div>
+              </div>
+            </div>
+            <div id="courseList" class="course-list"></div>
+
+            <div>
+              <div class="panel-title">学习状态</div>
+              <div class="panel-sub">按当前筛选结果统计</div>
+            </div>
+            <div id="statusStack" class="status-stack"></div>
+          </aside>
+
+          <section class="panel table-panel">
+            <div class="student-toolbar">
+              <div>
+                <div class="panel-title">学生学情列表</div>
+                <div id="studentListMeta" class="panel-sub">暂无学生记录</div>
+              </div>
+              <div class="tab-row">
+                <button class="tab-btn active" type="button" data-sort="risk">优先关注</button>
+                <button class="tab-btn" type="button" data-sort="progress">按进度</button>
+                <button class="tab-btn" type="button" data-sort="latest">按时间</button>
+              </div>
+            </div>
+
+            <div class="student-table">
+              <div class="student-header">
+                <span>学生</span>
+                <span>状态</span>
+                <span>进度</span>
+                <span>提问</span>
+                <span>最近学习</span>
+                <span style="text-align:right;">操作</span>
+              </div>
+              <div id="studentRows"></div>
+            </div>
+          </section>
+
+          <aside class="panel detail-panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">学生详情</div>
+                <div id="detailMeta" class="panel-sub">选择学生后查看学习轨迹</div>
+              </div>
+              <button id="focusBtn" class="tech-btn warning" type="button" style="display:none;">标记关注</button>
+            </div>
+            <div id="studentDetail" class="student-detail">
+              <div class="detail-empty">请选择一名学生。</div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="bottom-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">最近学习动态</div>
+                <div class="panel-sub">按时间倒序</div>
+              </div>
+            </div>
+            <div id="timelineList" class="timeline-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <div class="panel-title">重点问答记录</div>
+                <div class="panel-sub">来自学生学习页回传</div>
+              </div>
+            </div>
+            <div id="questionList" class="question-list"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/teacher/login.html';
+        return;
+      }
+
+      const ok = await window.AppStore.requireRole(['teacher', 'admin'], { loginRole: 'teacher' });
+      if (!ok) return;
+      window.AppStore.mountNav('insight');
+
+      const query = new URLSearchParams(location.search);
+      const initialProjectId = query.get('projectId') || '';
+      const NOTE_KEY = 'ai_teacher_learning_notes_v1';
+      const FOCUS_KEY = 'ai_teacher_learning_focus_v1';
+      let lessons = [];
+      let currentProject = null;
+      let currentStudents = [];
+      let selectedStudent = '';
+      let sortMode = 'risk';
+
+      const el = {
+        lessonSummary: document.getElementById('lessonSummary'),
+        studentPreviewLink: document.getElementById('studentPreviewLink'),
+        learningDetailLink: document.getElementById('learningDetailLink'),
+        exportBtn: document.getElementById('exportBtn'),
+        refreshBtn: document.getElementById('refreshBtn'),
+        courseSelect: document.getElementById('courseSelect'),
+        termSelect: document.getElementById('termSelect'),
+        rangeSelect: document.getElementById('rangeSelect'),
+        statusSelect: document.getElementById('statusSelect'),
+        keywordInput: document.getElementById('keywordInput'),
+        resetBtn: document.getElementById('resetBtn'),
+        metricStudents: document.getElementById('metricStudents'),
+        metricProgress: document.getElementById('metricProgress'),
+        metricRisk: document.getElementById('metricRisk'),
+        metricQuestions: document.getElementById('metricQuestions'),
+        metricSections: document.getElementById('metricSections'),
+        topologyCourse: document.getElementById('topologyCourse'),
+        topologyStudents: document.getElementById('topologyStudents'),
+        topologyStudentsText: document.getElementById('topologyStudentsText'),
+        topologyProgress: document.getElementById('topologyProgress'),
+        topologyProgressText: document.getElementById('topologyProgressText'),
+        topologyQuestions: document.getElementById('topologyQuestions'),
+        topologyQuestionText: document.getElementById('topologyQuestionText'),
+        topologyRisk: document.getElementById('topologyRisk'),
+        topologyRiskText: document.getElementById('topologyRiskText'),
+        courseList: document.getElementById('courseList'),
+        statusStack: document.getElementById('statusStack'),
+        studentListMeta: document.getElementById('studentListMeta'),
+        studentRows: document.getElementById('studentRows'),
+        detailMeta: document.getElementById('detailMeta'),
+        focusBtn: document.getElementById('focusBtn'),
+        studentDetail: document.getElementById('studentDetail'),
+        timelineList: document.getElementById('timelineList'),
+        questionList: document.getElementById('questionList')
+      };
+
+      function escapeHtml(text) {
+        return String(text || '').replace(/[&<>"]/g, function (ch) {
+          return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch];
+        });
+      }
+
+      function formatTime(value) {
+        if (!value) return '--';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+        return date.toLocaleString('zh-CN', { hour12: false });
+      }
+
+      function readJson(key) {
+        try {
+          return JSON.parse(localStorage.getItem(key) || '{}') || {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value || {}));
+      }
+
+      function studentKey(name) {
+        return (currentProject && currentProject.id ? currentProject.id : 'none') + '::' + name;
+      }
+
+      function getNote(name) {
+        return readJson(NOTE_KEY)[studentKey(name)] || '';
+      }
+
+      function saveNote(name, note) {
+        const data = readJson(NOTE_KEY);
+        data[studentKey(name)] = note || '';
+        writeJson(NOTE_KEY, data);
+      }
+
+      function isFocused(name) {
+        return !!readJson(FOCUS_KEY)[studentKey(name)];
+      }
+
+      function toggleFocus(name) {
+        const data = readJson(FOCUS_KEY);
+        const key = studentKey(name);
+        if (data[key]) {
+          delete data[key];
+        } else {
+          data[key] = true;
+        }
+        writeJson(FOCUS_KEY, data);
+      }
+
+      function excludedLearnerNames() {
+        const set = new Set();
+        const me = window.AppStore && window.AppStore.currentUser ? window.AppStore.currentUser() : null;
+        if (me && me.username) set.add(String(me.username).trim().toLowerCase());
+        if (currentProject && currentProject.username) {
+          set.add(String(currentProject.username).trim().toLowerCase());
+        }
+        return set;
+      }
+
+      function isStudentLearningRecord(item) {
+        const name = String((item && item.learnerUsername) || '').trim().toLowerCase();
+        if (!name) return true;
+        if (excludedLearnerNames().has(name)) return false;
+        return true;
+      }
+
+      function normalizeRecords(project) {
+        return (Array.isArray(project && project.learningRecords) ? project.learningRecords.slice() : [])
+          .filter(isStudentLearningRecord)
+          .sort(function (a, b) {
+            return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+          });
+      }
+
+      function withinRange(value) {
+        if (el.rangeSelect.value === 'all') return true;
+        const date = new Date(value || 0);
+        if (Number.isNaN(date.getTime())) return false;
+        const now = new Date();
+        const diff = now.getTime() - date.getTime();
+        if (el.rangeSelect.value === 'today') {
+          return date.toDateString() === now.toDateString();
+        }
+        if (el.rangeSelect.value === 'week') {
+          return diff <= 7 * 24 * 60 * 60 * 1000;
+        }
+        if (el.rangeSelect.value === 'month') {
+          return diff <= 31 * 24 * 60 * 60 * 1000;
+        }
+        return true;
+      }
+
+      function buildStudents(records) {
+        const map = new Map();
+        records.forEach(function (item) {
+          if (!withinRange(item.createdAt)) return;
+          const name = item.learnerUsername || 'anonymous';
+          if (!map.has(name)) {
+            map.set(name, {
+              name: name,
+              latestAt: item.createdAt || '',
+              latestSection: item.currentSectionId || '',
+              progress: typeof item.progressPercent === 'number' ? item.progressPercent : 0,
+              questionCount: 0,
+              resumeCount: 0,
+              weakCount: 0,
+              actionCount: 0,
+              records: []
+            });
+          }
+          const stat = map.get(name);
+          stat.records.push(item);
+          stat.actionCount += 1;
+          if (item.question) stat.questionCount += 1;
+          if (item.action === 'continue-lecture') stat.resumeCount += 1;
+          if (/不足|不充分|困难|错误|薄弱|未掌握/.test(String(item.understandingLevel || ''))) stat.weakCount += 1;
+          if ((item.createdAt || '') >= (stat.latestAt || '')) {
+            stat.latestAt = item.createdAt || '';
+            stat.latestSection = item.currentSectionId || '';
+            stat.progress = typeof item.progressPercent === 'number' ? item.progressPercent : stat.progress;
+          }
+        });
+
+        return Array.from(map.values()).map(function (student) {
+          const focused = isFocused(student.name);
+          let status = 'normal';
+          let label = '稳定学习';
+          let color = 'var(--ink-cyan)';
+          if (student.progress >= 80 && student.weakCount === 0) {
+            status = 'high';
+            label = '高完成';
+            color = 'var(--ink-green)';
+          }
+          if (student.progress < 60 || student.weakCount > 0 || focused) {
+            status = 'risk';
+            label = focused ? '已关注' : '需关注';
+            color = 'var(--ink-red)';
+          }
+          return Object.assign(student, {
+            status: status,
+            label: label,
+            color: color,
+            focused: focused
+          });
+        });
+      }
+
+      function buildSections(records) {
+        const map = new Map();
+        records.forEach(function (item) {
+          if (!withinRange(item.createdAt)) return;
+          const key = item.currentSectionId || '完整讲稿';
+          map.set(key, (map.get(key) || 0) + 1);
+        });
+        return Array.from(map.entries()).sort(function (a, b) { return b[1] - a[1]; });
+      }
+
+      function filteredStudents() {
+        const keyword = el.keywordInput.value.trim().toLowerCase();
+        const status = el.statusSelect.value;
+        let result = currentStudents.slice();
+        if (keyword) {
+          result = result.filter(function (item) {
+            return item.name.toLowerCase().indexOf(keyword) >= 0;
+          });
+        }
+        if (status !== 'all') {
+          if (status === 'inactive') {
+            result = [];
+          } else {
+            result = result.filter(function (item) { return item.status === status; });
+          }
+        }
+        result.sort(function (a, b) {
+          if (sortMode === 'progress') return (b.progress || 0) - (a.progress || 0);
+          if (sortMode === 'latest') return new Date(b.latestAt || 0).getTime() - new Date(a.latestAt || 0).getTime();
+          const riskA = a.status === 'risk' ? 1 : 0;
+          const riskB = b.status === 'risk' ? 1 : 0;
+          return riskB - riskA || (a.progress || 0) - (b.progress || 0);
+        });
+        return result;
+      }
+
+      function setLessonLinks(projectId) {
+        const suffix = projectId ? '?projectId=' + encodeURIComponent(projectId) : '';
+        el.studentPreviewLink.href = '/student.html' + suffix;
+        el.learningDetailLink.href = '/learning.html' + suffix;
+      }
+
+      function renderCourseControls() {
+        if (!lessons.length) {
+          el.courseSelect.innerHTML = '<option value="">暂无已发布智课</option>';
+          el.courseList.innerHTML = `<div class="empty-state">
+            <strong style="display:block;margin-bottom:8px;">暂无已发布智课</strong>
+            <span style="display:block;margin-bottom:12px;color:var(--sub,#64748b);">先去备课台制作，或从我的备课发布一门智课，学情才会出现。</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+              <a class="btn" href="/workspace.html">打开备课台</a>
+              <a class="btn ghost" href="/projects.html">去我的备课发布</a>
+            </div>
+          </div>`;
+          return;
+        }
+        el.courseSelect.innerHTML = lessons.map(function (item) {
+          const title = item.lessonTitle || item.name || '未命名智课';
+          return '<option value="' + escapeHtml(item.id) + '">' + escapeHtml(title) + '</option>';
+        }).join('');
+        if (currentProject && currentProject.id) {
+          el.courseSelect.value = currentProject.id;
+        }
+        el.courseList.innerHTML = lessons.map(function (item) {
+          const active = currentProject && currentProject.id === item.id;
+          return `
+            <button class="course-item ${active ? 'active' : ''}" type="button" data-id="${escapeHtml(item.id)}">
+              <strong>${escapeHtml(item.lessonTitle || item.name || '未命名智课')}</strong>
+              <span>${item.publishedAt ? formatTime(item.publishedAt) : '未记录发布时间'}</span>
+            </button>
+          `;
+        }).join('');
+        Array.from(el.courseList.querySelectorAll('[data-id]')).forEach(function (node) {
+          node.addEventListener('click', function () {
+            loadLesson(node.getAttribute('data-id'));
+          });
+        });
+      }
+
+      function renderStatusSummary(students) {
+        const total = Math.max(students.length, 1);
+        const high = students.filter(function (item) { return item.status === 'high'; }).length;
+        const normal = students.filter(function (item) { return item.status === 'normal'; }).length;
+        const risk = students.filter(function (item) { return item.status === 'risk'; }).length;
+        const rows = [
+          { name: '高完成', count: high, color: 'var(--ink-green)' },
+          { name: '稳定学习', count: normal, color: 'var(--ink-cyan)' },
+          { name: '需关注', count: risk, color: 'var(--ink-red)' }
+        ];
+        el.statusStack.innerHTML = rows.map(function (item) {
+          const value = students.length ? Math.round(item.count / total * 100) : 0;
+          return `
+            <div class="status-card" style="--line-color:${item.color};">
+              <div class="status-line"><span>${item.name}</span><strong>${item.count}</strong></div>
+              <div class="mini-bar"><span style="--value:${value}%"></span></div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderMetrics(records, students) {
+        const questions = records.filter(function (item) { return withinRange(item.createdAt) && item.question; });
+        const sections = buildSections(records);
+        const avg = students.length ? students.reduce(function (sum, item) { return sum + (item.progress || 0); }, 0) / students.length : 0;
+        const risk = students.filter(function (item) { return item.status === 'risk'; }).length;
+        el.metricStudents.textContent = String(students.length);
+        el.metricProgress.textContent = avg.toFixed(1) + '%';
+        el.metricRisk.textContent = String(risk);
+        el.metricQuestions.textContent = String(questions.length);
+        el.metricSections.textContent = String(sections.length);
+      }
+
+      function renderTopology(records, students) {
+        const title = currentProject ? (currentProject.lessonTitle || currentProject.name || '当前课程') : '当前课程';
+        const questions = records.filter(function (item) { return withinRange(item.createdAt) && item.question; });
+        const avg = students.length ? students.reduce(function (sum, item) { return sum + (item.progress || 0); }, 0) / students.length : 0;
+        const riskStudents = students.filter(function (item) { return item.status === 'risk'; });
+        const topQuestion = questions.length ? questions[0] : null;
+
+        el.topologyCourse.textContent = title;
+        el.topologyStudents.textContent = String(students.length);
+        el.topologyStudentsText.textContent = students.length
+          ? '已形成 ' + students.length + ' 名学生的学习画像。'
+          : '等待学习记录回传。';
+        el.topologyProgress.textContent = avg.toFixed(1) + '%';
+        el.topologyProgressText.textContent = avg >= 80
+          ? '整体学习推进较充分。'
+          : avg >= 60
+            ? '整体进度稳定，可继续观察。'
+            : '整体进度偏低，建议查看学生列表。';
+        el.topologyQuestions.textContent = String(questions.length);
+        el.topologyQuestionText.textContent = topQuestion
+          ? '最近问题：' + String(topQuestion.question || '').slice(0, 32)
+          : '暂无集中提问。';
+        el.topologyRisk.textContent = String(riskStudents.length);
+        el.topologyRiskText.textContent = riskStudents.length
+          ? '优先关注：' + riskStudents.slice(0, 3).map(function (item) { return item.name; }).join('、')
+          : '暂无需关注学生。';
+      }
+
+      function renderStudentRows() {
+        const students = filteredStudents();
+        el.studentListMeta.textContent = currentProject
+          ? '当前显示 ' + students.length + ' 名学生'
+          : '暂无学生记录';
+        if (!students.length) {
+          el.studentRows.innerHTML = '<div class="empty-state">当前筛选条件下没有学生记录。</div>';
+          renderDetail(null);
+          return;
+        }
+        if (!selectedStudent || !students.some(function (item) { return item.name === selectedStudent; })) {
+          selectedStudent = students[0].name;
+        }
+        el.studentRows.innerHTML = students.map(function (student) {
+          const active = selectedStudent === student.name;
+          return `
+            <article class="student-row ${active ? 'active' : ''}" data-student="${escapeHtml(student.name)}">
+              <div class="student-main">
+                <span class="student-name">${escapeHtml(student.name)}</span>
+                <span class="student-meta">最近节点：${escapeHtml(student.latestSection || '未记录')}</span>
+              </div>
+              <span class="badge" style="--badge-color:${student.color};">${student.label}</span>
+              <div class="progress-cell">
+                <span class="progress-text">${Number(student.progress || 0).toFixed(1)}%</span>
+                <div class="mini-bar" style="--line-color:${student.color};"><span style="--value:${Math.max(3, Math.min(100, student.progress || 0))}%"></span></div>
+              </div>
+              <span>${student.questionCount} 次</span>
+              <span>${formatTime(student.latestAt)}</span>
+              <div class="row-actions">
+                <button class="mini-btn" type="button" data-action="detail" data-student="${escapeHtml(student.name)}">详情</button>
+                <a class="mini-btn" href="${el.learningDetailLink.href}">明细</a>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        Array.from(el.studentRows.querySelectorAll('[data-student]')).forEach(function (node) {
+          node.addEventListener('click', function (event) {
+            if (event.target && event.target.tagName === 'A') return;
+            const name = node.getAttribute('data-student') || '';
+            selectedStudent = name;
+            renderAll();
+          });
+        });
+
+        renderDetail(students.find(function (item) { return item.name === selectedStudent; }) || students[0]);
+      }
+
+      function renderDetail(student) {
+        if (!student) {
+          el.detailMeta.textContent = '选择学生后查看学习轨迹';
+          el.focusBtn.style.display = 'none';
+          el.studentDetail.innerHTML = '<div class="detail-empty">请选择一名学生。</div>';
+          return;
+        }
+        el.detailMeta.textContent = student.name + ' · ' + student.label;
+        el.focusBtn.style.display = 'inline-flex';
+        el.focusBtn.textContent = student.focused ? '取消关注' : '标记关注';
+        const note = getNote(student.name);
+        const recent = student.records.slice(0, 4);
+        const questions = student.records.filter(function (item) { return item.question; }).slice(0, 3);
+        el.studentDetail.innerHTML = `
+          <div class="detail-profile">
+            <div class="profile-head">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <div class="avatar">${escapeHtml(student.name.slice(0, 1).toUpperCase())}</div>
+                <div style="min-width:0;">
+                  <div class="profile-name">${escapeHtml(student.name)}</div>
+                  <div class="profile-sub">${escapeHtml(student.latestSection || '未记录节点')} · ${formatTime(student.latestAt)}</div>
+                </div>
+              </div>
+              <span class="badge" style="--badge-color:${student.color};">${student.label}</span>
+            </div>
+            <div class="ring-row">
+              <div class="ring" data-value="${Number(student.progress || 0).toFixed(0)}%" style="--ring-value:${Math.max(0, Math.min(100, student.progress || 0))}%;--ring-color:${student.color};"></div>
+              <div class="detail-list">
+                <div class="detail-card"><strong>学习行为</strong><span>${student.actionCount} 条记录，继续讲解 ${student.resumeCount} 次</span></div>
+                <div class="detail-card"><strong>问答表现</strong><span>${student.questionCount} 次提问，理解风险 ${student.weakCount} 次</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <strong>教师备注</strong>
+            <textarea id="teacherNoteInput" class="note-input" placeholder="记录课堂观察、跟进安排或辅导建议。">${escapeHtml(note)}</textarea>
+            <button id="saveNoteBtn" class="tech-btn primary" type="button">保存备注</button>
+          </div>
+
+          <div>
+            <div class="panel-title" style="margin-bottom:8px;">最近轨迹</div>
+            <div class="detail-list">
+              ${recent.length ? recent.map(function (item) {
+                return '<div class="detail-card"><strong>' + escapeHtml(item.action || 'study') + '</strong><span>' + formatTime(item.createdAt) + ' · 进度 ' + Number(item.progressPercent || 0).toFixed(1) + '%</span></div>';
+              }).join('') : '<div class="empty-state">暂无学习轨迹。</div>'}
+            </div>
+          </div>
+
+          <div>
+            <div class="panel-title" style="margin-bottom:8px;">提问记录</div>
+            <div class="detail-list">
+              ${questions.length ? questions.map(function (item) {
+                return '<div class="detail-card"><strong>' + escapeHtml(item.question || '') + '</strong><span>' + escapeHtml(item.answer || '暂无回答') + '</span></div>';
+              }).join('') : '<div class="empty-state">暂无提问记录。</div>'}
+            </div>
+          </div>
+        `;
+        const noteInput = document.getElementById('teacherNoteInput');
+        const saveNoteBtn = document.getElementById('saveNoteBtn');
+        if (saveNoteBtn && noteInput) {
+          saveNoteBtn.addEventListener('click', function () {
+            saveNote(student.name, noteInput.value.trim());
+            if (window.AppStore.toast) window.AppStore.toast('备注已保存', 'ok');
+          });
+        }
+      }
+
+      function renderBottom(records) {
+        const visibleRecords = records.filter(function (item) { return withinRange(item.createdAt); });
+        if (!visibleRecords.length) {
+          el.timelineList.innerHTML = '<div class="empty-state">暂无学习动态。</div>';
+        } else {
+          el.timelineList.innerHTML = visibleRecords.slice(0, 8).map(function (item) {
+            const title = item.question ? '提出问题' : item.action === 'continue-lecture' ? '继续讲解' : '学习记录';
+            return `
+              <article class="timeline-item">
+                <strong>${escapeHtml(item.learnerUsername || 'anonymous')} · ${title}</strong>
+                <span>${formatTime(item.createdAt)} · ${escapeHtml(item.currentSectionId || '未记录节点')} · ${Number(item.progressPercent || 0).toFixed(1)}%</span>
+              </article>
+            `;
+          }).join('');
+        }
+
+        const questions = visibleRecords.filter(function (item) { return item.question; });
+        if (!questions.length) {
+          el.questionList.innerHTML = '<div class="empty-state">暂无问答记录。</div>';
+        } else {
+          el.questionList.innerHTML = questions.slice(0, 8).map(function (item) {
+            return `
+              <article class="question-item">
+                <strong>${escapeHtml(item.question || '')}</strong>
+                <span>${escapeHtml(item.learnerUsername || 'anonymous')} · ${formatTime(item.createdAt)}</span>
+                <span>${escapeHtml(item.answer || '暂无回答')}</span>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+
+      function renderAll() {
+        const records = normalizeRecords(currentProject);
+        currentStudents = buildStudents(records);
+        renderCourseControls();
+        renderMetrics(records, currentStudents);
+        renderTopology(records, currentStudents);
+        renderStatusSummary(filteredStudents());
+        renderStudentRows();
+        renderBottom(records);
+
+        const title = currentProject ? (currentProject.lessonTitle || currentProject.name || '未命名智课') : '暂无课程';
+        el.lessonSummary.textContent = currentProject
+          ? title + ' · ' + el.termSelect.value + ' · ' + (currentProject.lessonIntro || currentProject.summary || currentProject.meta || '暂无课程简介')
+          : '暂无已发布智课。';
+      }
+
+      async function loadLesson(projectId) {
+        if (!projectId) return;
+        try {
+          currentProject = await window.AppStore.getPublishedLesson(projectId);
+          selectedStudent = '';
+          setLessonLinks(projectId);
+          renderAll();
+        } catch (err) {
+          if (window.AppStore.toast) window.AppStore.toast(err.message || '课程学情加载失败', 'err');
+        }
+      }
+
+      async function boot() {
+        try {
+          lessons = await window.AppStore.getPublishedLessons();
+          const targetId = (currentProject && currentProject.id) || initialProjectId || (lessons[0] && lessons[0].id) || '';
+          if (!targetId) {
+            currentProject = null;
+            setLessonLinks('');
+            renderAll();
+            return;
+          }
+          await loadLesson(targetId);
+        } catch (err) {
+          el.courseList.innerHTML = '<div class="empty-state">已发布智课加载失败。</div>';
+          if (window.AppStore.toast) window.AppStore.toast(err.message || '已发布课程加载失败', 'err');
+        }
+      }
+
+      function exportCsv() {
+        const rows = filteredStudents();
+        if (!rows.length) {
+          if (window.AppStore.toast) window.AppStore.toast('当前没有可导出的学生数据', 'err');
+          return;
+        }
+        const header = ['学生', '状态', '进度', '提问次数', '最近学习', '教师备注'];
+        const lines = [header].concat(rows.map(function (item) {
+          return [
+            item.name,
+            item.label,
+            Number(item.progress || 0).toFixed(1) + '%',
+            String(item.questionCount),
+            formatTime(item.latestAt),
+            getNote(item.name)
+          ];
+        })).map(function (row) {
+          return row.map(function (cell) {
+            return '"' + String(cell || '').replace(/"/g, '""') + '"';
+          }).join(',');
+        });
+        const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '学生学情分析.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      el.courseSelect.addEventListener('change', function () {
+        loadLesson(el.courseSelect.value);
+      });
+      [el.termSelect, el.rangeSelect, el.statusSelect].forEach(function (node) {
+        node.addEventListener('change', renderAll);
+      });
+      el.keywordInput.addEventListener('input', renderAll);
+      el.resetBtn.addEventListener('click', function () {
+        el.rangeSelect.value = 'all';
+        el.statusSelect.value = 'all';
+        el.keywordInput.value = '';
+        sortMode = 'risk';
+        Array.from(document.querySelectorAll('.tab-btn')).forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-sort') === 'risk');
+        });
+        renderAll();
+      });
+      el.refreshBtn.addEventListener('click', boot);
+      el.exportBtn.addEventListener('click', exportCsv);
+      el.focusBtn.addEventListener('click', function () {
+        if (!selectedStudent) return;
+        toggleFocus(selectedStudent);
+        renderAll();
+      });
+      Array.from(document.querySelectorAll('.tab-btn')).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          sortMode = btn.getAttribute('data-sort') || 'risk';
+          Array.from(document.querySelectorAll('.tab-btn')).forEach(function (item) {
+            item.classList.toggle('active', item === btn);
+          });
+          renderAll();
+        });
+      });
+
+      await boot();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+22:54:20.491 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - ai-teacher-mysql - configuration:
+22:54:20.494 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension................................false
+22:54:20.494 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit................................true
+22:54:20.494 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - catalog................................none
+22:54:20.494 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql................................none
+22:54:20.494 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout................................1000
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - dataSource................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties................................{password=<masked>}
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties................................{}
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout................................10000
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout................................1
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries................................false
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl................................jdbc:mysql://127.0.0.1:3306/zhike_gongsheng?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime................................0
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold................................0
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime................................30000
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize................................1
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle................................0
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - password................................<masked>
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - poolName................................"ai-teacher-mysql"
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - readOnly................................false
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans................................false
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - schema................................none
+22:54:20.495 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory................................internal
+22:54:20.496 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation................................default
+22:54:20.496 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - username................................"root"
+22:54:20.496 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout................................5000
+22:54:20.496 [com.contest.KnowledgeImportCli.main()] INFO com.zaxxer.hikari.HikariDataSource - ai-teacher-mysql - Starting...
+22:54:20.511 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.util.DriverDataSource - Loaded driver with class name com.mysql.cj.jdbc.Driver for jdbcUrl=jdbc:mysql://127.0.0.1:3306/zhike_gongsheng?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+22:54:20.581 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Closing connection com.mysql.cj.jdbc.ConnectionImpl@1727dfb2: (initialization check complete and minimumIdle is zero)
+22:54:20.584 [com.contest.KnowledgeImportCli.main()] INFO com.zaxxer.hikari.HikariDataSource - ai-teacher-mysql - Start completed.
+22:54:20.588 [ai-teacher-mysql connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - Added connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.608 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.616 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.631 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.637 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.657 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.668 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.689 [ai-teacher-mysql housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - Before cleanup stats (total=1, active=0, idle=1, waiting=0)
+22:54:20.690 [ai-teacher-mysql housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - After cleanup  stats (total=1, active=0, idle=1, waiting=0)
+22:54:20.690 [ai-teacher-mysql housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - Fill pool skipped, pool is at sufficient level.
+22:54:20.716 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.870 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:20.906 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.157 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.173 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.275 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.292 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.347 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.386 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.707 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:21.790 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.232 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.243 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.252 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.265 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.279 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+22:54:22.369 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Reset (autoCommit) on connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee
+{
+  "import" : {
+    "documentCount" : 23,
+    "chunkCount" : 2119,
+    "evaluationCaseCount" : 14,
+    "warnings" : [ ]
+  },
+  "stats" : {
+    "documentCount" : 23,
+    "chunkCount" : 2119,
+    "courses" : [ {
+      "courseCode" : "computer_network",
+      "documentCount" : 3,
+      "chunkCount" : 1042,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "data_structure",
+      "documentCount" : 6,
+      "chunkCount" : 26,
+      "averageQuality" : 92.0
+    }, {
+      "courseCode" : "database",
+      "documentCount" : 4,
+      "chunkCount" : 590,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "java",
+      "documentCount" : 5,
+      "chunkCount" : 359,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "operating_system",
+      "documentCount" : 5,
+      "chunkCount" : 102,
+      "averageQuality" : 100.0
+    } ]
+  },
+  "evaluation" : {
+    "caseCount" : 14,
+    "passedCount" : 14,
+    "passRate" : 100.0,
+    "items" : [ {
+      "caseId" : "eval_net_http_code",
+      "courseCode" : "computer_network",
+      "questionType" : "code",
+      "question" : "HTTP GET 和 POST 方法的语义有什么区别？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "GET", "method" ],
+      "topScore" : 42.85,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9110.html"
+    }, {
+      "caseId" : "eval_net_tcp_concept",
+      "courseCode" : "computer_network",
+      "questionType" : "concept",
+      "question" : "TCP 为什么需要 sequence number 和 acknowledgment？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "sequence number", "acknowledgment", "TCP" ],
+      "topScore" : 41.05,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9293.html"
+    }, {
+      "caseId" : "eval_net_tcp_debug",
+      "courseCode" : "computer_network",
+      "questionType" : "debug",
+      "question" : "TCP 报文丢失后为什么会触发 retransmission 重传？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "retransmission", "timeout", "segment" ],
+      "topScore" : 16.33,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9293.html"
+    }, {
+      "caseId" : "eval_ds_hash_debug",
+      "courseCode" : "data_structure",
+      "questionType" : "debug",
+      "question" : "哈希表发生 collision 冲突时为什么不能直接覆盖原记录？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "hash" ],
+      "topScore" : 24.95,
+      "topSource" : "https://github.com/OpenDSA/OpenDSA/blob/4085e0b971bc3de390e4d310d5b9e9cf2c54178e/RST/en/Hashing/HashIntro.rst"
+    }, {
+      "caseId" : "eval_ds_stack_concept",
+      "courseCode" : "data_structure",
+      "questionType" : "concept",
+      "question" : "栈为什么被称为 LIFO 数据结构？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "LIFO", "last-in", "stack" ],
+      "topScore" : 47.61,
+      "topSource" : "https://github.com/OpenDSA/OpenDSA/blob/4085e0b971bc3de390e4d310d5b9e9cf2c54178e/RST/en/List/StackArray.rst"
+    }, {
+      "caseId" : "eval_db_ddl_code",
+      "courseCode" : "database",
+      "questionType" : "code",
+      "question" : "SQL 创建表时如何声明 primary key 和 foreign key 约束？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "PRIMARY KEY", "FOREIGN KEY" ],
+      "topScore" : 40.31,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/ddl.sgml"
+    }, {
+      "caseId" : "eval_db_join_debug",
+      "courseCode" : "database",
+      "questionType" : "debug",
+      "question" : "SQL JOIN 后出现重复行，应该检查哪些连接条件？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "JOIN" ],
+      "topScore" : 27.24,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/queries.sgml"
+    }, {
+      "caseId" : "eval_db_mvcc_concept",
+      "courseCode" : "database",
+      "questionType" : "concept",
+      "question" : "PostgreSQL MVCC 的 snapshot 快照如何影响事务可见性？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "snapshot", "MVCC", "transaction" ],
+      "topScore" : 41.85,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/mvcc.sgml"
+    }, {
+      "caseId" : "eval_java_arraylist_code",
+      "courseCode" : "java",
+      "questionType" : "code",
+      "question" : "Java ArrayList 的 grow 扩容方法在什么情况下被调用？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "grow", "capacity", "ArrayList" ],
+      "topScore" : 34.46,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/ArrayList.java"
+    }, {
+      "caseId" : "eval_java_hashmap_debug",
+      "courseCode" : "java",
+      "questionType" : "debug",
+      "question" : "HashMap get 返回 null 时，如何判断是键不存在还是值本身为 null？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "containsKey", "null", "get" ],
+      "topScore" : 21.33,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/HashMap.java"
+    }, {
+      "caseId" : "eval_java_optional_concept",
+      "courseCode" : "java",
+      "questionType" : "concept",
+      "question" : "Java Optional 的 orElse 和 orElseGet 有什么使用语义？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "orElse", "orElseGet", "Optional" ],
+      "topScore" : 32.58,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/Optional.java"
+    }, {
+      "caseId" : "eval_os_cfs_concept",
+      "courseCode" : "operating_system",
+      "questionType" : "concept",
+      "question" : "Linux CFS 调度器中的 virtual runtime 有什么作用？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "virtual runtime", "vruntime", "CFS" ],
+      "topScore" : 46.87,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/scheduler/sched-design-CFS.rst"
+    }, {
+      "caseId" : "eval_os_memory_code",
+      "courseCode" : "operating_system",
+      "questionType" : "code",
+      "question" : "Linux 内核分配内存时 GFP_KERNEL 和 GFP_ATOMIC 应如何选择？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "GFP_KERNEL", "GFP_ATOMIC", "allocation" ],
+      "topScore" : 34.06,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/core-api/memory-allocation.rst"
+    }, {
+      "caseId" : "eval_os_mutex_debug",
+      "courseCode" : "operating_system",
+      "questionType" : "debug",
+      "question" : "Linux mutex contention 竞争严重时锁的 fastpath 和 slowpath 如何工作？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "fastpath", "slowpath" ],
+      "topScore" : 33.06,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/locking/mutex-design.rst"
+    } ]
+  }
+}
+22:54:24.040 [com.contest.KnowledgeImportCli.main()] INFO com.zaxxer.hikari.HikariDataSource - ai-teacher-mysql - Shutdown initiated...
+22:54:24.040 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - Before shutdown stats (total=1, active=0, idle=1, waiting=0)
+22:54:24.042 [ai-teacher-mysql connection closer] DEBUG com.zaxxer.hikari.pool.PoolBase - ai-teacher-mysql - Closing connection com.mysql.cj.jdbc.ConnectionImpl@7d933fee: (connection evicted)
+22:54:24.044 [com.contest.KnowledgeImportCli.main()] DEBUG com.zaxxer.hikari.pool.HikariPool - ai-teacher-mysql - After shutdown stats (total=0, active=0, idle=0, waiting=0)
+22:54:24.044 [com.contest.KnowledgeImportCli.main()] INFO com.zaxxer.hikari.HikariDataSource - ai-teacher-mysql - Shutdown completed.

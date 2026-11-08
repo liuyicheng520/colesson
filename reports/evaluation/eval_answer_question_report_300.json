@@ -1,0 +1,3030 @@
+{
+  "sample_size": 300,
+  "base_url": "http://localhost:8081",
+  "ok_count": 300,
+  "error_count": 0,
+  "ok_rate": 1.0,
+  "source_distribution": {
+    "dataset": 300,
+    "llm": 0,
+    "other": 0
+  },
+  "dataset_hit_rate": 1.0,
+  "dataset_answer_exact_rate": 1.0,
+  "top1_question_match_rate": 1.0,
+  "top3_question_recall_rate": 1.0,
+  "metrics": {
+    "hit_rate": 1.0,
+    "top1_accuracy": 1.0,
+    "top3_recall": 1.0
+  },
+  "latency_ms": {
+    "avg": 53.82,
+    "p50": 53.55,
+    "p90": 58.69,
+    "p95": 60.81,
+    "max": 74.67
+  },
+  "details": [
+    {
+      "index": 1,
+      "question": "非弹性失稳与弹性失稳的区别？",
+      "latency_ms": 70.45,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "非弹性失稳与弹性失稳的区别？"
+    },
+    {
+      "index": 2,
+      "question": "真应力-真应变曲线的工程意义？",
+      "latency_ms": 60.48,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "真应力-真应变曲线的工程意义？"
+    },
+    {
+      "index": 3,
+      "question": "圆轴拉扭组合的第三强度理论校核？",
+      "latency_ms": 59.65,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "圆轴拉扭组合的第三强度理论校核？"
+    },
+    {
+      "index": 4,
+      "question": "解释\"透明矿井\"力学感知原理？",
+      "latency_ms": 60.89,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"透明矿井\"力学感知原理？"
+    },
+    {
+      "index": 5,
+      "question": "惯性环节在什么条件下可以近似为比例环节。",
+      "latency_ms": 65.03,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "惯性环节在什么条件下可以近似为比例环节。"
+    },
+    {
+      "index": 6,
+      "question": "什么是梁的挠曲线方程？",
+      "latency_ms": 55.41,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是梁的挠曲线方程？"
+    },
+    {
+      "index": 7,
+      "question": "如何治理软土地区桩基负摩阻力？",
+      "latency_ms": 60.98,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何治理软土地区桩基负摩阻力？"
+    },
+    {
+      "index": 8,
+      "question": "如何测试土体动态孔隙水压力？",
+      "latency_ms": 58.93,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测试土体动态孔隙水压力？"
+    },
+    {
+      "index": 9,
+      "question": "扭转减振器的种类有哪些？",
+      "latency_ms": 55.93,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "扭转减振器的种类有哪些？"
+    },
+    {
+      "index": 10,
+      "question": "圆轴扭转时的应力分布规律是什么？",
+      "latency_ms": 54.46,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "圆轴扭转时的应力分布规律是什么？"
+    },
+    {
+      "index": 11,
+      "question": "量子点压杆的应变传感网络？",
+      "latency_ms": 53.9,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "量子点压杆的应变传感网络？"
+    },
+    {
+      "index": 12,
+      "question": "如何求一般位置平面（与三个投影面均倾斜）的实形？请说明用换面法求平面实形的基本步骤。",
+      "latency_ms": 62.72,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何求一般位置平面（与三个投影面均倾斜）的实形？请说明用换面法求平面实形的基本步骤。"
+    },
+    {
+      "index": 13,
+      "question": "如何分析带式输送机断带抓捕失效？",
+      "latency_ms": 55.31,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何分析带式输送机断带抓捕失效？"
+    },
+    {
+      "index": 14,
+      "question": "简述线性系统时域分析中，常用的系统性能指标",
+      "latency_ms": 56.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "简述线性系统时域分析中，常用的系统性能指标"
+    },
+    {
+      "index": 15,
+      "question": "6.系统的稳定的条件是什么？",
+      "latency_ms": 51.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "6.系统的稳定的条件是什么？"
+    },
+    {
+      "index": 16,
+      "question": "什么是材料的应力集中系数？",
+      "latency_ms": 51.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的应力集中系数？"
+    },
+    {
+      "index": 17,
+      "question": "风冷式冷凝器是否需要保温？",
+      "latency_ms": 52.38,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "风冷式冷凝器是否需要保温？"
+    },
+    {
+      "index": 18,
+      "question": "什么是应力集中？",
+      "latency_ms": 48.62,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应力集中？"
+    },
+    {
+      "index": 19,
+      "question": "石油管道跨越桁架的弯曲分析？",
+      "latency_ms": 52.54,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "石油管道跨越桁架的弯曲分析？"
+    },
+    {
+      "index": 20,
+      "question": "什么是材料的冲击载荷系数？",
+      "latency_ms": 52.82,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的冲击载荷系数？"
+    },
+    {
+      "index": 21,
+      "question": "家用空调器中有哪些具体部件？",
+      "latency_ms": 53.97,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "家用空调器中有哪些具体部件？"
+    },
+    {
+      "index": 22,
+      "question": "什么是压缩比？",
+      "latency_ms": 48.43,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是压缩比？"
+    },
+    {
+      "index": 23,
+      "question": "复合材料层合梁的等效抗弯刚度？",
+      "latency_ms": 52.92,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "复合材料层合梁的等效抗弯刚度？"
+    },
+    {
+      "index": 24,
+      "question": "如何计算矩形截面梁的最大弯曲正应力？",
+      "latency_ms": 54.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算矩形截面梁的最大弯曲正应力？"
+    },
+    {
+      "index": 25,
+      "question": "冷却排管是否需要保温？",
+      "latency_ms": 51.0,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "冷却排管是否需要保温？"
+    },
+    {
+      "index": 26,
+      "question": "四通换向阀有什么作用？",
+      "latency_ms": 51.23,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "四通换向阀有什么作用？"
+    },
+    {
+      "index": 27,
+      "question": "如何计算矿井罐笼的动载系数？",
+      "latency_ms": 52.36,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算矿井罐笼的动载系数？"
+    },
+    {
+      "index": 28,
+      "question": "数字散斑相关技术全场应变测量精度影响因素？",
+      "latency_ms": 57.43,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字散斑相关技术全场应变测量精度影响因素？"
+    },
+    {
+      "index": 29,
+      "question": "双离合器变速器（DCT）可分为哪两类？",
+      "latency_ms": 56.93,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "双离合器变速器（DCT）可分为哪两类？"
+    },
+    {
+      "index": 30,
+      "question": "什么是仿生材料力学？",
+      "latency_ms": 50.01,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是仿生材料力学？"
+    },
+    {
+      "index": 31,
+      "question": "解释“让压-吸能”支护原理？",
+      "latency_ms": 51.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释“让压-吸能”支护原理？"
+    },
+    {
+      "index": 32,
+      "question": "深海钻井隔水管涡激疲劳分析？",
+      "latency_ms": 54.72,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "深海钻井隔水管涡激疲劳分析？"
+    },
+    {
+      "index": 33,
+      "question": "为何幕墙设计需验算层间位移？",
+      "latency_ms": 53.7,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何幕墙设计需验算层间位移？"
+    },
+    {
+      "index": 34,
+      "question": "为何大跨空间结构需考虑风致振动？",
+      "latency_ms": 55.12,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何大跨空间结构需考虑风致振动？"
+    },
+    {
+      "index": 35,
+      "question": "桥梁梁设计要点",
+      "latency_ms": 49.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "桥梁梁设计要点"
+    },
+    {
+      "index": 36,
+      "question": "如何计算热应力？",
+      "latency_ms": 48.96,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算热应力？"
+    },
+    {
+      "index": 37,
+      "question": "磁致伸缩传感器测弯曲应力？",
+      "latency_ms": 52.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "磁致伸缩传感器测弯曲应力？"
+    },
+    {
+      "index": 38,
+      "question": "7.什么是系统的动态结构图？它等效变换的原则是什么？系统的动态结构图有 哪几种典型的连接？将它们用图形的形式表示出来，并列写出典型连接的传递函数。",
+      "latency_ms": 63.05,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "7.什么是系统的动态结构图？它等效变换的原则是什么？系统的动态结构图有 哪几种典型的连接？将它们用图形的形式表示出来，并列写出典型连接的传递函数。"
+    },
+    {
+      "index": 39,
+      "question": "如何测定岩体结构面JRC值？",
+      "latency_ms": 53.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定岩体结构面JRC值？"
+    },
+    {
+      "index": 40,
+      "question": "什么是材料的循环硬化特性？",
+      "latency_ms": 51.4,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的循环硬化特性？"
+    },
+    {
+      "index": 41,
+      "question": "风力机叶片雷电冲击热应力分析？",
+      "latency_ms": 54.56,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "风力机叶片雷电冲击热应力分析？"
+    },
+    {
+      "index": 42,
+      "question": "疲劳裂纹扩展机理？",
+      "latency_ms": 50.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "疲劳裂纹扩展机理？"
+    },
+    {
+      "index": 43,
+      "question": "智能材料自修复结构设计",
+      "latency_ms": 51.8,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "智能材料自修复结构设计"
+    },
+    {
+      "index": 44,
+      "question": "绘制平面立体（如长方体、三棱柱）的三视图时，如何处理棱线的投影？哪些棱线的投影需要可见性判断？",
+      "latency_ms": 62.09,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "绘制平面立体（如长方体、三棱柱）的三视图时，如何处理棱线的投影？哪些棱线的投影需要可见性判断？"
+    },
+    {
+      "index": 45,
+      "question": "离合器从动盘如何分类？",
+      "latency_ms": 50.72,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "离合器从动盘如何分类？"
+    },
+    {
+      "index": 46,
+      "question": "什么是材料的应变率效应？",
+      "latency_ms": 50.27,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的应变率效应？"
+    },
+    {
+      "index": 47,
+      "question": "什么是根轨迹？绘制的几条规则",
+      "latency_ms": 53.94,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是根轨迹？绘制的几条规则"
+    },
+    {
+      "index": 48,
+      "question": "解释\"强支护-弱扰动\"巷道掘进？",
+      "latency_ms": 54.42,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"强支护-弱扰动\"巷道掘进？"
+    },
+    {
+      "index": 49,
+      "question": "空间可展开天线铰链力学优化",
+      "latency_ms": 54.11,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "空间可展开天线铰链力学优化"
+    },
+    {
+      "index": 50,
+      "question": "横观各向同性材料的扭转本构关系？",
+      "latency_ms": 55.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "横观各向同性材料的扭转本构关系？"
+    },
+    {
+      "index": 51,
+      "question": "飞机机翼在气动载荷下的弯曲应力分析？",
+      "latency_ms": 54.34,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "飞机机翼在气动载荷下的弯曲应力分析？"
+    },
+    {
+      "index": 52,
+      "question": "解释\"智能锚杆\"监测原理？",
+      "latency_ms": 51.69,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"智能锚杆\"监测原理？"
+    },
+    {
+      "index": 53,
+      "question": "什么是制动器间隙？制动间隙如何调整？",
+      "latency_ms": 54.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是制动器间隙？制动间隙如何调整？"
+    },
+    {
+      "index": 54,
+      "question": "如何用位移法解刚架？",
+      "latency_ms": 50.11,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何用位移法解刚架？"
+    },
+    {
+      "index": 55,
+      "question": "数字图像相关法测组合变形全场应变？",
+      "latency_ms": 54.08,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字图像相关法测组合变形全场应变？"
+    },
+    {
+      "index": 56,
+      "question": "如何计算桩基负摩阻力？",
+      "latency_ms": 50.23,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算桩基负摩阻力？"
+    },
+    {
+      "index": 57,
+      "question": "如何评估混凝土的抗压强度?",
+      "latency_ms": 50.82,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何评估混凝土的抗压强度?"
+    },
+    {
+      "index": 58,
+      "question": "当两圆柱体直径相等且轴线垂直相交时，相贯线的投影有何特殊变化？",
+      "latency_ms": 60.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "当两圆柱体直径相等且轴线垂直相交时，相贯线的投影有何特殊变化？"
+    },
+    {
+      "index": 59,
+      "question": "如何测定土的压缩模量？",
+      "latency_ms": 49.76,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定土的压缩模量？"
+    },
+    {
+      "index": 60,
+      "question": "解释真应力与工程应力的区别？",
+      "latency_ms": 50.77,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释真应力与工程应力的区别？"
+    },
+    {
+      "index": 61,
+      "question": "原子力显微镜测微梁弯曲刚度？",
+      "latency_ms": 54.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "原子力显微镜测微梁弯曲刚度？"
+    },
+    {
+      "index": 62,
+      "question": "解释\"能量平衡\"防冲原理？",
+      "latency_ms": 52.34,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"能量平衡\"防冲原理？"
+    },
+    {
+      "index": 63,
+      "question": "厚壁圆筒在内压和高温下的组合应力？",
+      "latency_ms": 54.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "厚壁圆筒在内压和高温下的组合应力？"
+    },
+    {
+      "index": 64,
+      "question": "激光散斑干涉法测扭转变形原理？",
+      "latency_ms": 54.86,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "激光散斑干涉法测扭转变形原理？"
+    },
+    {
+      "index": 65,
+      "question": "弹塑性扭转的应力分布规律？",
+      "latency_ms": 51.17,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "弹塑性扭转的应力分布规律？"
+    },
+    {
+      "index": 66,
+      "question": "为何高层建筑采用筏板基础？",
+      "latency_ms": 52.01,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何高层建筑采用筏板基础？"
+    },
+    {
+      "index": 67,
+      "question": "超导磁悬浮梁的零摩擦弯曲响应？",
+      "latency_ms": 53.38,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "超导磁悬浮梁的零摩擦弯曲响应？"
+    },
+    {
+      "index": 68,
+      "question": "负载三角形联结时，相电流和线电流是否相等？",
+      "latency_ms": 57.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "负载三角形联结时，相电流和线电流是否相等？"
+    },
+    {
+      "index": 69,
+      "question": "如何计算矿用卡轨车的轮轨接触应力？",
+      "latency_ms": 52.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算矿用卡轨车的轮轨接触应力？"
+    },
+    {
+      "index": 70,
+      "question": "数字图像相关法（DIC）测全场挠度？",
+      "latency_ms": 56.61,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字图像相关法（DIC）测全场挠度？"
+    },
+    {
+      "index": 71,
+      "question": "制冷系统中的不凝性气体有哪些影响？",
+      "latency_ms": 54.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "制冷系统中的不凝性气体有哪些影响？"
+    },
+    {
+      "index": 72,
+      "question": "什么是应力松弛度？",
+      "latency_ms": 49.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应力松弛度？"
+    },
+    {
+      "index": 73,
+      "question": "汽车行驶阻力由哪些部分组成？",
+      "latency_ms": 53.37,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "汽车行驶阻力由哪些部分组成？"
+    },
+    {
+      "index": 74,
+      "question": "配气机构按气门驱动形式不同如何分类？",
+      "latency_ms": 55.59,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "配气机构按气门驱动形式不同如何分类？"
+    },
+    {
+      "index": 75,
+      "question": "智能材料系统",
+      "latency_ms": 48.31,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "智能材料系统"
+    },
+    {
+      "index": 76,
+      "question": "高压容器设计中如何选择强度理论？",
+      "latency_ms": 53.99,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "高压容器设计中如何选择强度理论？"
+    },
+    {
+      "index": 77,
+      "question": "医疗器械",
+      "latency_ms": 47.49,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "医疗器械"
+    },
+    {
+      "index": 78,
+      "question": "如何计算非对称截面梁的弯曲中心？",
+      "latency_ms": 54.0,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算非对称截面梁的弯曲中心？"
+    },
+    {
+      "index": 79,
+      "question": "过热有哪些不利影响？",
+      "latency_ms": 50.84,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "过热有哪些不利影响？"
+    },
+    {
+      "index": 80,
+      "question": "电控液压操纵系统中的液压控制系统由哪几部分组成？",
+      "latency_ms": 55.69,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "电控液压操纵系统中的液压控制系统由哪几部分组成？"
+    },
+    {
+      "index": 81,
+      "question": "中子衍射法测厚壁梁内部应力梯度？",
+      "latency_ms": 54.21,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "中子衍射法测厚壁梁内部应力梯度？"
+    },
+    {
+      "index": 82,
+      "question": "解释岩石的弹性后效现象？",
+      "latency_ms": 51.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释岩石的弹性后效现象？"
+    },
+    {
+      "index": 83,
+      "question": "传递函数与状态空间描述的区别与优缺点是什么？",
+      "latency_ms": 57.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "传递函数与状态空间描述的区别与优缺点是什么？"
+    },
+    {
+      "index": 84,
+      "question": "什么是前轮外倾角？",
+      "latency_ms": 50.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是前轮外倾角？"
+    },
+    {
+      "index": 85,
+      "question": "氢燃料电池双极板接触电阻模型",
+      "latency_ms": 55.03,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "氢燃料电池双极板接触电阻模型"
+    },
+    {
+      "index": 86,
+      "question": "配气机构按传动方式不同如何分类？",
+      "latency_ms": 53.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "配气机构按传动方式不同如何分类？"
+    },
+    {
+      "index": 87,
+      "question": "焊接残余应力",
+      "latency_ms": 47.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "焊接残余应力"
+    },
+    {
+      "index": 88,
+      "question": "原子力显微镜测量纳米力学性能原理？",
+      "latency_ms": 54.39,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "原子力显微镜测量纳米力学性能原理？"
+    },
+    {
+      "index": 89,
+      "question": "考虑残余应力的压杆稳定性理论？",
+      "latency_ms": 52.37,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "考虑残余应力的压杆稳定性理论？"
+    },
+    {
+      "index": 90,
+      "question": "求图示多跨静定梁的弯矩极值？",
+      "latency_ms": 52.43,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "求图示多跨静定梁的弯矩极值？"
+    },
+    {
+      "index": 91,
+      "question": "什么是扭矩的正负号规定？",
+      "latency_ms": 50.51,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是扭矩的正负号规定？"
+    },
+    {
+      "index": 92,
+      "question": "目前最常见的双级蒸气压缩式制冷循环是哪种？",
+      "latency_ms": 57.64,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "目前最常见的双级蒸气压缩式制冷循环是哪种？"
+    },
+    {
+      "index": 93,
+      "question": "超声波测厚仪验证梁变形理论？",
+      "latency_ms": 53.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "超声波测厚仪验证梁变形理论？"
+    },
+    {
+      "index": 94,
+      "question": "如何测定混凝土静力弹模？",
+      "latency_ms": 51.11,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定混凝土静力弹模？"
+    },
+    {
+      "index": 95,
+      "question": "电测法测梁变形的温度补偿原理？",
+      "latency_ms": 53.16,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "电测法测梁变形的温度补偿原理？"
+    },
+    {
+      "index": 96,
+      "question": "功能梯度压杆的稳定性优化？",
+      "latency_ms": 51.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "功能梯度压杆的稳定性优化？"
+    },
+    {
+      "index": 97,
+      "question": "如何求解材料的临界屈曲载荷?",
+      "latency_ms": 52.37,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何求解材料的临界屈曲载荷?"
+    },
+    {
+      "index": 98,
+      "question": "如何计算组合应力？",
+      "latency_ms": 49.19,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算组合应力？"
+    },
+    {
+      "index": 99,
+      "question": "什么是主应变？",
+      "latency_ms": 47.7,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是主应变？"
+    },
+    {
+      "index": 100,
+      "question": "什么是材料的断裂韧性？",
+      "latency_ms": 50.01,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的断裂韧性？"
+    },
+    {
+      "index": 101,
+      "question": "机械增压器根据压气机的工作原理如何分类？",
+      "latency_ms": 54.67,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "机械增压器根据压气机的工作原理如何分类？"
+    },
+    {
+      "index": 102,
+      "question": "在螺栓连接的装配图中，螺栓杆与被连接件通孔之间、螺母与被连接件接触面之间分别采用什么配合关系？",
+      "latency_ms": 61.13,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在螺栓连接的装配图中，螺栓杆与被连接件通孔之间、螺母与被连接件接触面之间分别采用什么配合关系？"
+    },
+    {
+      "index": 103,
+      "question": "在直流电路中，电容相当于什么？",
+      "latency_ms": 54.56,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在直流电路中，电容相当于什么？"
+    },
+    {
+      "index": 104,
+      "question": "什么是体积改变比能和形状改变比能？",
+      "latency_ms": 54.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是体积改变比能和形状改变比能？"
+    },
+    {
+      "index": 105,
+      "question": "开环控制系统和闭环控制系统的概念？",
+      "latency_ms": 51.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "开环控制系统和闭环控制系统的概念？"
+    },
+    {
+      "index": 106,
+      "question": "典型的非线性特性有哪些",
+      "latency_ms": 50.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "典型的非线性特性有哪些"
+    },
+    {
+      "index": 107,
+      "question": "简述PID,PI,PD调节的区别",
+      "latency_ms": 52.24,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "简述PID,PI,PD调节的区别"
+    },
+    {
+      "index": 108,
+      "question": "大中型冻肉冷藏库的制冷系统中有哪些具体部件？",
+      "latency_ms": 57.08,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "大中型冻肉冷藏库的制冷系统中有哪些具体部件？"
+    },
+    {
+      "index": 109,
+      "question": "热泵工程中的热水箱一般需要连接哪些管道？",
+      "latency_ms": 55.5,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "热泵工程中的热水箱一般需要连接哪些管道？"
+    },
+    {
+      "index": 110,
+      "question": "什么是材料的蠕变现象？",
+      "latency_ms": 50.35,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的蠕变现象？"
+    },
+    {
+      "index": 111,
+      "question": "什么是剪切中心？",
+      "latency_ms": 49.44,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是剪切中心？"
+    },
+    {
+      "index": 112,
+      "question": "什么是组合体？组合体的常见构形方式有哪几种？请分别举例说明。",
+      "latency_ms": 58.1,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是组合体？组合体的常见构形方式有哪几种？请分别举例说明。"
+    },
+    {
+      "index": 113,
+      "question": "比拟法在扭转问题中的应用？",
+      "latency_ms": 50.78,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "比拟法在扭转问题中的应用？"
+    },
+    {
+      "index": 114,
+      "question": "如何治理膨胀土路基冻胀？",
+      "latency_ms": 51.46,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何治理膨胀土路基冻胀？"
+    },
+    {
+      "index": 115,
+      "question": "复合材料风电叶片弯扭耦合颤振抑制？",
+      "latency_ms": 55.93,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "复合材料风电叶片弯扭耦合颤振抑制？"
+    },
+    {
+      "index": 116,
+      "question": "气门顶面形状有哪几种？",
+      "latency_ms": 51.45,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "气门顶面形状有哪几种？"
+    },
+    {
+      "index": 117,
+      "question": "冷风机在装配前有几个接口，分别做什么用？",
+      "latency_ms": 56.84,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "冷风机在装配前有几个接口，分别做什么用？"
+    },
+    {
+      "index": 118,
+      "question": "解释采动裂隙的“O”型圈理论？",
+      "latency_ms": 52.48,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释采动裂隙的“O”型圈理论？"
+    },
+    {
+      "index": 119,
+      "question": "含裂纹平板的应力强度因子？",
+      "latency_ms": 51.1,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "含裂纹平板的应力强度因子？"
+    },
+    {
+      "index": 120,
+      "question": "布氏硬度试验的压头类型及适用场景",
+      "latency_ms": 54.05,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "布氏硬度试验的压头类型及适用场景"
+    },
+    {
+      "index": 121,
+      "question": "如何计算超长结构温度应力？",
+      "latency_ms": 50.89,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算超长结构温度应力？"
+    },
+    {
+      "index": 122,
+      "question": "解释\"3DEC数值模拟\"在矿柱群稳定性中的应用？",
+      "latency_ms": 57.2,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"3DEC数值模拟\"在矿柱群稳定性中的应用？"
+    },
+    {
+      "index": 123,
+      "question": "16.振荡环节和二阶微分缓解的谐振频率和谐振峰值？",
+      "latency_ms": 58.2,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "16.振荡环节和二阶微分缓解的谐振频率和谐振峰值？"
+    },
+    {
+      "index": 124,
+      "question": "碳纤维复合材料层合板弯曲失效模式？",
+      "latency_ms": 54.94,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "碳纤维复合材料层合板弯曲失效模式？"
+    },
+    {
+      "index": 125,
+      "question": "同步辐射衍射测多晶材料多向应力？",
+      "latency_ms": 54.11,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "同步辐射衍射测多晶材料多向应力？"
+    },
+    {
+      "index": 126,
+      "question": "航天器太阳帆板展开机构弯曲疲劳分析？",
+      "latency_ms": 57.19,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "航天器太阳帆板展开机构弯曲疲劳分析？"
+    },
+    {
+      "index": 127,
+      "question": "疲劳设计方法",
+      "latency_ms": 47.9,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "疲劳设计方法"
+    },
+    {
+      "index": 128,
+      "question": "斜弯曲处理",
+      "latency_ms": 47.97,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "斜弯曲处理"
+    },
+    {
+      "index": 129,
+      "question": "9.对于一个确定的自动控制系统，它的微分方程、传递函数和结构图的形式都 将是唯一的。这种说法对么吗？为什么？",
+      "latency_ms": 63.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "9.对于一个确定的自动控制系统，它的微分方程、传递函数和结构图的形式都 将是唯一的。这种说法对么吗？为什么？"
+    },
+    {
+      "index": 130,
+      "question": "溴化锂吸收式制冷机需要哪几种工作介质？",
+      "latency_ms": 56.73,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "溴化锂吸收式制冷机需要哪几种工作介质？"
+    },
+    {
+      "index": 131,
+      "question": "自来水如何引入热泵型热水机？",
+      "latency_ms": 52.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "自来水如何引入热泵型热水机？"
+    },
+    {
+      "index": 132,
+      "question": "如何计算深基坑突涌风险？",
+      "latency_ms": 51.38,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算深基坑突涌风险？"
+    },
+    {
+      "index": 133,
+      "question": "如何修复腐蚀滨海混凝土梁？",
+      "latency_ms": 52.08,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何修复腐蚀滨海混凝土梁？"
+    },
+    {
+      "index": 134,
+      "question": "反馈校正所依据的基本原理是什么？",
+      "latency_ms": 54.38,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "反馈校正所依据的基本原理是什么？"
+    },
+    {
+      "index": 135,
+      "question": "泊松比的物理意义是什么？",
+      "latency_ms": 50.68,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "泊松比的物理意义是什么？"
+    },
+    {
+      "index": 136,
+      "question": "什么是泊松比？",
+      "latency_ms": 49.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是泊松比？"
+    },
+    {
+      "index": 137,
+      "question": "径流式涡轮机由哪几部分组成？",
+      "latency_ms": 53.86,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "径流式涡轮机由哪几部分组成？"
+    },
+    {
+      "index": 138,
+      "question": "红外热像法识别应力集中区域？",
+      "latency_ms": 53.29,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "红外热像法识别应力集中区域？"
+    },
+    {
+      "index": 139,
+      "question": "10.如何通过根轨迹判断系统性能？",
+      "latency_ms": 54.99,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "10.如何通过根轨迹判断系统性能？"
+    },
+    {
+      "index": 140,
+      "question": "沉浸式蒸发器是怎样换热的？",
+      "latency_ms": 51.91,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "沉浸式蒸发器是怎样换热的？"
+    },
+    {
+      "index": 141,
+      "question": "层合板刚度",
+      "latency_ms": 47.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "层合板刚度"
+    },
+    {
+      "index": 142,
+      "question": "如何分析采场顶板岩层断裂的力学成因？",
+      "latency_ms": 54.35,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何分析采场顶板岩层断裂的力学成因？"
+    },
+    {
+      "index": 143,
+      "question": "什么是压杆的“有效长度”？",
+      "latency_ms": 50.81,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是压杆的“有效长度”？"
+    },
+    {
+      "index": 144,
+      "question": "光纤光栅阵列测分布式变形？",
+      "latency_ms": 51.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "光纤光栅阵列测分布式变形？"
+    },
+    {
+      "index": 145,
+      "question": "如何计算爆破振动对巷道衬砌的冲击应力？",
+      "latency_ms": 55.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算爆破振动对巷道衬砌的冲击应力？"
+    },
+    {
+      "index": 146,
+      "question": "什么是配气相位？",
+      "latency_ms": 49.15,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是配气相位？"
+    },
+    {
+      "index": 147,
+      "question": "碳纳米管增强梁的等效刚度预测？",
+      "latency_ms": 53.76,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "碳纳米管增强梁的等效刚度预测？"
+    },
+    {
+      "index": 148,
+      "question": "金属玻璃剪切带形成原子尺度机理",
+      "latency_ms": 55.67,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "金属玻璃剪切带形成原子尺度机理"
+    },
+    {
+      "index": 149,
+      "question": "X射线断层扫描测内部损伤？",
+      "latency_ms": 52.5,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "X射线断层扫描测内部损伤？"
+    },
+    {
+      "index": 150,
+      "question": "在经典控制理论中用来分析系统性能的常用工程方法有那些分析内容有那些",
+      "latency_ms": 58.67,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在经典控制理论中用来分析系统性能的常用工程方法有那些分析内容有那些"
+    },
+    {
+      "index": 151,
+      "question": "微波雷达测梁动态挠度？",
+      "latency_ms": 52.05,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "微波雷达测梁动态挠度？"
+    },
+    {
+      "index": 152,
+      "question": "智能材料弯曲",
+      "latency_ms": 47.77,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "智能材料弯曲"
+    },
+    {
+      "index": 153,
+      "question": "如何用数字图像相关法测梁的变形？",
+      "latency_ms": 53.26,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何用数字图像相关法测梁的变形？"
+    },
+    {
+      "index": 154,
+      "question": "压杆的稳定性与什么因素有关？",
+      "latency_ms": 52.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆的稳定性与什么因素有关？"
+    },
+    {
+      "index": 155,
+      "question": "工字梁弯曲时如何计算腹板最大切应力？",
+      "latency_ms": 55.72,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "工字梁弯曲时如何计算腹板最大切应力？"
+    },
+    {
+      "index": 156,
+      "question": "如何计算带式输送机驱动滚筒的扭矩？",
+      "latency_ms": 53.65,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算带式输送机驱动滚筒的扭矩？"
+    },
+    {
+      "index": 157,
+      "question": "卧式壳管式冷凝器中的流动和传热结构有哪些？",
+      "latency_ms": 56.29,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "卧式壳管式冷凝器中的流动和传热结构有哪些？"
+    },
+    {
+      "index": 158,
+      "question": "预应力钢绞线压杆稳定性计算？",
+      "latency_ms": 52.74,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "预应力钢绞线压杆稳定性计算？"
+    },
+    {
+      "index": 159,
+      "question": "线弹性阶段",
+      "latency_ms": 47.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "线弹性阶段"
+    },
+    {
+      "index": 160,
+      "question": "如何治理膨胀土路基隆起？",
+      "latency_ms": 51.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何治理膨胀土路基隆起？"
+    },
+    {
+      "index": 161,
+      "question": "什么是应变集中？",
+      "latency_ms": 48.49,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应变集中？"
+    },
+    {
+      "index": 162,
+      "question": "什么是过量空气系数？",
+      "latency_ms": 50.36,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是过量空气系数？"
+    },
+    {
+      "index": 163,
+      "question": "空气源螺杆式冷热水机组中有哪些具体部件？",
+      "latency_ms": 58.19,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "空气源螺杆式冷热水机组中有哪些具体部件？"
+    },
+    {
+      "index": 164,
+      "question": "机油滤清器如何分类？",
+      "latency_ms": 50.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "机油滤清器如何分类？"
+    },
+    {
+      "index": 165,
+      "question": "4D打印形状记忆结构的主动变形机理？",
+      "latency_ms": 54.57,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "4D打印形状记忆结构的主动变形机理？"
+    },
+    {
+      "index": 166,
+      "question": "什么是转弯半径？什么是最小转弯半径？",
+      "latency_ms": 52.47,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是转弯半径？什么是最小转弯半径？"
+    },
+    {
+      "index": 167,
+      "question": "为什么可以利用系统开环零点和开环极点绘制闭环系统的根轨迹",
+      "latency_ms": 59.78,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为什么可以利用系统开环零点和开环极点绘制闭环系统的根轨迹"
+    },
+    {
+      "index": 168,
+      "question": "空间可展开天线肋条的弯曲稳定性？",
+      "latency_ms": 54.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "空间可展开天线肋条的弯曲稳定性？"
+    },
+    {
+      "index": 169,
+      "question": "楼板开洞对承载能力的影响分析？",
+      "latency_ms": 53.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "楼板开洞对承载能力的影响分析？"
+    },
+    {
+      "index": 170,
+      "question": "石油钻杆拉扭组合振动抑制？",
+      "latency_ms": 52.47,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "石油钻杆拉扭组合振动抑制？"
+    },
+    {
+      "index": 171,
+      "question": "解释\"安定定理\"在塑性设计中的意义",
+      "latency_ms": 53.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"安定定理\"在塑性设计中的意义"
+    },
+    {
+      "index": 172,
+      "question": "厚壁圆筒自增强处理残余应力计算",
+      "latency_ms": 54.12,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "厚壁圆筒自增强处理残余应力计算"
+    },
+    {
+      "index": 173,
+      "question": "摇臂是否为等臂杠杆？如果不是，长臂端在哪边？",
+      "latency_ms": 57.67,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "摇臂是否为等臂杠杆？如果不是，长臂端在哪边？"
+    },
+    {
+      "index": 174,
+      "question": "什么是应变硬化？",
+      "latency_ms": 48.97,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应变硬化？"
+    },
+    {
+      "index": 175,
+      "question": "解释纤维混凝土的桥联效应？",
+      "latency_ms": 50.81,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释纤维混凝土的桥联效应？"
+    },
+    {
+      "index": 176,
+      "question": "在土木工程中，如何选择建筑材料?",
+      "latency_ms": 54.64,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在土木工程中，如何选择建筑材料?"
+    },
+    {
+      "index": 177,
+      "question": "3D打印钛合金微桁架压杆优化？",
+      "latency_ms": 55.61,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "3D打印钛合金微桁架压杆优化？"
+    },
+    {
+      "index": 178,
+      "question": "如何修复锈蚀钢桥面板？",
+      "latency_ms": 51.99,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何修复锈蚀钢桥面板？"
+    },
+    {
+      "index": 179,
+      "question": "声发射技术监测结构损伤？",
+      "latency_ms": 53.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "声发射技术监测结构损伤？"
+    },
+    {
+      "index": 180,
+      "question": "为何连拱隧道需控制中墙位移？",
+      "latency_ms": 56.49,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何连拱隧道需控制中墙位移？"
+    },
+    {
+      "index": 181,
+      "question": "云纹干涉法测量面内位移原理",
+      "latency_ms": 58.87,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "云纹干涉法测量面内位移原理"
+    },
+    {
+      "index": 182,
+      "question": "如何计算轴向变形？",
+      "latency_ms": 53.26,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算轴向变形？"
+    },
+    {
+      "index": 183,
+      "question": "电测法测泊松比ν的实验步骤？",
+      "latency_ms": 54.71,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "电测法测泊松比ν的实验步骤？"
+    },
+    {
+      "index": 184,
+      "question": "直列六缸四冲程发动机的做功间隔角为多少？",
+      "latency_ms": 74.67,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "直列六缸四冲程发动机的做功间隔角为多少？"
+    },
+    {
+      "index": 185,
+      "question": "电控汽油喷射系统控制内容有哪些？",
+      "latency_ms": 54.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "电控汽油喷射系统控制内容有哪些？"
+    },
+    {
+      "index": 186,
+      "question": "什么是材料的比重?",
+      "latency_ms": 49.34,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是材料的比重?"
+    },
+    {
+      "index": 187,
+      "question": "绘制圆锥的三视图时，如何确定其底面和锥顶的投影位置？圆锥的俯视图为何要画中心点（锥顶投影）和底面圆周？",
+      "latency_ms": 64.5,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "绘制圆锥的三视图时，如何确定其底面和锥顶的投影位置？圆锥的俯视图为何要画中心点（锥顶投影）和底面圆周？"
+    },
+    {
+      "index": 188,
+      "question": "复合材料层合板渐进损伤模型？",
+      "latency_ms": 55.81,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "复合材料层合板渐进损伤模型？"
+    },
+    {
+      "index": 189,
+      "question": "三轴式变速器有何特点？应用场合如何？",
+      "latency_ms": 55.53,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "三轴式变速器有何特点？应用场合如何？"
+    },
+    {
+      "index": 190,
+      "question": "什么是执行器？",
+      "latency_ms": 48.65,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是执行器？"
+    },
+    {
+      "index": 191,
+      "question": "普通水冷冷水机组在安装时需要连接哪些管路？",
+      "latency_ms": 58.92,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "普通水冷冷水机组在安装时需要连接哪些管路？"
+    },
+    {
+      "index": 192,
+      "question": "如何治理露天矿边坡的圆弧滑动？",
+      "latency_ms": 53.92,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何治理露天矿边坡的圆弧滑动？"
+    },
+    {
+      "index": 193,
+      "question": "如何测试钢筋的弯曲性能？",
+      "latency_ms": 50.57,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测试钢筋的弯曲性能？"
+    },
+    {
+      "index": 194,
+      "question": "冷凝温度升高对制冷循环有哪些影响？",
+      "latency_ms": 55.7,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "冷凝温度升高对制冷循环有哪些影响？"
+    },
+    {
+      "index": 195,
+      "question": "什么是偶极子，在分析系统性能时候，什么情况可以忽略它的影响，什么时 候不能忽略它的影响",
+      "latency_ms": 64.45,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是偶极子，在分析系统性能时候，什么情况可以忽略它的影响，什么时 候不能忽略它的影响"
+    },
+    {
+      "index": 196,
+      "question": "数字孪生力学仿真流程",
+      "latency_ms": 50.52,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字孪生力学仿真流程"
+    },
+    {
+      "index": 197,
+      "question": "为何大跨屋盖需考虑风致振动？",
+      "latency_ms": 53.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何大跨屋盖需考虑风致振动？"
+    },
+    {
+      "index": 198,
+      "question": "板式换热器是怎样换热的？",
+      "latency_ms": 48.82,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "板式换热器是怎样换热的？"
+    },
+    {
+      "index": 199,
+      "question": "溴化锂吸收式制冷系统中的吸收器为什么需要被冷却？",
+      "latency_ms": 58.33,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "溴化锂吸收式制冷系统中的吸收器为什么需要被冷却？"
+    },
+    {
+      "index": 200,
+      "question": "干燥过滤器有什么作用？",
+      "latency_ms": 51.65,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "干燥过滤器有什么作用？"
+    },
+    {
+      "index": 201,
+      "question": "什么是排气持续角？",
+      "latency_ms": 49.91,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是排气持续角？"
+    },
+    {
+      "index": 202,
+      "question": "双螺杆式制冷压缩机的应用如何？",
+      "latency_ms": 51.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "双螺杆式制冷压缩机的应用如何？"
+    },
+    {
+      "index": 203,
+      "question": "什么是梁的转角方程？",
+      "latency_ms": 49.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是梁的转角方程？"
+    },
+    {
+      "index": 204,
+      "question": "如何修复古建筑木构件腐朽？",
+      "latency_ms": 51.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何修复古建筑木构件腐朽？"
+    },
+    {
+      "index": 205,
+      "question": "机床导轨的许用挠度如何设计？",
+      "latency_ms": 51.66,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "机床导轨的许用挠度如何设计？"
+    },
+    {
+      "index": 206,
+      "question": "解释滑移线场理论？",
+      "latency_ms": 49.79,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释滑移线场理论？"
+    },
+    {
+      "index": 207,
+      "question": "什么是岩石的Drucker-Prager准则？",
+      "latency_ms": 56.95,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是岩石的Drucker-Prager准则？"
+    },
+    {
+      "index": 208,
+      "question": "格构式柱设计",
+      "latency_ms": 47.39,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "格构式柱设计"
+    },
+    {
+      "index": 209,
+      "question": "24.非线性系统分析方法？",
+      "latency_ms": 51.01,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "24.非线性系统分析方法？"
+    },
+    {
+      "index": 210,
+      "question": "如何进行材料的抗拉试验?",
+      "latency_ms": 50.5,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何进行材料的抗拉试验?"
+    },
+    {
+      "index": 211,
+      "question": "数字图像相关法（DIC）测量应变的原理？",
+      "latency_ms": 55.36,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字图像相关法（DIC）测量应变的原理？"
+    },
+    {
+      "index": 212,
+      "question": "与劳斯判据相比，nyquist判据的主要优点有哪些（3个）",
+      "latency_ms": 59.28,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "与劳斯判据相比，nyquist判据的主要优点有哪些（3个）"
+    },
+    {
+      "index": 213,
+      "question": "蒸汽压缩式制冷系统中制冷剂节流前后的状态如何？",
+      "latency_ms": 56.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "蒸汽压缩式制冷系统中制冷剂节流前后的状态如何？"
+    },
+    {
+      "index": 214,
+      "question": "现实中，真实的系统都具有一定程度的非线性特性和时变特性，但是理论分析和设计经常采用线性时不变模型的原因。",
+      "latency_ms": 60.8,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "现实中，真实的系统都具有一定程度的非线性特性和时变特性，但是理论分析和设计经常采用线性时不变模型的原因。"
+    },
+    {
+      "index": 215,
+      "question": "如何测试土体三轴渗透系数？",
+      "latency_ms": 52.05,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测试土体三轴渗透系数？"
+    },
+    {
+      "index": 216,
+      "question": "熔断器（保险丝）的作用是什么？",
+      "latency_ms": 55.56,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "熔断器（保险丝）的作用是什么？"
+    },
+    {
+      "index": 217,
+      "question": "压杆屈曲过程的数字孪生预测？",
+      "latency_ms": 56.49,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆屈曲过程的数字孪生预测？"
+    },
+    {
+      "index": 218,
+      "question": "磁悬浮轴承转子弯扭振动抑制？",
+      "latency_ms": 58.48,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "磁悬浮轴承转子弯扭振动抑制？"
+    },
+    {
+      "index": 219,
+      "question": "排气消声器有哪四种基本结构形式？",
+      "latency_ms": 60.46,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "排气消声器有哪四种基本结构形式？"
+    },
+    {
+      "index": 220,
+      "question": "磁致伸缩传感器监测梁应力？",
+      "latency_ms": 53.57,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "磁致伸缩传感器监测梁应力？"
+    },
+    {
+      "index": 221,
+      "question": "配气机构按每缸气门数不同如何分类？",
+      "latency_ms": 55.19,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "配气机构按每缸气门数不同如何分类？"
+    },
+    {
+      "index": 222,
+      "question": "激光位移传感器测量梁挠度的步骤？",
+      "latency_ms": 53.94,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "激光位移传感器测量梁挠度的步骤？"
+    },
+    {
+      "index": 223,
+      "question": "如何计算索膜结构形态找形？",
+      "latency_ms": 54.53,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算索膜结构形态找形？"
+    },
+    {
+      "index": 224,
+      "question": "如何用万用表测量电阻？",
+      "latency_ms": 51.97,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何用万用表测量电阻？"
+    },
+    {
+      "index": 225,
+      "question": "实心圆轴扭转时的最大切应力计算公式是什么？",
+      "latency_ms": 57.39,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "实心圆轴扭转时的最大切应力计算公式是什么？"
+    },
+    {
+      "index": 226,
+      "question": "有限元法在材料力学中的应用步骤？",
+      "latency_ms": 53.87,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "有限元法在材料力学中的应用步骤？"
+    },
+    {
+      "index": 227,
+      "question": "如何计算轴的弯扭组合变形应力？",
+      "latency_ms": 52.4,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算轴的弯扭组合变形应力？"
+    },
+    {
+      "index": 228,
+      "question": "为什么说幅角条件是绘制根轨迹的充分必要条件",
+      "latency_ms": 56.71,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为什么说幅角条件是绘制根轨迹的充分必要条件"
+    },
+    {
+      "index": 229,
+      "question": "压杆稳定性的量子力学类比？",
+      "latency_ms": 51.2,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆稳定性的量子力学类比？"
+    },
+    {
+      "index": 230,
+      "question": "热继电器的作用是什么？",
+      "latency_ms": 50.21,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "热继电器的作用是什么？"
+    },
+    {
+      "index": 231,
+      "question": "什么是破坏应力?",
+      "latency_ms": 49.06,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是破坏应力?"
+    },
+    {
+      "index": 232,
+      "question": "制冷剂在制冷压缩机压缩前后的状态如何？",
+      "latency_ms": 53.77,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "制冷剂在制冷压缩机压缩前后的状态如何？"
+    },
+    {
+      "index": 233,
+      "question": "新能源汽车电池箱抗冲击设计",
+      "latency_ms": 68.11,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "新能源汽车电池箱抗冲击设计"
+    },
+    {
+      "index": 234,
+      "question": "在使用阶梯剖视图表达机件时，剖切平面的转折处为何不能与机件的轮廓线重合？若重合会导致什么问题？",
+      "latency_ms": 63.09,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在使用阶梯剖视图表达机件时，剖切平面的转折处为何不能与机件的轮廓线重合？若重合会导致什么问题？"
+    },
+    {
+      "index": 235,
+      "question": "解释泊松效应对采矿支护结构的影响？",
+      "latency_ms": 55.23,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释泊松效应对采矿支护结构的影响？"
+    },
+    {
+      "index": 236,
+      "question": "如何测定锚杆托盘的抗冲切强度？",
+      "latency_ms": 53.98,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定锚杆托盘的抗冲切强度？"
+    },
+    {
+      "index": 237,
+      "question": "5.系统稳定的条件？稳定性与什么有关？",
+      "latency_ms": 55.0,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "5.系统稳定的条件？稳定性与什么有关？"
+    },
+    {
+      "index": 238,
+      "question": "组合变形中截面核心的定义是什么？",
+      "latency_ms": 53.95,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "组合变形中截面核心的定义是什么？"
+    },
+    {
+      "index": 239,
+      "question": "如何测定沥青老化性能？",
+      "latency_ms": 50.43,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定沥青老化性能？"
+    },
+    {
+      "index": 240,
+      "question": "如何计算拉伸应力？",
+      "latency_ms": 49.18,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算拉伸应力？"
+    },
+    {
+      "index": 241,
+      "question": "套管式冷凝器中的制冷剂和冷却水怎样流动和换热？",
+      "latency_ms": 56.61,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "套管式冷凝器中的制冷剂和冷却水怎样流动和换热？"
+    },
+    {
+      "index": 242,
+      "question": "描述函数分析法的实质是什么？试描述函数的概念及其求取方法。",
+      "latency_ms": 58.37,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "描述函数分析法的实质是什么？试描述函数的概念及其求取方法。"
+    },
+    {
+      "index": 243,
+      "question": "机床丝杠拉压扭组合变形校核？",
+      "latency_ms": 54.17,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "机床丝杠拉压扭组合变形校核？"
+    },
+    {
+      "index": 244,
+      "question": "什么是三相交流电路？",
+      "latency_ms": 49.98,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是三相交流电路？"
+    },
+    {
+      "index": 245,
+      "question": "应变定义是什么",
+      "latency_ms": 48.71,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "应变定义是什么"
+    },
+    {
+      "index": 246,
+      "question": "如何治理井下电机车轨道变形？",
+      "latency_ms": 53.59,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何治理井下电机车轨道变形？"
+    },
+    {
+      "index": 247,
+      "question": "材料力学实验中应变片的原理是什么？",
+      "latency_ms": 54.16,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "材料力学实验中应变片的原理是什么？"
+    },
+    {
+      "index": 248,
+      "question": "梯度密度泡沫压杆的等效参数？",
+      "latency_ms": 50.96,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "梯度密度泡沫压杆的等效参数？"
+    },
+    {
+      "index": 249,
+      "question": "负刚度超材料压弯组合吸能特性？",
+      "latency_ms": 52.73,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "负刚度超材料压弯组合吸能特性？"
+    },
+    {
+      "index": 250,
+      "question": "梯度纳米结构金属强化机理",
+      "latency_ms": 51.53,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "梯度纳米结构金属强化机理"
+    },
+    {
+      "index": 251,
+      "question": "什么是应力强度因子？",
+      "latency_ms": 49.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应力强度因子？"
+    },
+    {
+      "index": 252,
+      "question": "桥梁拱肋压弯组合稳定性分析？",
+      "latency_ms": 52.22,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "桥梁拱肋压弯组合稳定性分析？"
+    },
+    {
+      "index": 253,
+      "question": "比较铸铁与钢材的弯曲破坏特征？",
+      "latency_ms": 52.44,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "比较铸铁与钢材的弯曲破坏特征？"
+    },
+    {
+      "index": 254,
+      "question": "溴化锂吸收式制冷机中溴化锂水溶液是否在蒸发器和冷凝器中流动？",
+      "latency_ms": 60.33,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "溴化锂吸收式制冷机中溴化锂水溶液是否在蒸发器和冷凝器中流动？"
+    },
+    {
+      "index": 255,
+      "question": "如何测试混凝土碳化深度？",
+      "latency_ms": 51.75,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测试混凝土碳化深度？"
+    },
+    {
+      "index": 256,
+      "question": "对称三相电压有哪三个特征？",
+      "latency_ms": 53.09,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "对称三相电压有哪三个特征？"
+    },
+    {
+      "index": 257,
+      "question": "请简述复频域条件下的传递函数的特点",
+      "latency_ms": 56.1,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "请简述复频域条件下的传递函数的特点"
+    },
+    {
+      "index": 258,
+      "question": "4D打印液晶弹性体压杆的光控变形？",
+      "latency_ms": 55.35,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "4D打印液晶弹性体压杆的光控变形？"
+    },
+    {
+      "index": 259,
+      "question": "组合轴（钢套铜芯）的等效剪切模量？",
+      "latency_ms": 54.6,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "组合轴（钢套铜芯）的等效剪切模量？"
+    },
+    {
+      "index": 260,
+      "question": "平面应力转换公式",
+      "latency_ms": 49.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "平面应力转换公式"
+    },
+    {
+      "index": 261,
+      "question": "已知一个轴承座（组合体）的轴测图，绘制它的三视图，并标注尺寸。",
+      "latency_ms": 60.57,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "已知一个轴承座（组合体）的轴测图，绘制它的三视图，并标注尺寸。"
+    },
+    {
+      "index": 262,
+      "question": "断裂韧性的测定方法？",
+      "latency_ms": 48.76,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "断裂韧性的测定方法？"
+    },
+    {
+      "index": 263,
+      "question": "深海机器人钛合金压杆优化？",
+      "latency_ms": 51.59,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "深海机器人钛合金压杆优化？"
+    },
+    {
+      "index": 264,
+      "question": "压杆全场应变的数字激光散斑？",
+      "latency_ms": 52.62,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆全场应变的数字激光散斑？"
+    },
+    {
+      "index": 265,
+      "question": "在工程中如何使用复合材料?",
+      "latency_ms": 55.23,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "在工程中如何使用复合材料?"
+    },
+    {
+      "index": 266,
+      "question": "什么是应变计的原理?",
+      "latency_ms": 53.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应变计的原理?"
+    },
+    {
+      "index": 267,
+      "question": "什么是应变?",
+      "latency_ms": 47.98,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应变?"
+    },
+    {
+      "index": 268,
+      "question": "碳纳米管增强铝基复合梁的弯曲模型？",
+      "latency_ms": 55.04,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "碳纳米管增强铝基复合梁的弯曲模型？"
+    },
+    {
+      "index": 269,
+      "question": "离散系统的稳定性与什么因素有关？",
+      "latency_ms": 54.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "离散系统的稳定性与什么因素有关？"
+    },
+    {
+      "index": 270,
+      "question": "8.系统的稳定误差与哪些因素有关？",
+      "latency_ms": 54.04,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "8.系统的稳定误差与哪些因素有关？"
+    },
+    {
+      "index": 271,
+      "question": "光弹性法测定主应力差原理？",
+      "latency_ms": 51.66,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "光弹性法测定主应力差原理？"
+    },
+    {
+      "index": 272,
+      "question": "如何评估材料的强度?",
+      "latency_ms": 50.32,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何评估材料的强度?"
+    },
+    {
+      "index": 273,
+      "question": "解释“应力壳”理论在采场中的应用？",
+      "latency_ms": 54.55,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释“应力壳”理论在采场中的应用？"
+    },
+    {
+      "index": 274,
+      "question": "试说明系统局部反馈对系统产生哪些主要影响",
+      "latency_ms": 59.41,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "试说明系统局部反馈对系统产生哪些主要影响"
+    },
+    {
+      "index": 275,
+      "question": "解释煤层注水软化机理？",
+      "latency_ms": 53.27,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释煤层注水软化机理？"
+    },
+    {
+      "index": 276,
+      "question": "解释\"强壳-梯度核\"充填体？",
+      "latency_ms": 52.88,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "解释\"强壳-梯度核\"充填体？"
+    },
+    {
+      "index": 277,
+      "question": "压杆的\"拓扑保护\"稳定性机制？",
+      "latency_ms": 52.72,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆的\"拓扑保护\"稳定性机制？"
+    },
+    {
+      "index": 278,
+      "question": "柴油机排气净化装置有哪些？",
+      "latency_ms": 53.07,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "柴油机排气净化装置有哪些？"
+    },
+    {
+      "index": 279,
+      "question": "汽车板簧的等强度设计原理？",
+      "latency_ms": 51.43,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "汽车板簧的等强度设计原理？"
+    },
+    {
+      "index": 280,
+      "question": "生物材料粘弹性本构模型？",
+      "latency_ms": 52.62,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "生物材料粘弹性本构模型？"
+    },
+    {
+      "index": 281,
+      "question": "什么是三相电源的相序？就三相异步电动机本身而言，有无相序？",
+      "latency_ms": 60.09,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是三相电源的相序？就三相异步电动机本身而言，有无相序？"
+    },
+    {
+      "index": 282,
+      "question": "如何减小应力集中？",
+      "latency_ms": 49.74,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何减小应力集中？"
+    },
+    {
+      "index": 283,
+      "question": "什么是应力幅值？",
+      "latency_ms": 49.24,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应力幅值？"
+    },
+    {
+      "index": 284,
+      "question": "如何计算简支梁跨中挠度？",
+      "latency_ms": 52.04,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算简支梁跨中挠度？"
+    },
+    {
+      "index": 285,
+      "question": "气缸盖按结构形式不同如何分类？",
+      "latency_ms": 54.23,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "气缸盖按结构形式不同如何分类？"
+    },
+    {
+      "index": 286,
+      "question": "如何计算材料的抗弯刚度?",
+      "latency_ms": 51.02,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算材料的抗弯刚度?"
+    },
+    {
+      "index": 287,
+      "question": "如何计算矿井防水墙的抗爆能力？",
+      "latency_ms": 52.58,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算矿井防水墙的抗爆能力？"
+    },
+    {
+      "index": 288,
+      "question": "超材料多尺度弯扭耦合力学模型？",
+      "latency_ms": 54.12,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "超材料多尺度弯扭耦合力学模型？"
+    },
+    {
+      "index": 289,
+      "question": "混凝土梁按第二强度理论设计？",
+      "latency_ms": 59.01,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "混凝土梁按第二强度理论设计？"
+    },
+    {
+      "index": 290,
+      "question": "超材料负泊松比结构力学模型？",
+      "latency_ms": 54.4,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "超材料负泊松比结构力学模型？"
+    },
+    {
+      "index": 291,
+      "question": "如何测定弹性模量？",
+      "latency_ms": 57.52,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何测定弹性模量？"
+    },
+    {
+      "index": 292,
+      "question": "临界应力总图的三段区域划分？",
+      "latency_ms": 56.3,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "临界应力总图的三段区域划分？"
+    },
+    {
+      "index": 293,
+      "question": "功能梯度梁的弯曲解析解推导？",
+      "latency_ms": 53.94,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "功能梯度梁的弯曲解析解推导？"
+    },
+    {
+      "index": 294,
+      "question": "4D打印形状记忆聚合物梁？",
+      "latency_ms": 56.08,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "4D打印形状记忆聚合物梁？"
+    },
+    {
+      "index": 295,
+      "question": "6.二阶系统是一个振荡环节，这种说法对么？为什么？",
+      "latency_ms": 61.57,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "6.二阶系统是一个振荡环节，这种说法对么？为什么？"
+    },
+    {
+      "index": 296,
+      "question": "数字体积相关(DVC)变形测量",
+      "latency_ms": 55.41,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "数字体积相关(DVC)变形测量"
+    },
+    {
+      "index": 297,
+      "question": "古典控制论和现代控制理论的区别",
+      "latency_ms": 52.51,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "古典控制论和现代控制理论的区别"
+    },
+    {
+      "index": 298,
+      "question": "压杆微裂纹的太赫兹波成像？",
+      "latency_ms": 53.15,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆微裂纹的太赫兹波成像？"
+    },
+    {
+      "index": 299,
+      "question": "如何改变旋转磁场的转向？",
+      "latency_ms": 52.14,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何改变旋转磁场的转向？"
+    },
+    {
+      "index": 300,
+      "question": "什么是应力状态？",
+      "latency_ms": 49.47,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是应力状态？"
+    }
+  ]
+}

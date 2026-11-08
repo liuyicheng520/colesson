@@ -1,0 +1,523 @@
+{
+  "summary": {
+    "sourceCount": 7,
+    "coursewareCount": 81,
+    "validatedSampleCount": 81,
+    "totalBytes": 546134350,
+    "categoryDistribution": {
+      "工科": 81
+    },
+    "specialtyDistribution": {
+      "材料类": 13,
+      "汽车类": 14,
+      "控制类": 41,
+      "电气类": 8,
+      "计算机类": 5
+    },
+    "suffixDistribution": {
+      ".ppt": 18,
+      ".pptx": 63
+    },
+    "expansionReady": true
+  },
+  "sources": [
+    {
+      "label": "材料力学智慧课程（15期 2025春夏）",
+      "category": "工科",
+      "specialty": "材料类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/材料力学智慧课程（15期 2025春夏）-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 13,
+      "totalBytes": 146220464,
+      "files": [
+        {
+          "name": "M01绪论-1.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 8595456
+        },
+        {
+          "name": "材料力学混合式教学（第二期）.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 3938816
+        },
+        {
+          "name": "M02-1轴向拉伸和压缩-强度.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 17021952
+        },
+        {
+          "name": "弯曲正应力1.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 4658864
+        },
+        {
+          "name": "弯曲正应力4.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3677072
+        },
+        {
+          "name": "弯曲正应力2.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3169508
+        },
+        {
+          "name": "金材-第二章 1.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 367081
+        },
+        {
+          "name": "M01绪论.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 14606848
+        },
+        {
+          "name": "扭转切应力 - 2016.12.20.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 930430
+        },
+        {
+          "name": "第二章 拉伸、压缩1 （强度刚度）.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 6240293
+        },
+        {
+          "name": "第二章 轴向拉伸和压缩-1.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 27627008
+        },
+        {
+          "name": "第一章 绪论及基本概念.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 38818816
+        },
+        {
+          "name": "第九章 压杆稳定.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 16568320
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "汽车构造 2025",
+      "category": "工科",
+      "specialty": "汽车类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/汽车构造 2025-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 14,
+      "totalBytes": 181327700,
+      "files": [
+        {
+          "name": "01总论.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 4437822
+        },
+        {
+          "name": "02第一章 发动机的基本知识.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 26582231
+        },
+        {
+          "name": "03第二章 曲柄连杆机构.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 8564420
+        },
+        {
+          "name": "04第三章 配气机构.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 13023479
+        },
+        {
+          "name": "05第四章 电控汽油喷射式燃料供给系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 16471804
+        },
+        {
+          "name": "06第五章 柴油机燃料供给系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 12371945
+        },
+        {
+          "name": "08第七章 发动机润滑系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 5856475
+        },
+        {
+          "name": "09第八章 发动机冷却系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 5775397
+        },
+        {
+          "name": "11第十章 新能源汽车.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 11364829
+        },
+        {
+          "name": "12第十一章 汽车传动系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 26165747
+        },
+        {
+          "name": "13第十二章 汽车行驶系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 21200284
+        },
+        {
+          "name": "14第十三章 汽车转向系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 8760588
+        },
+        {
+          "name": "15第十四章 汽车制动系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 12260079
+        },
+        {
+          "name": "16第十五章 轿车车身.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 8492600
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "自动控制原理",
+      "category": "工科",
+      "specialty": "控制类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/自动控制原理-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 41,
+      "totalBytes": 147671759,
+      "files": [
+        {
+          "name": "第一章 绪论.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 6707200
+        },
+        {
+          "name": "第五章 频域响应法.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 3080192
+        },
+        {
+          "name": "第四章 根轨迹法.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 3138048
+        },
+        {
+          "name": "第六章 控制系统的校正.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 4047360
+        },
+        {
+          "name": "第二章 控制系统的数学模型.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 8259072
+        },
+        {
+          "name": "第三章 线性系统的时域分析法(1).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1848496
+        },
+        {
+          "name": "第一章 电气（1）.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 5509055
+        },
+        {
+          "name": "第一章 应用物理学.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 5509048
+        },
+        {
+          "name": "自动控制原理第五章.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2971136
+        },
+        {
+          "name": "自动控制原理第五章(1).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2983439
+        },
+        {
+          "name": "自动控制原理第五章(2).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2976963
+        },
+        {
+          "name": "自动控制原理第五章(3).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1503692
+        },
+        {
+          "name": "第一章 绪论(4).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 5593730
+        },
+        {
+          "name": "第三章 线性系统的时域分析法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1849440
+        },
+        {
+          "name": "第三章 线性系统的时域分析法(2).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1848002
+        },
+        {
+          "name": "自动控制原理习题课.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1768851
+        },
+        {
+          "name": "自动控制原理第六章.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 580608
+        },
+        {
+          "name": "自动控制原理第六章(1).ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 613888
+        },
+        {
+          "name": "2. 控制系统的数学模型.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 7526770
+        },
+        {
+          "name": "1. 绪论.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3924436
+        },
+        {
+          "name": "5. 频域响应法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3968723
+        },
+        {
+          "name": "6.控制系统的校正.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3136101
+        },
+        {
+          "name": "自动控制原理第六章(2).ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 2335232
+        },
+        {
+          "name": "3. 线性系统的时域分析法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2270648
+        },
+        {
+          "name": "4. 根轨迹法.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 3273728
+        },
+        {
+          "name": "1. 绪论(1).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3311187
+        },
+        {
+          "name": "《自动控制原理》说课20220226.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 177962
+        },
+        {
+          "name": "第四章 根轨迹法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 993954
+        },
+        {
+          "name": "自动控制原理习题课(1).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1706150
+        },
+        {
+          "name": "1. 绪论(2).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 4575852
+        },
+        {
+          "name": "1. 绪论(5).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3961998
+        },
+        {
+          "name": "自动化专业导论-5.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 12085625
+        },
+        {
+          "name": "自动化专业导论-2.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 12085625
+        },
+        {
+          "name": "根轨迹法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 653652
+        },
+        {
+          "name": "根轨迹法1.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 654196
+        },
+        {
+          "name": "自动控制原理习题课(2).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1935979
+        },
+        {
+          "name": "5_第1章(自控).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 11048573
+        },
+        {
+          "name": "第2章(自控).pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 4288761
+        },
+        {
+          "name": "第一章（1）信号与系统的概念.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 380739
+        },
+        {
+          "name": "第一章（3）系统的描述.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 1031680
+        },
+        {
+          "name": "第一章（2）信号的运算.ppt",
+          "suffix": ".ppt",
+          "sizeBytes": 1555968
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "制冷原理与设备、建筑冷热源",
+      "category": "工科",
+      "specialty": "能源与制冷类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/制冷原理与设备、建筑冷热源-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 0,
+      "totalBytes": 0,
+      "files": [],
+      "errors": [
+        "未发现 PPT/PPTX 文件，检测到其他文件类型：.pdf x12"
+      ]
+    },
+    {
+      "label": "画法几何与机械制图",
+      "category": "工科",
+      "specialty": "机械制图类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/画法几何与机械制图-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 0,
+      "totalBytes": 0,
+      "files": [],
+      "errors": [
+        "未发现 PPT/PPTX 文件，检测到其他文件类型：.pdf x1"
+      ]
+    },
+    {
+      "label": "电工技术I",
+      "category": "工科",
+      "specialty": "电气类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/courseware_downloads_20260303/电工技术I-课件20260303.zip",
+      "exists": true,
+      "coursewareCount": 8,
+      "totalBytes": 63148196,
+      "files": [
+        {
+          "name": "10继电接触器控制系统.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3687470
+        },
+        {
+          "name": "7交流电动机.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 44463320
+        },
+        {
+          "name": "6变压器_xhm.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2600277
+        },
+        {
+          "name": "5三相交流电.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1518632
+        },
+        {
+          "name": "4正弦交流电路.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 4566242
+        },
+        {
+          "name": "2电路的分析方法.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2047393
+        },
+        {
+          "name": "1 电路概念定律.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3182427
+        },
+        {
+          "name": "12安全用电.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1082435
+        }
+      ],
+      "errors": []
+    },
+    {
+      "label": "项目内补充PPT样本（计算机类）",
+      "category": "工科",
+      "specialty": "计算机类",
+      "sourceType": "zip",
+      "path": "/Users/by/Documents/ai-teacher/reports/samples/project_local_ppts.zip",
+      "exists": true,
+      "coursewareCount": 5,
+      "totalBytes": 7766231,
+      "files": [
+        {
+          "name": "1_第4章_类与对象.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 518329
+        },
+        {
+          "name": "第4周 查询_副本.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 2589814
+        },
+        {
+          "name": "ch2 html基础_副本.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 163464
+        },
+        {
+          "name": "6.1 触发器_副本.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 3276360
+        },
+        {
+          "name": "ch1_副本.pptx",
+          "suffix": ".pptx",
+          "sizeBytes": 1218264
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

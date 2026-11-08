@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学生学习 - 智课共生</title>  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    :root {
+      --brand: #0F7B72;
+      --brand-deep: #0a625b;
+      --brand-light: #e8f4f2;
+      --ink: #1a2e2c;
+      --muted: #666666;
+      --line: rgba(15, 123, 114, 0.12);
+      --panel: #ffffff;
+      --bg: #eef3f2;
+      --radius: 8px;
+      --pad: 20px;
+      --gap: 24px;
+      --shadow: 0 2px 12px rgba(15, 123, 114, 0.08);
+    }
+
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .main {
+      padding: var(--pad);
+      display: grid;
+      gap: var(--gap);
+      min-width: 0;
+      max-width: none;
+    }
+
+    /* ── Header ── */
+    .student-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .student-header-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .student-header-text strong {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    /* ── Alert bar ── */
+    .alert-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      background: #fff8e6;
+      border: 1px solid #f0d080;
+      color: #8a6d1a;
+      font-size: 13px;
+    }
+
+    .alert-bar[hidden] { display: none !important; }
+
+    .alert-bar-text { flex: 1; min-width: 0; }
+
+    /* ── Workbench grid ── */
+    .workbench {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: var(--gap);
+      align-items: start;
+      min-width: 0;
+    }
+
+    /* ── Course rail ── */
+    .course-rail {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      padding: var(--pad);
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      max-height: calc(100vh - 120px);
+      overflow: hidden;
+    }
+
+    .course-rail-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .course-rail-tools {
+      display: grid;
+      gap: 8px;
+    }
+
+    .course-rail-tools input,
+    .course-rail-tools select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fafcfc;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .course-rail-tools input:focus,
+    .course-rail-tools select:focus {
+      border-color: var(--brand);
+    }
+
+    #publishedList {
+      display: grid;
+      gap: 8px;
+      overflow-y: auto;
+      max-height: calc(100vh - 280px);
+    }
+
+    .lesson-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafcfc;
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+
+    .lesson-card:hover {
+      border-color: rgba(15, 123, 114, 0.35);
+      box-shadow: var(--shadow);
+      background: #fff;
+    }
+
+    .lesson-card.active {
+      border-color: var(--brand);
+      background: var(--brand-light);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-card.failed {
+      border-color: #e8b4b4;
+      background: #fff5f5;
+    }
+
+    .lesson-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .lesson-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .status-pill {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .status-pill.ok {
+      background: var(--brand-light);
+      color: var(--brand);
+    }
+
+    .status-pill.error {
+      background: #fde8e8;
+      color: #c0392b;
+    }
+
+    .status-pill.idle {
+      background: #f0f0f0;
+      color: var(--muted);
+    }
+
+    .lesson-card-date {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .mini-progress {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(15, 123, 114, 0.12);
+      overflow: hidden;
+    }
+
+    .mini-progress-bar {
+      height: 100%;
+      background: var(--brand);
+      border-radius: inherit;
+      width: 0%;
+      transition: width .3s;
+    }
+
+    /* ── Workbench main ── */
+    .workbench-main {
+      display: grid;
+      gap: var(--gap);
+      min-width: 0;
+    }
+
+    #lessonEmpty,
+    #lessonWorkbench {
+      display: grid;
+      gap: var(--gap);
+    }
+
+    #lessonEmpty[hidden],
+    #lessonWorkbench[hidden] { display: none !important; }
+
+    .empty-panel {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px dashed rgba(15, 123, 114, 0.25);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty-panel strong {
+      display: block;
+      font-size: 16px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    /* ── Overview card ── */
+    .overview-card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      padding: var(--pad);
+      display: grid;
+      gap: 14px;
+    }
+
+    .overview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .overview-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .overview-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .overview-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .overview-progress-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .overview-progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .overview-progress-head strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(15, 123, 114, 0.12);
+      overflow: hidden;
+    }
+
+    .progress-value {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), #2db5a8);
+      border-radius: inherit;
+      width: 0%;
+      transition: width .35s;
+    }
+
+    .overview-node {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Content row ── */
+    .content-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: var(--gap);
+      align-items: start;
+      position: relative;
+    }
+
+    .content-row.assist-collapsed {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .content-main {
+      display: grid;
+      gap: var(--gap);
+      min-width: 0;
+    }
+
+    .content-card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      padding: var(--pad);
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* ── Flow timeline ── */
+    .flow-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .flow-track {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .flow-node {
+      min-width: 148px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .flow-node.current {
+      border-color: rgba(15, 123, 114, 0.45);
+      background: var(--brand-light);
+    }
+
+    .flow-node.done { background: #f8fafa; opacity: .88; }
+    .flow-node.paused { border-color: #f0c28a; background: #fff8ef; }
+    .flow-node.supplement { border-color: #9ec9e8; background: #f3f9ff; }
+    .flow-node.upcoming { opacity: .9; }
+
+    .flow-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--brand-light);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .flow-node.current .flow-index {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .flow-node.paused .flow-index { background: #e8a54b; color: #fff; }
+    .flow-node.supplement .flow-index { background: #3b82f6; color: #fff; }
+
+    .flow-node-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .flow-node-meta {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .flow-state {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: var(--brand-light);
+      color: var(--brand-deep);
+    }
+
+    .flow-node.paused .flow-state { border-color: #f0c28a; background: #fff3df; color: #9a6513; }
+    .flow-node.supplement .flow-state { border-color: #c7ddff; background: #eef6ff; color: #275ea8; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--brand-light);
+      color: var(--brand-deep);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+    }
+
+    /* ── Pagination ── */
+    .section-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--brand-deep);
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .15s;
+    }
+
+    .page-btn:hover:not(:disabled) { background: var(--brand-light); }
+    .page-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .page-btn.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .page-ellipsis { font-size: 12px; color: var(--muted); padding: 0 2px; }
+
+    .page-jump {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .page-jump input {
+      width: 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 4px 6px;
+      font-size: 12px;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    #pageNavHint {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Script box ── */
+    .script-box {
+      max-height: 420px;
+      overflow-y: auto;
+      line-height: 1.7;
+      color: var(--ink);
+      padding: 16px;
+      background: #fafcfc;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--brand);
+      font-size: 14px;
+    }
+
+    .script-box h3,
+    .script-box h4 {
+      margin: 0 0 8px;
+      color: var(--brand-deep);
+      font-weight: 700;
+    }
+
+    .script-box h3 { font-size: 15px; }
+    .script-box h4 { font-size: 14px; }
+
+    .script-box p { margin: 0 0 10px; }
+
+    .script-media-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--brand-light);
+      color: var(--brand);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 2px 0;
+    }
+
+    /* ── Assist panel ── */
+    #assistPanel {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      padding: var(--pad);
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    #assistPanel[hidden] { display: none !important; }
+
+    .assist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .assist-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    #assistCollapseBtn {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fafcfc;
+      color: var(--muted);
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    #assistExpandTab {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      border: 1px solid var(--line);
+      border-right: none;
+      border-radius: var(--radius) 0 0 var(--radius);
+      background: var(--panel);
+      color: var(--brand);
+      padding: 12px 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      font-family: inherit;
+      z-index: 2;
+    }
+
+    #assistExpandTab.show { display: block; }
+
+    .question-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    @media (min-width: 720px) {
+      .question-row {
+        grid-template-columns: 1fr auto auto auto;
+      }
+    }
+
+    .question-row input {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .question-row input:focus { border-color: var(--brand); }
+
+    .qa-log {
+      display: grid;
+      gap: 10px;
+      max-height: 280px;
+      overflow: auto;
+    }
+
+    .qa-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fafcfc;
+      display: grid;
+      gap: 6px;
+    }
+
+    .qa-item .md-body {
+      max-width: 100%;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .qa-item .md-body p { margin: 0 0 .55em; }
+    .qa-item .md-body .md-term { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .qa-item .md-body .md-desc { color: var(--muted); line-height: 1.7; margin: 0 0 .35em; }
+
+    .qa-role {
+      font-size: 12px;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .helper-note {
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      background: var(--brand-light);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .analytics-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--brand-light);
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+      text-align: center;
+    }
+
+    .analytics-card-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .analytics-card strong {
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .analytics-card span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Computer / Lab panels ── */
+    .computer-learning-panel,
+    .lab-practice-panel {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f7faff;
+      padding: 12px;
+      gap: 10px;
+    }
+
+    .computer-learning-panel.show,
+    .lab-practice-panel.show { display: grid; }
+
+    .lab-task-tabs,
+    .computer-resource-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .computer-resource-tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--brand-deep);
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    .computer-resource-tab.active {
+      color: #fff;
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .lab-code-editor {
+      width: 100%;
+      min-height: 200px;
+      resize: vertical;
+      border: 1px solid #263b58;
+      border-radius: var(--radius);
+      background: #172234;
+      color: #dce7f8;
+      padding: 12px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      outline: none;
+    }
+
+    .lab-result {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 11px;
+      white-space: pre-wrap;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .computer-resource-preview {
+      max-height: 200px;
+      overflow: auto;
+      border: 1px solid #e3e9f5;
+      border-radius: var(--radius);
+      background: #172234;
+      color: #dce7f8;
+      padding: 12px;
+      white-space: pre-wrap;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .computer-question-mode {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .computer-question-mode.show { display: flex; }
+
+    .computer-question-mode select {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      padding: 6px 10px;
+      font-family: inherit;
+    }
+
+    .detail-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .empty-state {
+      border: 1px dashed rgba(15, 123, 114, 0.25);
+      border-radius: var(--radius);
+      background: #fafcfc;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .main .btn:not(.ghost) {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+
+    .main .btn:not(.ghost):hover { filter: brightness(1.06); }
+
+    .btn-primary-cta {
+      background: var(--brand) !important;
+      border-color: var(--brand) !important;
+      color: #fff !important;
+      font-weight: 700;
+      padding: 10px 18px;
+      box-shadow: 0 6px 16px rgba(15, 123, 114, 0.28);
+    }
+
+    .main .btn.ghost {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--brand-deep);
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .sr-shim {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1200px) {
+      .content-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      #assistPanel { display: none !important; }
+      #assistExpandTab.show { display: block; }
+    }
+
+    @media (max-width: 960px) {
+      .workbench { grid-template-columns: 1fr; }
+      .course-rail { max-height: none; }
+      #publishedList { max-height: 320px; }
+    }
+
+    @media (max-width: 720px) {
+      .analytics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+
+    <main class="main">
+      <header class="student-header">
+        <div class="student-header-text"><strong>智课共生</strong>｜选课、读讲稿、随时提问，进度会自动接续。</div>
+        <a id="openCourseCenterBtn" href="/student/course-center" class="btn ghost" style="text-decoration:none;">返回课程中心</a>
+      </header>
+
+      <div id="alertBar" class="alert-bar" hidden>
+        <span id="alertBarText" class="alert-bar-text">智课加载失败</span>
+        <button id="alertRefreshBtn" class="btn ghost" type="button">重新加载</button>
+      </div>
+
+      <div class="workbench">
+        <aside class="course-rail">
+          <div class="course-rail-title">已发布智课</div>
+          <div class="course-rail-tools">
+            <input id="courseSearchInput" type="search" placeholder="搜索课程名称…" autocomplete="off" />
+            <select id="courseFilterSelect">
+              <option value="all">全部状态</option>
+              <option value="ok">正常</option>
+              <option value="error">加载失败</option>
+            </select>
+          </div>
+          <div id="publishedList"></div>
+        </aside>
+
+        <div class="workbench-main">
+          <div id="lessonEmpty">
+            <div class="empty-panel">
+              <strong>请从左侧选择一门智课</strong>
+              发布后，讲稿、进度与问答将在这里呈现。
+            </div>
+          </div>
+
+          <div id="lessonWorkbench" hidden>
+            <section class="overview-card">
+              <div class="overview-top">
+                <div>
+                  <div id="overviewProjectName" class="overview-title">未选择项目</div>
+                  <div id="overviewPublishText" class="overview-meta">发布后这里会显示发布时间。</div>
+                </div>
+                <div class="overview-actions">
+                  <a id="digitalLink" class="btn btn-primary-cta" href="#" target="_blank" style="display:none;text-decoration:none;">打开讲解视频</a>
+                  <button id="refreshLessonBtn" class="btn ghost" type="button">刷新课程</button>
+                  <button id="resetProgressBtn" class="btn ghost" type="button">重置进度</button>
+                </div>
+              </div>
+              <div class="overview-progress-row">
+                <div class="overview-progress-head">
+                  <strong id="overviewLessonName">未选择智课</strong>
+                  <span id="lessonProgressText">进度 0%</span>
+                </div>
+                <div class="progress-track">
+                  <div id="progressValue" class="progress-value"></div>
+                </div>
+                <div id="lessonSectionText" class="overview-node">当前节点：未开始</div>
+              </div>
+            </section>
+
+            <div class="content-row" id="contentRow">
+              <div class="content-main">
+                <div class="content-card">
+                  <div class="flow-head">
+                    <strong class="section-label">讲解节点流</strong>
+                    <span id="flowSummary" class="tag">未开始</span>
+                  </div>
+                  <div id="flowTrack" class="flow-track"></div>
+                </div>
+
+                <div class="content-card">
+                  <div id="sectionNav" class="section-nav"></div>
+                  <div id="pageNavHint" class="muted"></div>
+                  <div id="scriptBox" class="script-box">讲稿内容将在这里呈现。</div>
+                </div>
+
+                <div id="computerLearningPanel" class="computer-learning-panel">
+                  <div>
+                    <strong class="section-label">计算机专项实践资料</strong>
+                    <div class="muted">选择代码、SQL或错误日志，问答将优先结合该资料。</div>
+                  </div>
+                  <div id="computerResourceTabs" class="computer-resource-tabs"></div>
+                  <div id="computerResourcePreview" class="computer-resource-preview">尚未选择专项资料。</div>
+                </div>
+
+                <div id="labPracticePanel" class="lab-practice-panel">
+                  <div>
+                    <strong class="section-label">课程实践实验</strong>
+                    <div class="muted">选择实验任务，编写代码并提交隐藏测试用例判题。</div>
+                  </div>
+                  <div id="labTaskTabs" class="lab-task-tabs"></div>
+                  <div id="labTaskDescription" class="helper-note">教师尚未发布实验任务。</div>
+                  <div class="detail-row">
+                    <span id="labLanguageTag">语言：未指定</span>
+                    <span id="labCaseTag">测试用例：0</span>
+                    <span id="labLimitTag">时间限制：0ms</span>
+                  </div>
+                  <textarea id="labCodeEditor" class="lab-code-editor" spellcheck="false" placeholder="在这里编写代码"></textarea>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button id="submitLabBtn" class="btn" type="button">提交判题</button>
+                    <button id="resetLabCodeBtn" class="btn ghost" type="button">恢复起始代码</button>
+                  </div>
+                  <div id="labResult" class="lab-result">提交后将在这里显示得分、通过用例和错误信息。</div>
+                </div>
+
+                <audio id="lessonAudioPlayer" controls style="width:100%;display:none;"></audio>
+              </div>
+
+              <aside id="assistPanel">
+                <div class="assist-header">
+                  <div class="assist-title">课堂问答</div>
+                  <button id="assistCollapseBtn" type="button" title="收起面板">收起</button>
+                </div>
+                <div class="muted">学习中随时提问，系统会结合当前讲稿作答。</div>
+
+                <div id="computerQuestionMode" class="computer-question-mode">
+                  <span>专项问答模式</span>
+                  <select id="studentQuestionType">
+                    <option value="concept">概念解释</option>
+                    <option value="code">代码理解</option>
+                    <option value="debug">错误调试</option>
+                  </select>
+                </div>
+
+                <div class="question-row">
+                  <input id="studentQuestionInput" type="text" placeholder="例如：这一部分为什么先讲这个概念？" />
+                  <button id="askBtn" class="btn" type="button">发送问题</button>
+                  <button id="continueBtn" class="btn ghost" type="button" disabled>继续讲解</button>
+                  <button id="resolvedBtn" class="btn ghost" type="button" disabled>问题已解决</button>
+                </div>
+                <div id="adjustHint" class="muted">当前尚未触发节奏调整。</div>
+
+                <div id="qaLog" class="qa-log">
+                  <div class="empty-state">问答记录会显示在这里。</div>
+                </div>
+
+                <div>
+                  <div class="section-label" style="margin-bottom:10px;">学情快照</div>
+                  <div class="analytics-grid">
+                    <div class="analytics-card">
+                      <div class="analytics-card-icon">👥</div>
+                      <strong id="learnerCount">0</strong>
+                      <span>学习人数</span>
+                    </div>
+                    <div class="analytics-card">
+                      <div class="analytics-card-icon">📊</div>
+                      <strong id="avgProgress">0%</strong>
+                      <span>平均进度</span>
+                    </div>
+                    <div class="analytics-card">
+                      <div class="analytics-card-icon">💬</div>
+                      <strong id="qaCount">0</strong>
+                      <span>问答次数</span>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+
+              <button id="assistExpandTab" type="button">展开问答</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden shims for legacy IDs still updated by JS -->
+      <div class="sr-shim" aria-hidden="true">
+        <span id="lessonContextTitle"></span>
+        <span id="lessonContextMeta"></span>
+        <span id="contextProjectBadge"></span>
+        <span id="contextCourseBadge"></span>
+        <span id="contextEntryBadge"></span>
+        <a id="openLearningViewBtn" href="/learning.html" style="display:none;"></a>
+        <span id="overviewActionText"></span>
+        <span id="currentLessonTitle"></span>
+        <span id="currentLessonDesc"></span>
+        <span id="lessonTag"></span>
+        <span id="lastActionText"></span>
+        <span id="continuationSection"></span>
+        <span id="continuationUnderstanding"></span>
+        <span id="continuationAction"></span>
+        <span id="continuationHint"></span>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      const pageParams = new URLSearchParams(location.search);
+      const queryProjectId = pageParams.get('projectId') || '';
+      const inviteCode = (pageParams.get('invite') || '').trim();
+      // 旧版「仅 projectId」游客直入已取消：必须学生登录；带邀请码则走加入班级页
+      if (inviteCode) {
+        location.replace('/student/join.html?' + pageParams.toString());
+        return;
+      }
+
+      if (!window.AppStore || !window.AppStore.requireRole) {
+        location.href = '/student/login.html?returnTo=' + encodeURIComponent(location.pathname + location.search);
+        return;
+      }
+      const ok = await window.AppStore.requireRole(['student'], { loginRole: 'student' });
+      if (!ok) return;
+
+      const publishedList = document.getElementById('publishedList');
+      const lessonContextTitle = document.getElementById('lessonContextTitle');
+      const lessonContextMeta = document.getElementById('lessonContextMeta');
+      const contextProjectBadge = document.getElementById('contextProjectBadge');
+      const contextCourseBadge = document.getElementById('contextCourseBadge');
+      const contextEntryBadge = document.getElementById('contextEntryBadge');
+      const openCourseCenterBtn = document.getElementById('openCourseCenterBtn');
+      const openLearningViewBtn = document.getElementById('openLearningViewBtn');
+      const overviewProjectName = document.getElementById('overviewProjectName');
+      const overviewLessonName = document.getElementById('overviewLessonName');
+      const overviewPublishText = document.getElementById('overviewPublishText');
+      const overviewActionText = document.getElementById('overviewActionText');
+      const currentLessonTitle = document.getElementById('currentLessonTitle');
+      const currentLessonDesc = document.getElementById('currentLessonDesc');
+      const lessonTag = document.getElementById('lessonTag');
+      const lessonProgressText = document.getElementById('lessonProgressText');
+      const lessonSectionText = document.getElementById('lessonSectionText');
+      const lastActionText = document.getElementById('lastActionText');
+      const progressValue = document.getElementById('progressValue');
+      const flowTrack = document.getElementById('flowTrack');
+      const flowSummary = document.getElementById('flowSummary');
+      const continuationSection = document.getElementById('continuationSection');
+      const continuationUnderstanding = document.getElementById('continuationUnderstanding');
+      const continuationAction = document.getElementById('continuationAction');
+      const continuationHint = document.getElementById('continuationHint');
+      const sectionNav = document.getElementById('sectionNav');
+      const pageNavHint = document.getElementById('pageNavHint');
+      const scriptBox = document.getElementById('scriptBox');
+      const computerLearningPanel = document.getElementById('computerLearningPanel');
+      const computerResourceTabs = document.getElementById('computerResourceTabs');
+      const computerResourcePreview = document.getElementById('computerResourcePreview');
+      const computerQuestionMode = document.getElementById('computerQuestionMode');
+      const studentQuestionType = document.getElementById('studentQuestionType');
+      const labPracticePanel = document.getElementById('labPracticePanel');
+      const labTaskTabs = document.getElementById('labTaskTabs');
+      const labTaskDescription = document.getElementById('labTaskDescription');
+      const labLanguageTag = document.getElementById('labLanguageTag');
+      const labCaseTag = document.getElementById('labCaseTag');
+      const labLimitTag = document.getElementById('labLimitTag');
+      const labCodeEditor = document.getElementById('labCodeEditor');
+      const submitLabBtn = document.getElementById('submitLabBtn');
+      const resetLabCodeBtn = document.getElementById('resetLabCodeBtn');
+      const labResult = document.getElementById('labResult');
+      const lessonAudioPlayer = document.getElementById('lessonAudioPlayer');
+      const digitalLink = document.getElementById('digitalLink');
+      const studentQuestionInput = document.getElementById('studentQuestionInput');
+      const askBtn = document.getElementById('askBtn');
+      const continueBtn = document.getElementById('continueBtn');
+      const resolvedBtn = document.getElementById('resolvedBtn');
+      const adjustHint = document.getElementById('adjustHint');
+      const qaLog = document.getElementById('qaLog');
+      const learnerCount = document.getElementById('learnerCount');
+      const avgProgress = document.getElementById('avgProgress');
+      const qaCount = document.getElementById('qaCount');
+      const alertBar = document.getElementById('alertBar');
+      const alertBarText = document.getElementById('alertBarText');
+      const alertRefreshBtn = document.getElementById('alertRefreshBtn');
+      const courseSearchInput = document.getElementById('courseSearchInput');
+      const courseFilterSelect = document.getElementById('courseFilterSelect');
+      const refreshLessonBtn = document.getElementById('refreshLessonBtn');
+      const resetProgressBtn = document.getElementById('resetProgressBtn');
+      const assistPanel = document.getElementById('assistPanel');
+      const assistCollapseBtn = document.getElementById('assistCollapseBtn');
+      const assistExpandTab = document.getElementById('assistExpandTab');
+      const contentRow = document.getElementById('contentRow');
+      const lessonEmpty = document.getElementById('lessonEmpty');
+      const lessonWorkbench = document.getElementById('lessonWorkbench');
+
+      const currentUser = window.AppStore.currentUser();
+      const guestMode = false;
+      let currentProject = null;
+      let slides = [];
+      let selectedSlideIdx = 0;
+      let lastAdjustPlan = null;
+      let continuationState = 'idle';
+      let lastUnderstandingLevel = '';
+      let selectedComputerResourceId = '';
+      let selectedLabTaskId = '';
+      let lastQuestionMeta = {};
+      let cachedPublishedList = [];
+      const failedLessonIds = new Set();
+      const lessonProgressMap = new Map();
+      let assistCollapsed = false;
+      let lastLoadedProjectId = '';
+
+      window.AppStore.mountNav('student');
+      if (openCourseCenterBtn) {
+        openCourseCenterBtn.style.display = 'inline-flex';
+      }
+      if (openLearningViewBtn) {
+        openLearningViewBtn.style.display = 'none';
+      }
+
+      function notify(message, tone) {
+        if (window.AppStore && window.AppStore.toast) {
+          window.AppStore.toast(message, tone);
+        } else {
+          window.alert(message);
+        }
+      }
+
+      function mountGuestNav() {
+        const nav = document.getElementById('sideNav');
+        if (!nav) return;
+        nav.innerHTML = `
+          <div class="nav-brand">
+            <div class="nav-logo">智</div>
+            <div class="nav-brand-text">
+              <h1>智课共生</h1>
+              <div class="nav-subtitle">访客学习</div>
+            </div>
+          </div>
+          <div class="menu">
+            <a href="/student.html${queryProjectId ? '?projectId=' + encodeURIComponent(queryProjectId) : ''}" class="active" aria-current="page">学生学习</a>
+          </div>
+          <div class="meta">
+            <div>当前身份</div>
+            <div class="nav-user">访客学生</div>
+            <div class="nav-role">课程直达链接</div>
+            <div class="nav-actions">
+              <a href="/student/login.html" class="link">学生登录</a>
+            </div>
+          </div>
+        `;
+      }
+
+      function getGuestLearnerId() {
+        const key = 'ai_teacher_guest_learner_v1';
+        try {
+          let value = localStorage.getItem(key);
+          if (!value) {
+            value = 'guest_' + Date.now().toString(36) + '_' + Math.random().toString(16).slice(2, 8);
+            localStorage.setItem(key, value);
+          }
+          return value;
+        } catch (e) {
+          return 'guest';
+        }
+      }
+
+      function escapeHtml(text) {
+        return String(text || '').replace(/[&<>"]/g, function (ch) {
+          return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch];
+        });
+      }
+
+      function renderMarkdown(text) {
+        const raw = String(text || '').replace(/\r\n/g, '\n').trim();
+        if (!raw) return '<p>暂无内容</p>';
+        const safe = escapeHtml(raw)
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/^###\s+(.+)$/gm, '@@H4@@$1@@/H4@@')
+          .replace(/^##\s+(.+)$/gm, '@@H3@@$1@@/H3@@')
+          .replace(/^#\s+(.+)$/gm, '@@H3@@$1@@/H3@@');
+        const lines = safe.split('\n');
+        let out = '';
+        let listType = null;
+        let listItemOpen = false;
+        const closeItem = function () {
+          if (listItemOpen) { out += '</li>'; listItemOpen = false; }
+        };
+        const closeList = function () {
+          closeItem();
+          if (listType === 'ol') out += '</ol>';
+          if (listType === 'ul') out += '</ul>';
+          listType = null;
+        };
+        lines.forEach(function (line) {
+          const heading = line.match(/^@@H([34])@@(.+)@@\/H\1@@$/);
+          if (heading) {
+            closeList();
+            out += heading[1] === '4' ? ('<h4>' + heading[2] + '</h4>') : ('<h3>' + heading[2] + '</h3>');
+            return;
+          }
+          const olSame = line.match(/^\s*(?:<strong>)?(\d+)\.\s+(.+?)(?:<\/strong>)?\s*[:：]\s+(.+)$/);
+          const ol = line.match(/^\s*(?:<strong>)?(\d+)\.\s+(.+?)(?:<\/strong>)?\s*[:：]?\s*$/);
+          const ul = line.match(/^\s*[-*•]\s+(.+)$/);
+          if (olSame || ol) {
+            const hit = olSame || ol;
+            if (listType !== 'ol') { closeList(); out += '<ol>'; listType = 'ol'; }
+            else closeItem();
+            const term = hit[2].replace(/<\/?strong>/g, '').replace(/[:：]\s*$/, '').trim();
+            out += '<li><div class="md-term">' + term + '</div>';
+            if (olSame && hit[3] && hit[3].trim()) {
+              out += '<div class="md-desc">' + hit[3].trim() + '</div>';
+            }
+            listItemOpen = true;
+            return;
+          }
+          if (ul) {
+            if (listType !== 'ul') { closeList(); out += '<ul>'; listType = 'ul'; }
+            else closeItem();
+            out += '<li>' + ul[1];
+            listItemOpen = true;
+            return;
+          }
+          if (!line.trim()) return;
+          if (listItemOpen) { out += '<div class="md-desc">' + line + '</div>'; return; }
+          closeList();
+          out += '<p>' + line + '</p>';
+        });
+        closeList();
+        return out || '<p>暂无内容</p>';
+      }
+
+      function formatScriptHtml(text) {
+        const raw = String(text || '').replace(/\r\n/g, '\n').trim();
+        if (!raw) return '<p>讲稿内容将在这里呈现。</p>';
+        const lines = raw.split('\n');
+        let out = '';
+        lines.forEach(function (line) {
+          const trimmed = line.trim();
+          if (!trimmed) return;
+          if (/^#{1,3}\s+/.test(trimmed)) {
+            const level = trimmed.match(/^(#+)/)[1].length;
+            const heading = trimmed.replace(/^#+\s+/, '');
+            out += level <= 2 ? ('<h3>' + escapeHtml(heading) + '</h3>') : ('<h4>' + escapeHtml(heading) + '</h4>');
+            return;
+          }
+          if (/【图片】/.test(trimmed)) {
+            const content = trimmed.replace(/【图片】/g, '').trim();
+            out += '<p><span class="script-media-tag">🖼 图片</span> ' + escapeHtml(content || '配图') + '</p>';
+            return;
+          }
+          if (/^【.+】/.test(trimmed)) {
+            const tagMatch = trimmed.match(/^【(.+?)】(.*)/);
+            if (tagMatch) {
+              out += '<p><span class="script-media-tag">' + escapeHtml(tagMatch[1]) + '</span> ' + escapeHtml(tagMatch[2].trim()) + '</p>';
+              return;
+            }
+          }
+          out += '<p>' + escapeHtml(trimmed) + '</p>';
+        });
+        return out || '<p>讲稿内容将在这里呈现。</p>';
+      }
+
+      function requestJson(url, options) {
+        return fetch(url, {
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          ...options
+        }).then(async function (response) {
+          const payload = await response.json().catch(function () {
+            return { code: 1, message: '服务返回格式异常' };
+          });
+          if (!response.ok || payload.code !== 0) {
+            throw new Error(payload.message || '请求失败');
+          }
+          return payload;
+        });
+      }
+
+      async function getPublishedLessonsForCurrentUser() {
+        if (!guestMode) {
+          return window.AppStore.getPublishedLessons();
+        }
+        const payload = await requestJson('/public/published-lessons', {
+          method: 'GET',
+          headers: undefined
+        });
+        return payload.data && Array.isArray(payload.data.items) ? payload.data.items : [];
+      }
+
+      async function getPublishedLessonForCurrentUser(projectId) {
+        if (!guestMode) {
+          return window.AppStore.getPublishedLesson(projectId);
+        }
+        const payload = await requestJson('/public/published-lessons/' + encodeURIComponent(projectId), {
+          method: 'GET',
+          headers: undefined
+        });
+        return payload.data && payload.data.project ? payload.data.project : null;
+      }
+
+      async function trackLessonForCurrentUser(projectId, payload) {
+        if (!guestMode) {
+          return window.AppStore.trackLesson(projectId, payload);
+        }
+        const ret = await requestJson('/public/published-lessons/' + encodeURIComponent(projectId) + '/track', {
+          method: 'POST',
+          body: JSON.stringify(payload || {})
+        });
+        return ret.data && ret.data.project ? ret.data.project : null;
+      }
+
+      function extractSlides(rawText) {
+        const rows = (rawText || '').split(/\r?\n/);
+        const result = [];
+        let current = null;
+        rows.forEach(function (row) {
+          const line = (row || '').trim();
+          const matched = line.match(/^===\s*第(\d+)页\s*===$/);
+          if (matched) {
+            if (current) result.push(current);
+            current = { page: Number(matched[1]), lines: [] };
+          } else if (current && line) {
+            current.lines.push(line);
+          }
+        });
+        if (current) result.push(current);
+        return result;
+      }
+
+      function getFilteredItems() {
+        const query = (courseSearchInput.value || '').trim().toLowerCase();
+        const filter = courseFilterSelect.value || 'all';
+        return cachedPublishedList.filter(function (item) {
+          const name = (item.lessonTitle || item.name || '').toLowerCase();
+          if (query && name.indexOf(query) < 0) return false;
+          if (filter === 'error') return failedLessonIds.has(item.id);
+          if (filter === 'ok') return !failedLessonIds.has(item.id);
+          return true;
+        });
+      }
+
+      function getItemProgress(item) {
+        if (lessonProgressMap.has(item.id)) return lessonProgressMap.get(item.id);
+        if (currentProject && currentProject.id === item.id && slides.length) {
+          return (((selectedSlideIdx + 1) / slides.length) * 100);
+        }
+        return 0;
+      }
+
+      function renderPublishedList() {
+        const items = getFilteredItems();
+        if (!cachedPublishedList.length) {
+          publishedList.innerHTML = '<div class="empty-state">当前还没有已发布智课，请先在教师工作台完成发布。</div>';
+          return;
+        }
+        if (!items.length) {
+          publishedList.innerHTML = '<div class="empty-state">没有匹配的课程，请调整搜索或筛选条件。</div>';
+          return;
+        }
+        publishedList.innerHTML = items.map(function (item) {
+          const isActive = currentProject && currentProject.id === item.id;
+          const isFailed = failedLessonIds.has(item.id);
+          const pct = getItemProgress(item);
+          const statusCls = isFailed ? 'error' : (isActive ? 'ok' : 'idle');
+          const statusText = isFailed ? '加载失败' : (isActive ? '学习中' : '可学习');
+          return `
+            <article class="lesson-card ${isActive ? 'active' : ''} ${isFailed ? 'failed' : ''}" data-project-id="${escapeHtml(item.id)}">
+              <div class="lesson-card-head">
+                <div class="lesson-card-name">${escapeHtml(item.lessonTitle || item.name || '未命名智课')}</div>
+                <span class="status-pill ${statusCls}">${statusText}</span>
+              </div>
+              <div class="lesson-card-date">${item.publishedAt ? new Date(item.publishedAt).toLocaleDateString('zh-CN') : '未发布'}</div>
+              <div class="mini-progress"><div class="mini-progress-bar" style="width:${pct.toFixed(0)}%"></div></div>
+            </article>
+          `;
+        }).join('');
+
+        Array.from(publishedList.querySelectorAll('[data-project-id]')).forEach(function (node) {
+          node.addEventListener('click', function () {
+            const projectId = node.getAttribute('data-project-id');
+            if (projectId) loadLesson(projectId);
+          });
+        });
+      }
+
+      function showAlert(message) {
+        alertBarText.textContent = message || '智课加载失败';
+        alertBar.hidden = false;
+      }
+
+      function hideAlert() {
+        alertBar.hidden = true;
+      }
+
+      function showWorkbench() {
+        lessonEmpty.hidden = true;
+        lessonWorkbench.hidden = false;
+      }
+
+      function showEmptyPanel(message) {
+        lessonEmpty.hidden = false;
+        lessonWorkbench.hidden = true;
+        if (message) {
+          lessonEmpty.innerHTML = '<div class="empty-panel"><strong>无法加载智课</strong>' + escapeHtml(message) + '</div>';
+        }
+      }
+
+      function setAssistCollapsed(collapsed) {
+        assistCollapsed = collapsed;
+        if (window.innerWidth <= 1200) {
+          assistPanel.hidden = true;
+          assistExpandTab.classList.add('show');
+          contentRow.classList.add('assist-collapsed');
+          return;
+        }
+        if (collapsed) {
+          assistPanel.hidden = true;
+          assistExpandTab.classList.add('show');
+          contentRow.classList.add('assist-collapsed');
+        } else {
+          assistPanel.hidden = false;
+          assistExpandTab.classList.remove('show');
+          contentRow.classList.remove('assist-collapsed');
+        }
+      }
+
+      function appendQaItem(role, text, meta) {
+        const empty = qaLog.querySelector('.empty-state');
+        if (empty) empty.remove();
+        const wrapper = document.createElement('div');
+        wrapper.className = 'qa-item';
+        const isAnswer = String(role || '').indexOf('回答') >= 0 || String(role || '').indexOf('系统') >= 0;
+        const body = isAnswer
+          ? ('<div class="md-body">' + renderMarkdown(text) + '</div>')
+          : ('<div>' + escapeHtml(text) + '</div>');
+        wrapper.innerHTML = `
+          <div class="qa-role">${escapeHtml(role)}</div>
+          ${body}
+          <div class="muted">${escapeHtml(meta || '')}</div>
+        `;
+        qaLog.appendChild(wrapper);
+        qaLog.scrollTop = qaLog.scrollHeight;
+      }
+
+      function refreshAnalytics(project) {
+        const records = Array.isArray(project.learningRecords) ? project.learningRecords : [];
+        const byUser = new Map();
+        let totalProgress = 0;
+        let progressCount = 0;
+        let totalQa = 0;
+        records.forEach(function (item) {
+          if (item.learnerUsername) byUser.set(item.learnerUsername, true);
+          if (typeof item.progressPercent === 'number') {
+            totalProgress += item.progressPercent;
+            progressCount += 1;
+          }
+          if (item.question) totalQa += 1;
+        });
+        learnerCount.textContent = String(byUser.size);
+        avgProgress.textContent = progressCount ? (totalProgress / progressCount).toFixed(1) + '%' : '0%';
+        qaCount.textContent = String(totalQa);
+      }
+
+      function goToSlide(idx) {
+        if (!slides.length) return;
+        selectedSlideIdx = Math.max(0, Math.min(idx, slides.length - 1));
+        continuationState = 'idle';
+        lastAdjustPlan = null;
+        lastUnderstandingLevel = '';
+        continuationHint.textContent = '已切换到新的讲解节点，系统将按当前节点继续学习并在提问时记录续接状态。';
+        updateLearningStage();
+      }
+
+      function renderSections() {
+        if (!slides.length) {
+          sectionNav.innerHTML = '<span class="muted">当前课程暂无可视化章节。</span>';
+          pageNavHint.textContent = '';
+          scriptBox.innerHTML = formatScriptHtml(currentProject && currentProject.script ? currentProject.script : '');
+          return;
+        }
+
+        const total = slides.length;
+        const cur = selectedSlideIdx;
+        const parts = [];
+
+        parts.push('<button class="page-btn" type="button" data-action="prev"' + (cur <= 0 ? ' disabled' : '') + '>上一页</button>');
+
+        function addPage(idx) {
+          parts.push('<button class="page-btn' + (idx === cur ? ' active' : '') + '" type="button" data-idx="' + idx + '">' + slides[idx].page + '</button>');
+        }
+
+        if (total <= 7) {
+          for (let i = 0; i < total; i++) addPage(i);
+        } else {
+          addPage(0);
+          if (cur > 2) parts.push('<span class="page-ellipsis">…</span>');
+          const start = Math.max(1, cur - 1);
+          const end = Math.min(total - 2, cur + 1);
+          for (let i = start; i <= end; i++) addPage(i);
+          if (cur < total - 3) parts.push('<span class="page-ellipsis">…</span>');
+          addPage(total - 1);
+        }
+
+        parts.push('<button class="page-btn" type="button" data-action="next"' + (cur >= total - 1 ? ' disabled' : '') + '>下一页</button>');
+        parts.push('<span class="page-jump">跳至<input type="number" min="1" max="' + total + '" id="pageJumpInput" value="' + (cur + 1) + '" />页<button class="page-btn" type="button" data-action="jump">Go</button></span>');
+
+        sectionNav.innerHTML = parts.join('');
+        pageNavHint.textContent = '共 ' + total + ' 页 · 当前第 ' + slides[cur].page + ' 页';
+
+        sectionNav.querySelector('[data-action="prev"]').addEventListener('click', function () {
+          if (selectedSlideIdx > 0) goToSlide(selectedSlideIdx - 1);
+        });
+        sectionNav.querySelector('[data-action="next"]').addEventListener('click', function () {
+          if (selectedSlideIdx < total - 1) goToSlide(selectedSlideIdx + 1);
+        });
+        Array.from(sectionNav.querySelectorAll('[data-idx]')).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            goToSlide(Number(btn.getAttribute('data-idx') || '0'));
+          });
+        });
+        const jumpInput = document.getElementById('pageJumpInput');
+        sectionNav.querySelector('[data-action="jump"]').addEventListener('click', function () {
+          const val = Number(jumpInput.value);
+          if (val >= 1 && val <= total) goToSlide(val - 1);
+        });
+        jumpInput.addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            const val = Number(jumpInput.value);
+            if (val >= 1 && val <= total) goToSlide(val - 1);
+          }
+        });
+      }
+
+      function renderComputerLearning() {
+        const enabled = currentProject && currentProject.subjectMode === 'computer';
+        computerLearningPanel.classList.toggle('show', Boolean(enabled));
+        computerQuestionMode.classList.toggle('show', Boolean(enabled));
+        if (!enabled) {
+          selectedComputerResourceId = '';
+          return;
+        }
+        const resources = Array.isArray(currentProject.resources) ? currentProject.resources : [];
+        if (!resources.length) {
+          computerResourceTabs.innerHTML = '<span class="muted">教师尚未发布代码或实验资料。</span>';
+          computerResourcePreview.textContent = '当前课程仍可使用课件进行学习和提问。';
+          selectedComputerResourceId = '';
+          return;
+        }
+        if (!resources.some(function (item) { return item.id === selectedComputerResourceId; })) {
+          selectedComputerResourceId = resources[0].id;
+        }
+        computerResourceTabs.innerHTML = resources.map(function (item) {
+          return `<button class="computer-resource-tab ${item.id === selectedComputerResourceId ? 'active' : ''}" type="button" data-resource-id="${escapeHtml(item.id)}">${escapeHtml(item.fileName || '专项资料')}</button>`;
+        }).join('');
+        const selected = resources.find(function (item) { return item.id === selectedComputerResourceId; }) || resources[0];
+        computerResourcePreview.textContent = selected
+          ? `${selected.structuredContent || ''}\n\n${selected.rawContent || ''}`
+          : '尚未选择专项资料。';
+        Array.from(computerResourceTabs.querySelectorAll('[data-resource-id]')).forEach(function (button) {
+          button.addEventListener('click', function () {
+            selectedComputerResourceId = button.getAttribute('data-resource-id') || '';
+            renderComputerLearning();
+          });
+        });
+      }
+
+      function currentLabTask() {
+        const tasks = Array.isArray(currentProject && currentProject.labTasks) ? currentProject.labTasks : [];
+        return tasks.find(function (task) { return task.id === selectedLabTaskId; }) || tasks[0] || null;
+      }
+
+      function renderLabPractice(resetCode) {
+        const enabled = currentProject && currentProject.subjectMode === 'computer';
+        const tasks = Array.isArray(currentProject && currentProject.labTasks) ? currentProject.labTasks : [];
+        labPracticePanel.classList.toggle('show', Boolean(enabled));
+        if (!enabled) return;
+        if (!tasks.length) {
+          labTaskTabs.innerHTML = '<span class="muted">教师尚未发布实验任务。</span>';
+          labTaskDescription.textContent = '当前课程可以继续使用资料问答，实验任务发布后会显示在这里。';
+          labCodeEditor.value = '';
+          submitLabBtn.disabled = true;
+          resetLabCodeBtn.disabled = true;
+          return;
+        }
+        if (!tasks.some(function (task) { return task.id === selectedLabTaskId; })) {
+          selectedLabTaskId = tasks[0].id;
+          resetCode = true;
+        }
+        labTaskTabs.innerHTML = tasks.map(function (task) {
+          return `<button class="computer-resource-tab ${task.id === selectedLabTaskId ? 'active' : ''}" type="button" data-lab-task-id="${escapeHtml(task.id)}">${escapeHtml(task.title || '实验任务')}</button>`;
+        }).join('');
+        const task = currentLabTask();
+        labTaskDescription.textContent = `${task.description || ''}\n样例输入：${task.sampleInput || '无'}\n样例输出：${task.sampleOutput || '无'}`;
+        labLanguageTag.textContent = `语言：${task.language || '未指定'}`;
+        labCaseTag.textContent = `测试用例：${Number(task.testCaseCount || 0)}`;
+        labLimitTag.textContent = `时间限制：${Number(task.timeLimitMs || 2000)}ms`;
+        if (resetCode) {
+          labCodeEditor.value = task.starterCode || '';
+          labResult.textContent = '提交后将在这里显示得分、通过用例和错误信息。';
+        }
+        submitLabBtn.disabled = false;
+        resetLabCodeBtn.disabled = false;
+        Array.from(labTaskTabs.querySelectorAll('[data-lab-task-id]')).forEach(function (button) {
+          button.addEventListener('click', function () {
+            selectedLabTaskId = button.getAttribute('data-lab-task-id') || '';
+            renderLabPractice(true);
+          });
+        });
+      }
+
+      async function submitLabForCurrentUser(taskId, sourceCode) {
+        if (currentUser && currentUser.activeRole === 'student') {
+          return window.AppStore.submitLabTask(currentProject.id, taskId, sourceCode);
+        }
+        const payload = await requestJson(
+          '/public/published-lessons/' + encodeURIComponent(currentProject.id)
+            + '/lab-tasks/' + encodeURIComponent(taskId) + '/submit',
+          {
+            method: 'POST',
+            body: JSON.stringify({ sourceCode: sourceCode || '' })
+          }
+        );
+        return payload.data && payload.data.submission ? payload.data.submission : null;
+      }
+
+      function getFlowNodes() {
+        if (!slides.length) {
+          return [{
+            page: 1,
+            title: currentProject && currentProject.lessonTitle ? currentProject.lessonTitle : '完整智课',
+            preview: currentProject && currentProject.summary ? currentProject.summary : '当前课程将按完整讲稿顺序推进。'
+          }];
+        }
+        return slides.map(function (slide) {
+          return {
+            page: slide.page,
+            title: slide.lines[0] || `第 ${slide.page} 页内容`,
+            preview: (slide.lines[1] || slide.lines[0] || '等待讲解').slice(0, 36)
+          };
+        });
+      }
+
+      function getNodeVisualState(idx) {
+        if (idx < selectedSlideIdx) return { cls: 'done', label: '已学习' };
+        if (idx > selectedSlideIdx) return { cls: 'upcoming', label: '待讲解' };
+        if (continuationState === 'paused') return { cls: 'paused', label: '提问暂停' };
+        if (continuationState === 'supplement') return { cls: 'supplement', label: '补充讲解' };
+        return { cls: 'current', label: continuationState === 'resumed' ? '已续接' : '进行中' };
+      }
+
+      function renderFlow() {
+        const nodes = getFlowNodes();
+        flowTrack.innerHTML = nodes.map(function (node, idx) {
+          const visual = getNodeVisualState(idx);
+          return `
+            <article class="flow-node ${visual.cls}">
+              <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;">
+                <span class="flow-index">${idx + 1}</span>
+                <span class="flow-state">${visual.label}</span>
+              </div>
+              <div class="flow-node-title">${escapeHtml(node.title)}</div>
+              <div class="flow-node-meta">节点位置：${slides.length ? `第 ${node.page} 页` : '完整讲稿'}<br>${escapeHtml(node.preview)}</div>
+            </article>
+          `;
+        }).join('');
+
+        const currentNode = nodes[selectedSlideIdx] || nodes[0];
+        const stateLabel = continuationState === 'paused'
+          ? '当前提问打断中'
+          : continuationState === 'supplement'
+            ? '当前进入补充讲解'
+            : continuationState === 'resumed'
+              ? '已恢复原讲解进度'
+              : '按既定节奏讲解中';
+        flowSummary.textContent = stateLabel;
+        continuationSection.textContent = currentNode ? (slides.length ? `第 ${currentNode.page} 页` : currentNode.title) : '未开始';
+        continuationUnderstanding.textContent = lastUnderstandingLevel
+          ? (lastUnderstandingLevel === 'partial' ? '需要补充说明' : '理解正常')
+          : '等待问答';
+        continuationAction.textContent = continuationState === 'supplement'
+          ? '补充讲解后继续'
+          : continuationState === 'paused'
+            ? '等待答复后续接'
+            : continuationState === 'resumed'
+              ? '已回到原节点'
+              : '按原节奏推进';
+      }
+
+      function updateLearningStage() {
+        const slide = slides[selectedSlideIdx] || null;
+        const total = slides.length || 1;
+        const pct = slide ? (((selectedSlideIdx + 1) / total) * 100) : 0;
+        lessonProgressText.textContent = '进度 ' + pct.toFixed(0) + '%';
+        lessonSectionText.textContent = slide ? `当前节点：第 ${slide.page} 页` : '当前节点：未开始';
+        progressValue.style.width = pct.toFixed(0) + '%';
+        const scriptText = slide ? slide.lines.join('\n') : (currentProject && currentProject.script ? currentProject.script : '');
+        scriptBox.innerHTML = formatScriptHtml(scriptText);
+        overviewActionText.textContent = slide ? `正在学习第 ${slide.page} 页，可继续阅读或中途提问` : '当前以完整讲稿模式学习';
+        if (currentProject) {
+          lessonProgressMap.set(currentProject.id, pct);
+        }
+        renderSections();
+        renderFlow();
+        renderPublishedList();
+      }
+
+      async function trackCurrentProgress(action, question, answer, understandingLevel, extra) {
+        if (!currentProject) return;
+        const slide = slides[selectedSlideIdx] || null;
+        const pct = slides.length ? ((selectedSlideIdx + 1) / slides.length) * 100 : 0;
+        currentProject = await trackLessonForCurrentUser(currentProject.id, {
+          currentSectionId: slide ? `slide-${slide.page}` : 'full-script',
+          progressPercent: pct,
+          question: question || '',
+          answer: answer || '',
+          understandingLevel: understandingLevel || '',
+          action: action || 'study',
+          ...((extra && typeof extra === 'object') ? extra : {})
+        });
+        lastActionText.textContent = `${action || 'study'} · ${new Date().toLocaleString('zh-CN', { hour12: false })}`;
+        refreshAnalytics(currentProject);
+      }
+
+      async function loadLesson(projectId) {
+        lastLoadedProjectId = projectId;
+        try {
+          currentProject = await getPublishedLessonForCurrentUser(projectId);
+          failedLessonIds.delete(projectId);
+          hideAlert();
+          showWorkbench();
+
+          slides = extractSlides(currentProject.pptRawText || '');
+          selectedSlideIdx = 0;
+          lessonContextTitle.textContent = currentProject.lessonTitle || currentProject.name || '未命名智课';
+          lessonContextMeta.textContent = `当前学习项目：${currentProject.name || '未命名项目'} · 发布状态：${currentProject.published ? '已发布' : '未发布'}${currentProject.publishedAt ? ` · 发布时间：${new Date(currentProject.publishedAt).toLocaleString('zh-CN', { hour12: false })}` : ''}`;
+          contextProjectBadge.textContent = `项目：${currentProject.name || '未命名项目'}`;
+          contextCourseBadge.textContent = `课程：${currentProject.lessonTitle || currentProject.name || '未命名智课'}`;
+          contextEntryBadge.textContent = queryProjectId ? '入口方式：课程直达链接' : '入口方式：学生课程列表';
+          if (openCourseCenterBtn) {
+            openCourseCenterBtn.href = '/student/course-center';
+          }
+          if (openLearningViewBtn) {
+            openLearningViewBtn.href = `/learning.html?projectId=${encodeURIComponent(currentProject.id)}`;
+          }
+          openLearningViewBtn.style.display = 'inline-flex';
+          overviewProjectName.textContent = currentProject.name || '未命名项目';
+          overviewLessonName.textContent = currentProject.lessonTitle || currentProject.name || '未命名智课';
+          overviewPublishText.textContent = currentProject.publishedAt
+            ? `发布于 ${new Date(currentProject.publishedAt).toLocaleString('zh-CN', { hour12: false })}`
+            : '课程尚未完成发布。';
+          currentLessonTitle.textContent = currentProject.lessonTitle || currentProject.name || '未命名智课';
+          currentLessonDesc.textContent = currentProject.lessonIntro || currentProject.summary || currentProject.meta || '暂无课程简介';
+          lessonTag.textContent = currentProject.published ? '已发布智课' : '未发布';
+          if (currentProject.subjectMode === 'computer') {
+            lessonTag.textContent = '计算机专项智课';
+          }
+          renderComputerLearning();
+          renderLabPractice(true);
+          if (currentProject.audioUrl) {
+            lessonAudioPlayer.style.display = 'block';
+            lessonAudioPlayer.src = currentProject.audioUrl;
+          } else {
+            lessonAudioPlayer.style.display = 'none';
+            lessonAudioPlayer.removeAttribute('src');
+          }
+          if (currentProject.digitalUrl) {
+            digitalLink.style.display = 'inline-flex';
+            digitalLink.href = currentProject.digitalUrl;
+          } else {
+            digitalLink.style.display = 'none';
+          }
+          qaLog.innerHTML = '<div class="empty-state">可在学习过程中直接提问，系统会自动续接讲解。</div>';
+          adjustHint.textContent = '当前尚未触发节奏调整。';
+          continueBtn.disabled = true;
+          resolvedBtn.disabled = true;
+          lastQuestionMeta = {};
+          continuationState = 'idle';
+          lastUnderstandingLevel = '';
+          continuationHint.textContent = '学生中途提问后，系统会结合当前节点判断是否需要补充讲解，并在回答后续接回原讲解位置。';
+          updateLearningStage();
+          refreshAnalytics(currentProject);
+          renderPublishedList();
+          await trackCurrentProgress('enter-lesson');
+        } catch (err) {
+          failedLessonIds.add(projectId);
+          showAlert('智课不存在或尚未发布｜项目：' + projectId + '，' + (err.message || '课程加载失败'));
+          showEmptyPanel(err.message || '请稍后重试或选择其他课程。');
+
+          lessonContextTitle.textContent = '智课加载失败';
+          lessonContextMeta.textContent = err.message || '请稍后重试。';
+          contextProjectBadge.textContent = '项目：加载失败';
+          contextCourseBadge.textContent = '课程：加载失败';
+          contextEntryBadge.textContent = '入口方式：不可用';
+          overviewProjectName.textContent = '加载失败';
+          overviewLessonName.textContent = '加载失败';
+          overviewPublishText.textContent = err.message || '请稍后重试。';
+          overviewActionText.textContent = '当前无法开始学习';
+          openLearningViewBtn.style.display = 'none';
+          currentLessonTitle.textContent = '智课加载失败';
+          currentLessonDesc.textContent = err.message || '请稍后重试。';
+          renderPublishedList();
+          notify(err.message || '课程加载失败', 'err');
+        }
+      }
+
+      askBtn.addEventListener('click', async function () {
+        const question = studentQuestionInput.value.trim();
+        if (!currentProject) {
+          notify('请先选择已发布课程。', 'err');
+          return;
+        }
+        if (!question) {
+          studentQuestionInput.focus();
+          return;
+        }
+        askBtn.disabled = true;
+        appendQaItem('学生提问', question, '正在生成回答...');
+        try {
+          const contextText = currentProject.pptRawText || currentProject.script || '';
+          overviewActionText.textContent = '正在处理你的问题，并准备续接当前讲解节点';
+          const qaPayload = await requestJson('/public/answer-question', {
+            method: 'POST',
+            body: JSON.stringify({
+              projectId: currentProject.id,
+              question: question,
+              questionType: currentProject.subjectMode === 'computer' ? studentQuestionType.value : '',
+              resourceId: selectedComputerResourceId,
+              pptText: contextText,
+              currentPage: slides[selectedSlideIdx] ? slides[selectedSlideIdx].page : null
+            })
+          });
+          const answer = qaPayload.data && qaPayload.data.answer ? qaPayload.data.answer : '系统未返回回答';
+          const answerData = qaPayload.data || {};
+          lastQuestionMeta = {
+            questionType: answerData.questionType || '',
+            resourceId: answerData.resourceId || selectedComputerResourceId,
+            errorType: answerData.errorType || '',
+            hintLevel: answerData.hintLevel || ''
+          };
+          const knowledgeSources = Array.isArray(answerData.knowledgeSources) ? answerData.knowledgeSources : [];
+          const citationText = knowledgeSources.length
+            ? `；检索依据：${knowledgeSources.map(function (item) {
+                const title = `${item.title || '资料'}${item.section ? ` / ${item.section}` : ''}`;
+                const rights = item.license ? ` [${item.license}]` : '';
+                return `${title}${rights}${item.url ? ` ${item.url}` : ''}`;
+              }).join('；')}`
+            : '';
+          appendQaItem('系统回答', answer, `来源：${answerData.sourceLabel || answerData.source || 'llm'}${citationText}`);
+
+          const understandingLevel = answerData.understandingLevel || 'partial';
+          lastUnderstandingLevel = understandingLevel;
+          const slide = slides[selectedSlideIdx] || null;
+          const adjustPayload = await requestJson('/public/api/v1/progress/adjust', {
+            method: 'POST',
+            body: JSON.stringify({
+              userId: currentUser && currentUser.username ? currentUser.username : getGuestLearnerId(),
+              projectId: currentProject.id,
+              lessonId: currentProject.id,
+              currentSectionId: slide ? `slide-${slide.page}` : 'full-script',
+              understandingLevel: understandingLevel
+            })
+          });
+          lastAdjustPlan = adjustPayload.data && adjustPayload.data.adjustPlan ? adjustPayload.data.adjustPlan : null;
+          if (lastAdjustPlan) {
+            continuationState = lastAdjustPlan.adjustType === 'supplement' ? 'supplement' : 'paused';
+            adjustHint.textContent = lastAdjustPlan.adjustType === 'supplement'
+              ? '检测到学生理解不充分，系统建议补充讲解后再继续。'
+              : '当前理解正常，可继续原讲解节奏。';
+            continuationHint.textContent = lastAdjustPlan.adjustType === 'supplement'
+              ? '系统已根据当前问题判断该节点需要补充说明，建议先回顾关键概念，再回到原讲解主线。'
+              : '系统已记录当前问题，可在回答结束后继续原讲解节点，不打断整体学习路径。';
+            continueBtn.disabled = false;
+          }
+          resolvedBtn.disabled = false;
+          renderFlow();
+          await trackCurrentProgress('ask-question', question, answer, understandingLevel, {
+            questionType: answerData.questionType || '',
+            resourceId: answerData.resourceId || selectedComputerResourceId,
+            errorType: answerData.errorType || '',
+            hintLevel: answerData.hintLevel || '',
+            resolved: false
+          });
+          studentQuestionInput.value = '';
+        } catch (err) {
+          appendQaItem('系统提示', err.message || '问答失败', '请稍后重试');
+          overviewActionText.textContent = '提问失败，请稍后重试或继续当前讲解';
+          notify(err.message || '提问失败，请稍后重试', 'err');
+        } finally {
+          askBtn.disabled = false;
+        }
+      });
+
+      continueBtn.addEventListener('click', async function () {
+        if (!currentProject) return;
+        if (lastAdjustPlan && lastAdjustPlan.adjustType === 'supplement' && slides[selectedSlideIdx]) {
+          const supplementText = slides[selectedSlideIdx].lines.join('\n') + '\n\n【补充讲解】检测到该节点理解不充分，系统建议结合例题重新回顾关键知识点，再继续后续内容。';
+          scriptBox.innerHTML = formatScriptHtml(supplementText);
+          continuationState = 'resumed';
+          continuationHint.textContent = '补充讲解已完成，系统已返回原讲解节点，后续将继续按原学习主线推进。';
+          overviewActionText.textContent = '已完成补充讲解，正在返回原学习主线';
+        } else {
+          continuationState = 'resumed';
+          continuationHint.textContent = '已回到原讲解节点，可继续按当前顺序学习后续内容。';
+          overviewActionText.textContent = '已回到原讲解节点，继续按当前顺序学习';
+          updateLearningStage();
+        }
+        continueBtn.disabled = true;
+        renderFlow();
+        await trackCurrentProgress('continue-lecture', '', '', '', {
+          ...lastQuestionMeta,
+          resolved: false
+        });
+      });
+
+      resolvedBtn.addEventListener('click', async function () {
+        if (!currentProject || !lastQuestionMeta.questionType) return;
+        resolvedBtn.disabled = true;
+        try {
+          await trackCurrentProgress('resolve-question', '', '', '', {
+            ...lastQuestionMeta,
+            resolved: true
+          });
+          adjustHint.textContent = '已记录：该问题由学生确认解决。';
+          notify('已标记为解决', 'ok');
+        } catch (err) {
+          resolvedBtn.disabled = false;
+          notify(err.message || '解决状态保存失败', 'err');
+        }
+      });
+
+      submitLabBtn.addEventListener('click', async function () {
+        const task = currentLabTask();
+        if (!currentProject || !task) return;
+        submitLabBtn.disabled = true;
+        labResult.textContent = '正在受控环境中编译并运行测试用例...';
+        try {
+          const submission = await submitLabForCurrentUser(task.id, labCodeEditor.value);
+          if (!submission) throw new Error('判题结果为空');
+          const detail = submission.errorText || submission.outputText || '';
+          labResult.textContent = `状态：${submission.status}\n得分：${submission.score}\n通过：${submission.passedCases}/${submission.totalCases}\n耗时：${submission.durationMs}ms${detail ? `\n\n${detail}` : ''}`;
+          notify(submission.status === 'ACCEPTED' ? '实验判题通过' : '判题完成，请根据结果继续修改', submission.status === 'ACCEPTED' ? 'ok' : 'warn');
+        } catch (err) {
+          labResult.textContent = err.message || '代码判题失败';
+          notify(err.message || '代码判题失败', 'err');
+        } finally {
+          submitLabBtn.disabled = false;
+        }
+      });
+
+      resetLabCodeBtn.addEventListener('click', function () {
+        renderLabPractice(true);
+      });
+
+      studentQuestionInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          askBtn.click();
+        }
+      });
+
+      courseSearchInput.addEventListener('input', renderPublishedList);
+      courseFilterSelect.addEventListener('change', renderPublishedList);
+
+      alertRefreshBtn.addEventListener('click', function () {
+        if (lastLoadedProjectId) loadLesson(lastLoadedProjectId);
+      });
+
+      refreshLessonBtn.addEventListener('click', function () {
+        if (currentProject) loadLesson(currentProject.id);
+      });
+
+      resetProgressBtn.addEventListener('click', async function () {
+        if (!currentProject) return;
+        selectedSlideIdx = 0;
+        continuationState = 'idle';
+        lastAdjustPlan = null;
+        lastUnderstandingLevel = '';
+        updateLearningStage();
+        await trackCurrentProgress('reset-progress');
+        notify('进度已重置到第一页', 'ok');
+      });
+
+      assistCollapseBtn.addEventListener('click', function () {
+        setAssistCollapsed(true);
+      });
+
+      assistExpandTab.addEventListener('click', function () {
+        setAssistCollapsed(false);
+      });
+
+      window.addEventListener('resize', function () {
+        setAssistCollapsed(assistCollapsed);
+      });
+
+      try {
+        cachedPublishedList = await getPublishedLessonsForCurrentUser();
+        renderPublishedList();
+        if (queryProjectId) {
+          await loadLesson(queryProjectId);
+        } else if (cachedPublishedList.length) {
+          await loadLesson(cachedPublishedList[0].id);
+        } else {
+          showEmptyPanel('当前还没有已发布智课，请先在教师工作台完成发布。');
+        }
+      } catch (err) {
+        lessonContextTitle.textContent = '暂无可学习内容';
+        lessonContextMeta.textContent = err.message || '当前没有可学习的已发布智课，请先在教师工作台完成发布。';
+        contextProjectBadge.textContent = '项目：暂无';
+        contextCourseBadge.textContent = '课程：暂无';
+        contextEntryBadge.textContent = '入口方式：课程列表';
+        overviewProjectName.textContent = '暂无项目';
+        overviewLessonName.textContent = '暂无智课';
+        overviewPublishText.textContent = '教师发布成功后，学生即可在这里查看并开始学习。';
+        overviewActionText.textContent = '当前无法开始学习';
+        publishedList.innerHTML = '<div class="empty-state">已发布智课加载失败，请稍后重试。</div>';
+        currentLessonDesc.textContent = err.message || '暂无可学习内容。';
+        showEmptyPanel(err.message || '暂无可学习内容。');
+        notify(err.message || '课程列表加载失败', 'err');
+      }
+    })();
+  </script>
+</body>
+</html>

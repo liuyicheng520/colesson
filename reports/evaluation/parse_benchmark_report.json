@@ -1,0 +1,45 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "sampleSize": 3,
+  "okCount": 3,
+  "errorCount": 0,
+  "successRate": 1.0,
+  "latencyMs": {
+    "avg": 219.67,
+    "p50": 189.74,
+    "p90": 300.72,
+    "max": 300.72
+  },
+  "thresholdCheck": {
+    "under2MinutesPerFile": true
+  },
+  "details": [
+    {
+      "source": "材料力学智慧课程（15期 2025春夏）",
+      "file": "M01绪论-1.ppt",
+      "ok": true,
+      "latencyMs": 300.72,
+      "pageMarkers": 40,
+      "rawTextLength": 1500,
+      "error": null
+    },
+    {
+      "source": "材料力学智慧课程（15期 2025春夏）",
+      "file": "材料力学混合式教学（第二期）.ppt",
+      "ok": true,
+      "latencyMs": 189.74,
+      "pageMarkers": 32,
+      "rawTextLength": 1500,
+      "error": null
+    },
+    {
+      "source": "材料力学智慧课程（15期 2025春夏）",
+      "file": "M02-1轴向拉伸和压缩-强度.ppt",
+      "ok": true,
+      "latencyMs": 168.54,
+      "pageMarkers": 40,
+      "rawTextLength": 1596,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内容监管 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .stat{padding:16px;border-radius:16px;border:1px solid var(--line);background:#fff;display:grid;gap:4px}
+    .stat strong{font-size:26px;color:var(--brand-strong)}
+    .stat span{font-size:12px;color:var(--sub);font-weight:650}
+    .panel{padding:18px;border-radius:18px}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}
+    @media(max-width:800px){.stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">内容监管</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">查看全平台课程项目与发布状态（管理视角，非教师工作台）。</p>
+        </div>
+      </section>
+      <section class="stats">
+        <div class="stat"><strong id="c1">-</strong><span>项目总数</span></div>
+        <div class="stat"><strong id="c2">-</strong><span>已发布</span></div>
+        <div class="stat"><strong id="c3">-</strong><span>学习记录</span></div>
+      </section>
+      <section class="card panel">
+        <div class="tools" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <input id="q" type="search" placeholder="搜索教师或项目…" style="width:auto;min-width:180px;" />
+          <select id="pubFilter" style="width:auto;">
+            <option value="all">全部发布状态</option>
+            <option value="published">已发布</option>
+            <option value="draft">未发布</option>
+            <option value="incomplete">缺讲稿或课件</option>
+          </select>
+        </div>
+        <div style="overflow:auto">
+          <table class="table">
+            <thead><tr><th>教师</th><th>项目</th><th>发布</th><th>材料</th><th>学习数</th><th>更新时间</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('content');
+      const payload=await fetch('/admin-api/overview?projectLimit=100',{credentials:'same-origin'}).then(r=>r.json());
+      if(payload.code!==0){document.getElementById('tbody').innerHTML='<tr><td colspan="6">'+(payload.message||'加载失败')+'</td></tr>';return;}
+      const s=payload.data.summary||{};
+      document.getElementById('c1').textContent=s.projectCount||0;
+      document.getElementById('c2').textContent=s.publishedCount||0;
+      document.getElementById('c3').textContent=s.learningRecordCount||0;
+      const all=payload.data.projects||[];
+      const esc=v=>String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const fmt=v=>{if(!v)return'--';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString('zh-CN',{hour12:false});};
+      function render(){
+        const q=document.getElementById('q').value.trim().toLowerCase();
+        const pub=document.getElementById('pubFilter').value;
+        const rows=all.filter(r=>{
+          const name=String(r.name||r.lessonTitle||r.id||'').toLowerCase();
+          const teacher=String(r.username||'').toLowerCase();
+          if(q && name.indexOf(q)<0 && teacher.indexOf(q)<0) return false;
+          if(pub==='published' && !r.published) return false;
+          if(pub==='draft' && r.published) return false;
+          if(pub==='incomplete' && r.hasScript && r.hasPptText) return false;
+          return true;
+        });
+        document.getElementById('tbody').innerHTML=rows.map(r=>`<tr>
+          <td>${esc(r.username)}</td><td><strong>${esc(r.name||r.lessonTitle||r.id)}</strong></td>
+          <td>${r.published?'已发布':'未发布'}</td>
+          <td>${r.hasPptText?'课件':'缺课件'} / ${r.hasScript?'讲稿':'缺讲稿'}</td>
+          <td>${r.learningRecordCount||0}</td><td>${esc(fmt(r.updatedAt))}</td>
+        </tr>`).join('')||'<tr><td colspan="6">没有符合条件的项目</td></tr>';
+      }
+      document.getElementById('q').oninput=render;
+      document.getElementById('pubFilter').onchange=render;
+      render();
+    })();
+  </script>
+</body>
+</html>

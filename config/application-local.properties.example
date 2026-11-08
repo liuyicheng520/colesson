@@ -1,0 +1,6 @@
+﻿app.mysql.username=root
+app.mysql.password=
+# Optional AI key for teacher PPT/lecture generation (host Spring side)
+AI_API_KEY=
+AI_API_URL=https://ark.cn-beijing.volces.com/api/v3/chat/completions
+AI_MODEL_ENDPOINT=

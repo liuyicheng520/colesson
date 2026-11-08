@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理员账号 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .layout{display:grid;grid-template-columns:360px 1fr;gap:14px}
+    .panel{padding:18px;border-radius:18px;display:grid;gap:12px}
+    .panel h3{font-size:17px;font-weight:800}
+    .field{display:grid;gap:6px}.field label{font-size:12px;font-weight:700;color:var(--sub)}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}
+    .hint{padding:12px;border-radius:12px;background:var(--brand-soft);border:1px solid #bfdbfe;color:var(--sub);font-size:13px;line-height:1.7}
+    @media(max-width:980px){.layout{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">管理员账号</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">超级管理员可添加运维/内容管理员，支持多人协作。</p>
+        </div>
+      </section>
+      <section class="layout">
+        <div class="card panel">
+          <h3>添加管理员</h3>
+          <div class="hint">级别说明：超级=全部权限；运维=账号与重置；内容=内容监管为主。</div>
+          <div class="field"><label>账号</label><input id="username" type="text" /></div>
+          <div class="field"><label>密码</label><input id="password" type="text" placeholder="至少 6 位" /></div>
+          <div class="field"><label>管理员级别</label>
+            <select id="adminLevel">
+              <option value="ops">运维管理员</option>
+              <option value="content">内容管理员</option>
+              <option value="super">超级管理员</option>
+            </select>
+          </div>
+          <button class="btn" id="createBtn" type="button">创建管理员</button>
+          <div id="msg" class="muted" style="font-size:13px;min-height:20px;"></div>
+        </div>
+        <div class="card panel">
+          <h3>管理员列表</h3>
+          <div style="overflow:auto">
+            <table class="table">
+              <thead><tr><th>账号</th><th>级别</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('admins');
+      const levelMap={super:'超级管理员',ops:'运维管理员',content:'内容管理员'};
+      async function api(url,opts){
+        const res=await fetch(url,Object.assign({credentials:'same-origin',headers:{'Content-Type':'application/json'}},opts||{}));
+        const payload=await res.json();
+        if(payload.code!==0) throw new Error(payload.message||'失败');
+        return payload.data;
+      }
+      function esc(v){return String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+      async function load(){
+        const data=await api('/admin-api/users?role=admin');
+        const rows=(data.users||[]).filter(u=>(u.roles||[]).includes('admin'));
+        document.getElementById('tbody').innerHTML=rows.map(u=>`<tr>
+          <td><strong>${esc(u.username)}</strong></td>
+          <td>${esc(levelMap[u.adminLevel]||u.adminLevel||'运维管理员')}</td>
+          <td>${u.disabled?'已禁用':'正常'}</td>
+          <td>
+            <button class="btn ghost" data-reset="${esc(u.username)}" type="button">重置密码</button>
+            <button class="btn ghost" data-level="${esc(u.username)}" type="button">设为运维</button>
+          </td></tr>`).join('')||'<tr><td colspan="4">暂无管理员</td></tr>';
+        document.querySelectorAll('[data-reset]').forEach(btn=>{
+          btn.onclick=async()=>{
+            try{const d=await api('/admin-api/users/'+encodeURIComponent(btn.dataset.reset)+'/reset-password',{method:'POST',body:'{}'});alert('临时密码：'+d.tempPassword);}catch(e){alert(e.message);}
+          };
+        });
+        document.querySelectorAll('[data-level]').forEach(btn=>{
+          btn.onclick=async()=>{
+            try{await api('/admin-api/users/'+encodeURIComponent(btn.dataset.level)+'/update',{method:'POST',body:JSON.stringify({adminLevel:'ops',roles:['admin']})});load();}catch(e){alert(e.message);}
+          };
+        });
+      }
+      document.getElementById('createBtn').onclick=async()=>{
+        const msg=document.getElementById('msg');
+        try{
+          await api('/admin-api/users',{method:'POST',body:JSON.stringify({
+            username:document.getElementById('username').value.trim(),
+            password:document.getElementById('password').value.trim(),
+            roles:['admin'],
+            adminLevel:document.getElementById('adminLevel').value
+          })});
+          msg.className='msg-ok';msg.textContent='创建成功';
+          document.getElementById('username').value='';
+          document.getElementById('password').value='';
+          load();
+        }catch(e){msg.className='msg-err';msg.textContent=e.message;}
+      };
+      await load();
+    })();
+  </script>
+</body>
+</html>

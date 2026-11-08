@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理首页 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+    .stat { position:relative; padding:16px 16px 16px 18px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.94); box-shadow:var(--shadow-soft); display:grid; gap:4px; overflow:hidden; }
+    .stat::before { content:""; position:absolute; left:0; top:12px; bottom:12px; width:3px; border-radius:999px; background:#1f66ff; }
+    .stat:nth-child(n+5)::before { background:#c45c26; }
+    .stat strong { font-size:26px; color:var(--brand-strong); font-family:var(--font-display); letter-spacing:-0.03em; }
+    .stat span { font-size:12px; color:var(--sub); font-weight:650; }
+    .grid2 { display:grid; grid-template-columns:1.2fr .8fr; gap:14px; }
+    .panel { padding:18px; border-radius:18px; display:grid; gap:12px; }
+    .panel h3 { font-size:17px; font-weight:800; }
+    .quick { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .quick a { display:grid; gap:4px; padding:14px 14px 14px 16px; border-radius:14px; border:1px solid var(--line); background:linear-gradient(180deg,#fff,#f7faff); color:inherit; text-decoration:none; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+    .quick a:hover { transform:translateY(-2px); border-color:#9bc5bf; box-shadow:var(--shadow-soft); }
+    .quick b { font-size:14px; }
+    .quick span { font-size:12px; color:var(--sub); line-height:1.5; }
+    .level { display:inline-flex; border-radius:999px; padding:4px 9px; font-size:12px; font-weight:700; background:var(--brand-soft); color:var(--brand-strong); border:1px solid #bfdbfe; }
+    .todo { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .todo a { display:grid; gap:4px; padding:14px 16px; border-radius:16px; border:1px solid #f0d3b4; background:#fff8f1; color:inherit; text-decoration:none; }
+    .todo strong { font-size:22px; color:#8a4b16; }
+    .todo span { font-size:12px; color:var(--sub); }
+    @media (max-width:980px){ .stats,.grid2,.quick,.todo{grid-template-columns:1fr;} }
+    .table { width:100%; border-collapse:collapse; font-size:13px; }
+    .table th,.table td { padding:10px 8px; border-bottom:1px solid var(--line); text-align:left; }
+    .table th { color:var(--sub); font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">管理控制台</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">独立于教师端：账号治理、密码重置、内容监管与运维审计。</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span class="level" id="adminLevelTag">管理员</span>
+          <a class="btn ghost" href="/admin/console" style="border-color:rgba(34,211,238,.6);color:#0e7490;">CONSOLE 可视化</a>
+          <a class="btn" id="ctaResets" href="/admin/resets.html">处理重置申请</a>
+          <a class="btn ghost" id="ctaContent" href="/admin/content.html">内容监管</a>
+        </div>
+      </section>
+
+      <section class="stats" id="stats">
+        <div class="stat"><strong id="sUsers">-</strong><span>全部账号</span></div>
+        <div class="stat"><strong id="sTeachers">-</strong><span>教师</span></div>
+        <div class="stat"><strong id="sStudents">-</strong><span>学生</span></div>
+        <div class="stat"><strong id="sAdmins">-</strong><span>管理员</span></div>
+        <div class="stat"><strong id="sProjects">-</strong><span>课程项目</span></div>
+        <div class="stat"><strong id="sPublished">-</strong><span>已发布智课</span></div>
+        <div class="stat"><strong id="sLearning">-</strong><span>学习记录</span></div>
+        <div class="stat"><strong id="sResets">-</strong><span>待处理重置</span></div>
+      </section>
+
+      <section class="todo" id="todoBox"></section>
+
+      <section class="grid2">
+        <div class="card panel">
+          <h3>按职责进入</h3>
+          <div class="quick" id="quickLinks"></div>
+        </div>
+        <div class="card panel">
+          <h3 id="sideTitle">最近学习动态</h3>
+          <div id="learningBox" class="muted">加载中…</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function () {
+      if (!window.AppStore) { location.href = '/admin/login'; return; }
+      const ok = await window.AppStore.requireRole(['admin'], { loginRole: 'admin' });
+      if (!ok) return;
+      window.AppStore.mountNav('home');
+      const me = window.AppStore.currentUser() || {};
+      const level = me.adminLevel || 'ops';
+      const levelMap = { super: '超级管理员', ops: '运维管理员', content: '内容管理员' };
+      document.getElementById('adminLevelTag').textContent = levelMap[level] || '管理员';
+      const accountOps = level === 'super' || level === 'ops';
+      if (!accountOps) {
+        document.getElementById('ctaResets').style.display = 'none';
+      }
+
+      const links = [];
+      if (accountOps) {
+        links.push(['/admin/users.html', '师生账号', '创建、禁用、直接重置密码']);
+        links.push(['/admin/resets.html', '重置队列', '审核师生提交的重置申请']);
+      }
+      links.push(['/admin/content.html', '内容监管', '看项目是否发布、讲稿是否齐全']);
+      links.push(['/admin/audit.html', '操作审计', '管理员关键操作留痕']);
+      if (level === 'super') {
+        links.push(['/admin/admins.html', '管理员账号', '添加运维 / 内容管理员']);
+      }
+      document.getElementById('quickLinks').innerHTML = links.map(function (item) {
+        return '<a href="' + item[0] + '"><b>' + item[1] + '</b><span>' + item[2] + '</span></a>';
+      }).join('');
+
+      try {
+        const payload = await fetch('/admin-api/overview', { credentials: 'same-origin' }).then(r => r.json());
+        if (payload.code !== 0) throw new Error(payload.message || '加载失败');
+        const s = payload.data.summary || {};
+        document.getElementById('sUsers').textContent = s.userCount ?? 0;
+        document.getElementById('sTeachers').textContent = s.teacherCount ?? 0;
+        document.getElementById('sStudents').textContent = s.studentCount ?? 0;
+        document.getElementById('sAdmins').textContent = s.adminCount ?? 0;
+        document.getElementById('sProjects').textContent = s.projectCount ?? 0;
+        document.getElementById('sPublished').textContent = s.publishedCount ?? 0;
+        document.getElementById('sLearning').textContent = s.learningRecordCount ?? 0;
+        document.getElementById('sResets').textContent = s.pendingResetCount ?? 0;
+        const todos = [];
+        if (accountOps) {
+          todos.push('<a href="/admin/resets.html"><strong>' + (s.pendingResetCount || 0) + '</strong><span>待处理密码重置</span></a>');
+          todos.push('<a href="/admin/users.html"><strong>' + (s.disabledCount || 0) + '</strong><span>已禁用账号</span></a>');
+        } else {
+          todos.push('<a href="/admin/content.html"><strong>' + ((s.projectCount || 0) - (s.publishedCount || 0)) + '</strong><span>未发布项目</span></a>');
+          todos.push('<a href="/admin/content.html"><strong>' + (s.publishedCount || 0) + '</strong><span>已发布智课</span></a>');
+        }
+        document.getElementById('todoBox').innerHTML = todos.join('');
+        const rows = payload.data.recentLearningRecords || [];
+        document.getElementById('learningBox').innerHTML = rows.length ? `
+          <table class="table"><thead><tr><th>学生</th><th>课程</th><th>进度</th><th>时间</th></tr></thead>
+          <tbody>${rows.slice(0,8).map(r => `<tr>
+            <td>${esc(r.learnerUsername)}</td><td>${esc(r.projectName)}</td>
+            <td>${Number(r.progressPercent||0).toFixed(0)}%</td>
+            <td>${esc(fmt(r.createdAt))}</td></tr>`).join('')}</tbody></table>` : '<div class="muted">暂无学习动态</div>';
+      } catch (e) {
+        document.getElementById('learningBox').textContent = e.message || '加载失败';
+      }
+
+      function esc(v){ return String(v||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+      function fmt(v){ if(!v) return '--'; const d=new Date(v); return Number.isNaN(d.getTime())?v:d.toLocaleString('zh-CN',{hour12:false}); }
+    })();
+  </script>
+</body>
+</html>

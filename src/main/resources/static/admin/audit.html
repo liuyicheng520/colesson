@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>操作审计 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .panel{padding:18px;border-radius:18px}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">操作审计</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">记录管理员创建账号、重置密码、处理申请等关键动作。</p>
+        </div>
+        <button class="btn ghost" id="refreshBtn" type="button">刷新</button>
+      </section>
+      <section class="card panel">
+        <div style="overflow:auto">
+          <table class="table">
+            <thead><tr><th>时间</th><th>操作者</th><th>动作</th><th>对象</th><th>详情</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('audit');
+      const actionMap={create_user:'创建账号',update_user:'更新账号',reset_password:'重置密码',approve_reset_request:'通过重置申请',reject_reset_request:'驳回重置申请'};
+      async function load(){
+        const res=await fetch('/admin-api/audits?limit=100',{credentials:'same-origin'});
+        const payload=await res.json();
+        if(payload.code!==0){document.getElementById('tbody').innerHTML='<tr><td colspan="5">'+(payload.message||'加载失败')+'</td></tr>';return;}
+        const esc=v=>String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+        const fmt=v=>{if(!v)return'--';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString('zh-CN',{hour12:false});};
+        const items=payload.data.items||[];
+        document.getElementById('tbody').innerHTML=items.map(i=>`<tr>
+          <td>${esc(fmt(i.createdAt))}</td><td>${esc(i.actor)}</td>
+          <td>${esc(actionMap[i.action]||i.action)}</td><td>${esc(i.target)}</td><td>${esc(i.detail)}</td>
+        </tr>`).join('')||'<tr><td colspan="5">暂无审计记录</td></tr>';
+      }
+      document.getElementById('refreshBtn').onclick=load;
+      await load();
+    })();
+  </script>
+</body>
+</html>

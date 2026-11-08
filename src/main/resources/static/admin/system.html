@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>系统运维 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .panel{padding:18px;border-radius:18px;display:grid;gap:10px}
+    .panel h3{font-size:17px;font-weight:800}
+    .item{padding:12px;border:1px solid var(--line);border-radius:12px;background:#f7faff}
+    .item strong{display:block;margin-bottom:4px}
+    .item span{color:var(--sub);font-size:13px;line-height:1.6}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">系统运维</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">接口说明不进主导航。日常操作请回管理首页、账号治理或内容监管。</p>
+        </div>
+      </section>
+      <section class="grid">
+        <div class="card panel">
+          <h3>核心服务入口</h3>
+          <div class="item"><strong>管理首页</strong><span>平台账号、发布与重置申请总览。</span><div style="margin-top:8px"><a class="btn ghost" href="/admin/home.html">打开</a></div></div>
+          <div class="item"><strong>账号治理</strong><span>师生账号创建、禁用、重置密码。</span><div style="margin-top:8px"><a class="btn ghost" href="/admin/users.html">打开</a></div></div>
+          <div class="item"><strong>密码重置队列</strong><span>处理用户提交的重置申请。</span><div style="margin-top:8px"><a class="btn ghost" href="/admin/resets.html">打开</a></div></div>
+        </div>
+        <div class="card panel">
+          <h3>接口与说明</h3>
+          <div class="item"><strong>管理概览 API</strong><span><code>GET /admin-api/overview</code></span></div>
+          <div class="item"><strong>用户管理 API</strong><span><code>/admin-api/users</code> 创建、更新、重置密码</span></div>
+          <div class="item"><strong>重置申请 API</strong><span><code>/admin-api/password-resets</code> 与公开 <code>POST /auth/password-reset-request</code></span></div>
+          <div class="item"><strong>旧版运营看板</strong><span>仅保留只读参考，不再作为管理主入口。</span><div style="margin-top:8px"><a class="btn ghost" href="/metrics.html">查看旧看板</a></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('system');
+    })();
+  </script>
+</body>
+</html>

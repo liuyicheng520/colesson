@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账号管理 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .layout{display:grid;grid-template-columns:1fr;gap:14px;align-items:stretch}
+    .create-row{display:grid;grid-template-columns:1.1fr 1fr auto auto;gap:12px;align-items:end}
+    .panel{padding:18px;border-radius:18px;display:grid;gap:12px;height:100%}
+    .panel h3{font-size:17px;font-weight:800}
+    .field{display:grid;gap:6px}.field label{font-size:12px;font-weight:700;color:var(--sub)}
+    .roles{display:flex;gap:8px;flex-wrap:wrap;min-height:42px;align-items:center}
+    .roles label{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--text)}
+    .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .tools input,.tools select{width:auto;min-width:140px}
+    .table-wrap{overflow:auto;max-height:min(68vh,720px);border:1px solid var(--line);border-radius:14px}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .table th{background:#f7faff;color:var(--sub);font-size:12px;position:sticky;top:0;z-index:1}
+    .tag-warn{background:var(--accent-soft);color:#8a4b16;border-color:#f5d0b0}
+    .actions{display:flex;gap:6px;flex-wrap:wrap}
+    .msg{min-height:20px;font-size:13px}
+    @media(max-width:980px){.create-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">账号管理</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">只管教师和学生账号。管理员账号在「管理员」页，重置申请在「重置队列」。</p>
+        </div>
+        <a class="btn" href="/admin/resets.html">打开重置队列</a>
+      </section>
+      <section class="card panel">
+        <h3>创建账号</h3>
+        <div class="create-row">
+          <div class="field"><label>账号</label><input id="newUser" type="text" placeholder="登录用户名" /></div>
+          <div class="field"><label>初始密码</label><input id="newPass" type="text" placeholder="至少 6 位" /></div>
+          <div class="field"><label>角色</label>
+            <div class="roles">
+              <label><input type="checkbox" value="teacher" checked /> 教师</label>
+              <label><input type="checkbox" value="student" /> 学生</label>
+            </div>
+          </div>
+          <button class="btn" id="createBtn" type="button">创建账号</button>
+        </div>
+        <div id="createMsg" class="msg muted"></div>
+      </section>
+      <section class="card panel">
+          <div class="tools">
+            <input id="q" type="search" placeholder="搜索账号…" />
+            <select id="roleFilter">
+              <option value="all">全部角色</option>
+              <option value="teacher">教师</option>
+              <option value="student">学生</option>
+            </select>
+            <select id="statusFilter">
+              <option value="all">全部状态</option>
+              <option value="active">正常</option>
+              <option value="disabled">已禁用</option>
+            </select>
+            <button class="btn ghost" id="refreshBtn" type="button">刷新</button>
+          </div>
+          <div id="listMsg" class="msg muted"></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>账号</th><th>角色</th><th>状态</th><th>最近登录</th><th>操作</th></tr></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('users');
+
+      async function api(url, opts){
+        const res=await fetch(url,Object.assign({credentials:'same-origin',headers:{'Content-Type':'application/json'}},opts||{}));
+        const payload=await res.json();
+        if(payload.code!==0) throw new Error(payload.message||'请求失败');
+        return payload.data;
+      }
+      function esc(v){return String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+      function fmt(v){if(!v)return '--';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString('zh-CN',{hour12:false});}
+      function roleText(roles){return (roles||[]).map(r=>r==='teacher'?'教师':r==='student'?'学生':r==='admin'?'管理员':r).join('、');}
+
+      async function load(){
+        const role=document.getElementById('roleFilter').value;
+        const q=document.getElementById('q').value.trim();
+        const data=await api('/admin-api/users?role='+encodeURIComponent(role)+'&q='+encodeURIComponent(q));
+        const rows=(data.users||[]).filter(u=>{
+          const roles=u.roles||[];
+          if(role==='teacher') return roles.includes('teacher');
+          if(role==='student') return roles.includes('student');
+          if(!(roles.includes('teacher')||roles.includes('student'))) return false;
+          const status=document.getElementById('statusFilter').value;
+          if(status==='disabled') return !!u.disabled;
+          if(status==='active') return !u.disabled;
+          return true;
+        });
+        document.getElementById('tbody').innerHTML=rows.map(u=>`<tr>
+          <td><strong>${esc(u.username)}</strong></td>
+          <td>${esc(roleText(u.roles))}</td>
+          <td>${u.disabled?'<span class="tag tag-warn">已禁用</span>':'<span class="tag">正常</span>'}</td>
+          <td>${esc(fmt(u.loginAt))}</td>
+          <td class="actions">
+            <button class="btn ghost" data-reset="${esc(u.username)}" type="button">重置密码</button>
+            <button class="btn ghost" data-toggle="${esc(u.username)}" data-disabled="${u.disabled?1:0}" type="button">${u.disabled?'启用':'禁用'}</button>
+          </td></tr>`).join('')||'<tr><td colspan="5" class="muted">暂无账号</td></tr>';
+        document.getElementById('listMsg').textContent='共 '+rows.length+' 个账号';
+        bindRowActions();
+      }
+
+      function bindRowActions(){
+        document.querySelectorAll('[data-reset]').forEach(btn=>{
+          btn.onclick=async()=>{
+            if(!confirm('确认重置账号 '+btn.dataset.reset+' 的密码？'))return;
+            try{
+              const data=await api('/admin-api/users/'+encodeURIComponent(btn.dataset.reset)+'/reset-password',{method:'POST',body:'{}'});
+              alert('已重置。临时密码：'+data.tempPassword);
+              window.AppStore.toast('密码已重置','ok');
+            }catch(e){alert(e.message);}
+          };
+        });
+        document.querySelectorAll('[data-toggle]').forEach(btn=>{
+          btn.onclick=async()=>{
+            const disabled=btn.dataset.disabled!=='1';
+            try{
+              await api('/admin-api/users/'+encodeURIComponent(btn.dataset.toggle)+'/update',{method:'POST',body:JSON.stringify({disabled})});
+              window.AppStore.toast(disabled?'已禁用':'已启用','ok');
+              load();
+            }catch(e){alert(e.message);}
+          };
+        });
+      }
+
+      document.getElementById('createBtn').onclick=async()=>{
+        const username=document.getElementById('newUser').value.trim();
+        const password=document.getElementById('newPass').value.trim();
+        const roles=[...document.querySelectorAll('.roles input:checked')].map(i=>i.value);
+        const msg=document.getElementById('createMsg');
+        try{
+          await api('/admin-api/users',{method:'POST',body:JSON.stringify({username,password,roles})});
+          msg.className='msg msg-ok'; msg.textContent='创建成功';
+          document.getElementById('newUser').value='';
+          document.getElementById('newPass').value='';
+          load();
+        }catch(e){msg.className='msg msg-err'; msg.textContent=e.message;}
+      };
+      document.getElementById('refreshBtn').onclick=load;
+      document.getElementById('roleFilter').onchange=load;
+      document.getElementById('statusFilter').onchange=load;
+      document.getElementById('q').oninput=()=>{clearTimeout(window.__q);window.__q=setTimeout(load,250);};
+      await load();
+    })();
+  </script>
+</body>
+</html>

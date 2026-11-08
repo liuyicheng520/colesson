@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>密码重置申请 - 智课共生</title>
+  <link rel="stylesheet" href="/app.css?v=20261104c" />
+  <style>
+    .panel{padding:18px;border-radius:18px;display:grid;gap:12px;margin-bottom:14px}
+    .tools{display:flex;gap:8px;flex-wrap:wrap}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .actions{display:flex;gap:6px;flex-wrap:wrap}
+    .public-box{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}
+    .field{display:grid;gap:6px}.field label{font-size:12px;font-weight:700;color:var(--sub)}
+    @media(max-width:900px){.public-box{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header id="sideNav" class="nav" role="banner"></header>
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <div class="brand-title">密码重置申请</div>
+          <p class="muted" style="margin-top:6px;line-height:1.7;">审核师生提交的重置申请；也可代为登记申请。</p>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <h3 style="font-size:16px;font-weight:800;">代登记申请</h3>
+        <div class="public-box">
+          <div class="field"><label>账号</label><input id="reqUser" type="text" /></div>
+          <div class="field"><label>身份提示</label>
+            <select id="reqRole"><option value="student">学生</option><option value="teacher">教师</option></select>
+          </div>
+          <div class="field"><label>原因 / 联系方式</label><input id="reqReason" type="text" placeholder="如：忘记密码，联系微信 xxx" /></div>
+          <button class="btn" id="submitReq" type="button">提交申请</button>
+        </div>
+        <div id="reqMsg" class="muted" style="font-size:13px;"></div>
+      </section>
+
+      <section class="card panel">
+        <div class="tools">
+          <select id="statusFilter">
+            <option value="pending">待处理</option>
+            <option value="done">已通过</option>
+            <option value="rejected">已驳回</option>
+            <option value="all">全部</option>
+          </select>
+          <button class="btn ghost" id="refreshBtn" type="button">刷新</button>
+        </div>
+        <div style="overflow:auto">
+          <table class="table">
+            <thead><tr><th>账号</th><th>身份</th><th>原因</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js?v=20261104c"></script>
+  <script>
+    (async function(){
+      if(!window.AppStore){location.href='/admin/login';return;}
+      const ok=await window.AppStore.requireRole(['admin'],{loginRole:'admin'});
+      if(!ok)return;
+      window.AppStore.mountNav('resets');
+      async function api(url,opts){
+        const res=await fetch(url,Object.assign({credentials:'same-origin',headers:{'Content-Type':'application/json'}},opts||{}));
+        const payload=await res.json();
+        if(payload.code!==0) throw new Error(payload.message||'失败');
+        return payload.data;
+      }
+      function esc(v){return String(v||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+      function fmt(v){if(!v)return '--';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString('zh-CN',{hour12:false});}
+      const statusMap={pending:'待处理',done:'已通过',rejected:'已驳回'};
+      async function load(){
+        const status=document.getElementById('statusFilter').value;
+        const data=await api('/admin-api/password-resets?status='+encodeURIComponent(status));
+        const items=data.items||[];
+        document.getElementById('tbody').innerHTML=items.map(item=>`<tr>
+          <td><strong>${esc(item.username)}</strong></td>
+          <td>${esc(item.roleHint||'-')}</td>
+          <td>${esc((item.reason||'')+(item.contact?' / '+item.contact:''))}</td>
+          <td>${esc(statusMap[item.status]||item.status)}${item.tempPassword?'<div class="muted">临时密码：'+esc(item.tempPassword)+'</div>':''}</td>
+          <td>${esc(fmt(item.createdAt))}</td>
+          <td class="actions">${item.status==='pending'?`
+            <button class="btn" data-approve="${esc(item.id)}" type="button">通过并重置</button>
+            <button class="btn ghost" data-reject="${esc(item.id)}" type="button">驳回</button>`:'—'}</td>
+        </tr>`).join('')||'<tr><td colspan="6">暂无申请</td></tr>';
+        document.querySelectorAll('[data-approve]').forEach(btn=>{
+          btn.onclick=async()=>{
+            try{
+              const d=await api('/admin-api/password-resets/'+btn.dataset.approve+'/resolve',{method:'POST',body:JSON.stringify({action:'approve'})});
+              alert('已重置。临时密码：'+(d.item&&d.item.tempPassword||''));
+              load();
+            }catch(e){alert(e.message);}
+          };
+        });
+        document.querySelectorAll('[data-reject]').forEach(btn=>{
+          btn.onclick=async()=>{
+            try{await api('/admin-api/password-resets/'+btn.dataset.reject+'/resolve',{method:'POST',body:JSON.stringify({action:'reject'})});load();}catch(e){alert(e.message);}
+          };
+        });
+      }
+      document.getElementById('submitReq').onclick=async()=>{
+        const msg=document.getElementById('reqMsg');
+        try{
+          await fetch('/auth/password-reset-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+            username:document.getElementById('reqUser').value.trim(),
+            roleHint:document.getElementById('reqRole').value,
+            reason:document.getElementById('reqReason').value.trim(),
+            contact:''
+          })}).then(async r=>{const p=await r.json();if(p.code!==0)throw new Error(p.message||'失败');});
+          msg.className='msg-ok';msg.textContent='申请已登记';
+          load();
+        }catch(e){msg.className='msg-err';msg.textContent=e.message;}
+      };
+      document.getElementById('refreshBtn').onclick=load;
+      document.getElementById('statusFilter').onchange=load;
+      await load();
+    })();
+  </script>
+</body>
+</html>

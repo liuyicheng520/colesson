@@ -1,0 +1,93 @@
+/* 学生端新首页顶栏与落地页的轻量收口，不改业务结构 */
+.student-layout .top-nav {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(16px) saturate(1.15);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04) !important;
+}
+
+.student-layout .nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.student-layout .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.02em;
+}
+
+.student-layout .logo::before {
+  content: "学";
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: #fff;
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.28);
+}
+
+.student-layout .top-menu .el-menu-item {
+  margin: 0 2px;
+  border-radius: 999px;
+  border-bottom: none !important;
+  font-size: 13px;
+}
+
+.student-layout .top-menu .el-menu-item.is-active {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+}
+
+.student-layout .nav-actions .header-user {
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 4px 10px 4px 4px;
+  background: #fff;
+}
+
+.home-landing .hero {
+  padding-top: 72px !important;
+  padding-bottom: 64px !important;
+}
+
+.home-landing .feature-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.home-landing .feature-card:hover {
+  transform: translateY(-3px);
+}
+
+.student-layout.has-pointer .home-landing {
+  background-image: radial-gradient(520px circle at var(--mx, 70%) var(--my, 20%), rgba(37, 99, 235, 0.12), transparent 58%);
+}
+
+.student-layout .feature-card,
+.student-layout .stat-card,
+.student-layout .el-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.student-layout .feature-card::after,
+.student-layout .el-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(180px circle at var(--gx, 50%) var(--gy, 40%), rgba(255, 255, 255, 0.45), transparent 62%);
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.student-layout .feature-card:hover::after,
+.student-layout .el-card:hover::after {
+  opacity: 1;
+}
+

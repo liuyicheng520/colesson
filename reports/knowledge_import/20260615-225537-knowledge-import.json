@@ -1,0 +1,184 @@
+{
+  "import" : {
+    "documentCount" : 23,
+    "chunkCount" : 2119,
+    "evaluationCaseCount" : 14,
+    "warnings" : [ ]
+  },
+  "stats" : {
+    "documentCount" : 23,
+    "chunkCount" : 2119,
+    "courses" : [ {
+      "courseCode" : "computer_network",
+      "documentCount" : 3,
+      "chunkCount" : 1042,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "data_structure",
+      "documentCount" : 6,
+      "chunkCount" : 26,
+      "averageQuality" : 92.0
+    }, {
+      "courseCode" : "database",
+      "documentCount" : 4,
+      "chunkCount" : 590,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "java",
+      "documentCount" : 5,
+      "chunkCount" : 359,
+      "averageQuality" : 100.0
+    }, {
+      "courseCode" : "operating_system",
+      "documentCount" : 5,
+      "chunkCount" : 102,
+      "averageQuality" : 100.0
+    } ]
+  },
+  "evaluation" : {
+    "caseCount" : 14,
+    "passedCount" : 14,
+    "passRate" : 100.0,
+    "items" : [ {
+      "caseId" : "eval_net_http_code",
+      "courseCode" : "computer_network",
+      "questionType" : "code",
+      "question" : "HTTP GET 和 POST 方法的语义有什么区别？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "GET", "method" ],
+      "topScore" : 42.85,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9110.html"
+    }, {
+      "caseId" : "eval_net_tcp_concept",
+      "courseCode" : "computer_network",
+      "questionType" : "concept",
+      "question" : "TCP 为什么需要 sequence number 和 acknowledgment？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "sequence number", "acknowledgment", "TCP" ],
+      "topScore" : 41.05,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9293.html"
+    }, {
+      "caseId" : "eval_net_tcp_debug",
+      "courseCode" : "computer_network",
+      "questionType" : "debug",
+      "question" : "TCP 报文丢失后为什么会触发 retransmission 重传？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "retransmission", "timeout", "segment" ],
+      "topScore" : 16.33,
+      "topSource" : "https://www.rfc-editor.org/rfc/rfc9293.html"
+    }, {
+      "caseId" : "eval_ds_hash_debug",
+      "courseCode" : "data_structure",
+      "questionType" : "debug",
+      "question" : "哈希表发生 collision 冲突时为什么不能直接覆盖原记录？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "hash" ],
+      "topScore" : 24.95,
+      "topSource" : "https://github.com/OpenDSA/OpenDSA/blob/4085e0b971bc3de390e4d310d5b9e9cf2c54178e/RST/en/Hashing/HashIntro.rst"
+    }, {
+      "caseId" : "eval_ds_stack_concept",
+      "courseCode" : "data_structure",
+      "questionType" : "concept",
+      "question" : "栈为什么被称为 LIFO 数据结构？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "LIFO", "last-in", "stack" ],
+      "topScore" : 47.61,
+      "topSource" : "https://github.com/OpenDSA/OpenDSA/blob/4085e0b971bc3de390e4d310d5b9e9cf2c54178e/RST/en/List/StackArray.rst"
+    }, {
+      "caseId" : "eval_db_ddl_code",
+      "courseCode" : "database",
+      "questionType" : "code",
+      "question" : "SQL 创建表时如何声明 primary key 和 foreign key 约束？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "PRIMARY KEY", "FOREIGN KEY" ],
+      "topScore" : 40.31,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/ddl.sgml"
+    }, {
+      "caseId" : "eval_db_join_debug",
+      "courseCode" : "database",
+      "questionType" : "debug",
+      "question" : "SQL JOIN 后出现重复行，应该检查哪些连接条件？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "JOIN" ],
+      "topScore" : 27.24,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/queries.sgml"
+    }, {
+      "caseId" : "eval_db_mvcc_concept",
+      "courseCode" : "database",
+      "questionType" : "concept",
+      "question" : "PostgreSQL MVCC 的 snapshot 快照如何影响事务可见性？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "snapshot", "MVCC", "transaction" ],
+      "topScore" : 41.85,
+      "topSource" : "https://github.com/postgres/postgres/blob/e0511883cae27ec70834c52bbde1863aa11d81e1/doc/src/sgml/mvcc.sgml"
+    }, {
+      "caseId" : "eval_java_arraylist_code",
+      "courseCode" : "java",
+      "questionType" : "code",
+      "question" : "Java ArrayList 的 grow 扩容方法在什么情况下被调用？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "grow", "capacity", "ArrayList" ],
+      "topScore" : 34.46,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/ArrayList.java"
+    }, {
+      "caseId" : "eval_java_hashmap_debug",
+      "courseCode" : "java",
+      "questionType" : "debug",
+      "question" : "HashMap get 返回 null 时，如何判断是键不存在还是值本身为 null？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "containsKey", "null", "get" ],
+      "topScore" : 21.33,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/HashMap.java"
+    }, {
+      "caseId" : "eval_java_optional_concept",
+      "courseCode" : "java",
+      "questionType" : "concept",
+      "question" : "Java Optional 的 orElse 和 orElseGet 有什么使用语义？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "orElse", "orElseGet", "Optional" ],
+      "topScore" : 32.58,
+      "topSource" : "https://github.com/openjdk/jdk/blob/841e28822200103088c04d07b551537630ea79c4/src/java.base/share/classes/java/util/Optional.java"
+    }, {
+      "caseId" : "eval_os_cfs_concept",
+      "courseCode" : "operating_system",
+      "questionType" : "concept",
+      "question" : "Linux CFS 调度器中的 virtual runtime 有什么作用？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "virtual runtime", "vruntime", "CFS" ],
+      "topScore" : 46.87,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/scheduler/sched-design-CFS.rst"
+    }, {
+      "caseId" : "eval_os_memory_code",
+      "courseCode" : "operating_system",
+      "questionType" : "code",
+      "question" : "Linux 内核分配内存时 GFP_KERNEL 和 GFP_ATOMIC 应如何选择？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "GFP_KERNEL", "GFP_ATOMIC", "allocation" ],
+      "topScore" : 34.06,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/core-api/memory-allocation.rst"
+    }, {
+      "caseId" : "eval_os_mutex_debug",
+      "courseCode" : "operating_system",
+      "questionType" : "debug",
+      "question" : "Linux mutex contention 竞争严重时锁的 fastpath 和 slowpath 如何工作？",
+      "passed" : true,
+      "sourceMatched" : true,
+      "matchedKeywords" : [ "fastpath", "slowpath" ],
+      "topScore" : 33.06,
+      "topSource" : "https://github.com/torvalds/linux/blob/186d3c4e92242351afc24d9784f31cb4cd08a4b7/Documentation/locking/mutex-design.rst"
+    } ]
+  }
+}

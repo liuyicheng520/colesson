@@ -1,0 +1,223 @@
+{
+  "sample_size": 20,
+  "base_url": "http://localhost:8081",
+  "ok_count": 20,
+  "error_count": 0,
+  "ok_rate": 1.0,
+  "source_distribution": {
+    "dataset": 20,
+    "llm": 0,
+    "other": 0
+  },
+  "dataset_hit_rate": 1.0,
+  "dataset_answer_exact_rate": 1.0,
+  "top1_question_match_rate": 1.0,
+  "latency_ms": {
+    "avg": 56.18,
+    "p50": 55.42,
+    "p90": 62.56,
+    "max": 73.47
+  },
+  "details": [
+    {
+      "index": 1,
+      "question": "什么是系统的开环传递函数，什么是系统的闭环传递函数，当给定量和扰动量同时作用于系统时，如何计算系统的输出量？",
+      "latency_ms": 73.47,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是系统的开环传递函数，什么是系统的闭环传递函数，当给定量和扰动量同时作用于系统时，如何计算系统的输出量？"
+    },
+    {
+      "index": 2,
+      "question": "转轴弯扭组合疲劳寿命预测？",
+      "latency_ms": 56.62,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "转轴弯扭组合疲劳寿命预测？"
+    },
+    {
+      "index": 3,
+      "question": "应力与应变的概念有何区别？",
+      "latency_ms": 54.13,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "应力与应变的概念有何区别？"
+    },
+    {
+      "index": 4,
+      "question": "溴化锂吸收式制冷机中溴化锂水溶液是否在蒸发器和冷凝器中流动？",
+      "latency_ms": 62.56,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "溴化锂吸收式制冷机中溴化锂水溶液是否在蒸发器和冷凝器中流动？"
+    },
+    {
+      "index": 5,
+      "question": "X射线断层扫描测内部损伤？",
+      "latency_ms": 55.18,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "X射线断层扫描测内部损伤？"
+    },
+    {
+      "index": 6,
+      "question": "为何大跨悬索桥需设置中央扣？",
+      "latency_ms": 54.78,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何大跨悬索桥需设置中央扣？"
+    },
+    {
+      "index": 7,
+      "question": "红外热像法检测复合材料分层？",
+      "latency_ms": 55.42,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "红外热像法检测复合材料分层？"
+    },
+    {
+      "index": 8,
+      "question": "为何斜拉桥索塔需设置阻尼器？",
+      "latency_ms": 54.71,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "为何斜拉桥索塔需设置阻尼器？"
+    },
+    {
+      "index": 9,
+      "question": "涡旋式空气源热水机组中有哪些具体部件？",
+      "latency_ms": 58.54,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "涡旋式空气源热水机组中有哪些具体部件？"
+    },
+    {
+      "index": 10,
+      "question": "压杆初始缺陷敏感性实验？",
+      "latency_ms": 53.54,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆初始缺陷敏感性实验？"
+    },
+    {
+      "index": 11,
+      "question": "从元件的功能分类，控制元件主要包括哪些类型的元件",
+      "latency_ms": 58.06,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "从元件的功能分类，控制元件主要包括哪些类型的元件"
+    },
+    {
+      "index": 12,
+      "question": "单效或双效溴化锂吸收式制冷机在安装时至少需要连接哪些管路？",
+      "latency_ms": 64.51,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "单效或双效溴化锂吸收式制冷机在安装时至少需要连接哪些管路？"
+    },
+    {
+      "index": 13,
+      "question": "独立悬架的种类有哪些？",
+      "latency_ms": 51.74,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "独立悬架的种类有哪些？"
+    },
+    {
+      "index": 14,
+      "question": "多尺度分析",
+      "latency_ms": 48.44,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "多尺度分析"
+    },
+    {
+      "index": 15,
+      "question": "中国第一辆红旗牌轿车是哪一年生产的？",
+      "latency_ms": 56.05,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "中国第一辆红旗牌轿车是哪一年生产的？"
+    },
+    {
+      "index": 16,
+      "question": "如何计算材料的变形?",
+      "latency_ms": 51.93,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何计算材料的变形?"
+    },
+    {
+      "index": 17,
+      "question": "什么是岩石的Volterra蠕变积分？",
+      "latency_ms": 56.27,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "什么是岩石的Volterra蠕变积分？"
+    },
+    {
+      "index": 18,
+      "question": "如何验算偏心受压柱？",
+      "latency_ms": 50.51,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "如何验算偏心受压柱？"
+    },
+    {
+      "index": 19,
+      "question": "压杆的\"量子涨落\"效应假说？",
+      "latency_ms": 51.45,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "压杆的\"量子涨落\"效应假说？"
+    },
+    {
+      "index": 20,
+      "question": "空间桁架杆件拉压弯组合分析？",
+      "latency_ms": 55.68,
+      "ok": true,
+      "source": "dataset",
+      "hitScore": 250.0,
+      "error": null,
+      "top1_question": "空间桁架杆件拉压弯组合分析？"
+    }
+  ]
+}
