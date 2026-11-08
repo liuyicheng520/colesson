@@ -45,3 +45,13 @@ __pycache__/
 _hw_patch/
 data/admin-audit.json
 data/knowledge/.DS_Store
+.git-gh-token
+
+# 作品介绍文档生成工具：仅入库规格源码与生成器，派生物不入库
+.docx-intro/node_modules/
+.docx-intro/output.docx
+.docx-intro/output.pdf
+.docx-intro/v2_pages/
+.docx-intro/*.ps1
+.intro-imgs-jpg/
+.intro-manifest.json
