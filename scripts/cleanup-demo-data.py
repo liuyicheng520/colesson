@@ -6,6 +6,7 @@
 
 保留（演示承诺账号，见 仓库地址.txt）：
   lyc/admin123（超级管理员）、admin（管理员）、stu01~stu06（学生）
+  教师演示账号 teacher01/Demo2026（不存在时自动补建）
   项目 proj_ecd54394195c4c56873083095f52430e（机器学习入门）、知识库目录、管理审计日志
 移除：
   9 个 QA 账号（teacheck1/spalocal1/3/666/secfix1/teachreg1/stureg1/李元/uaudit01）
@@ -29,6 +30,8 @@ DATA = ROOT / "data"
 QA_ACCOUNTS = {"teacheck1", "spalocal1", "3", "666", "secfix1",
                "teachreg1", "stureg1", "李元", "uaudit01"}
 QA_CLASS_NAMES = {"软件测试", "QA测试班", "过期会话测试班", "过期会话班2"}
+TEACHER_DEMO = "teacher01"
+TEACHER_DEMO_PASSWORD = "Demo2026"
 
 
 def load(path):
@@ -69,6 +72,9 @@ def main():
     sessions = load(DATA / "auth-sessions.json")
     plan.append(("auth-sessions.json", f"清除 {len(sessions)} 个过期会话令牌"))
 
+    if TEACHER_DEMO not in users:
+        plan.append(("auth-users.json", f"补建教师演示账号 {TEACHER_DEMO}（密码 {TEACHER_DEMO_PASSWORD}）"))
+
     uploads = DATA / "homework-uploads"
     plan.append(("homework-uploads/", f"清除其中 QA 作业材料与提交文件（当前 {len(list(uploads.glob('*'))) if uploads.exists() else 0} 项）"))
 
@@ -86,6 +92,19 @@ def main():
 
     for k in drop_users:
         users.pop(k, None)
+
+    if TEACHER_DEMO not in users:
+        import bcrypt
+        users[TEACHER_DEMO] = {
+            "username": TEACHER_DEMO,
+            "passwordHash": bcrypt.hashpw(TEACHER_DEMO_PASSWORD.encode(), bcrypt.gensalt(rounds=10)).decode(),
+            "salt": "",
+            "passwordAlgo": "bcrypt",
+            "createdAt": time.strftime("%Y-%m-%dT%H:%M:%S.000000000Z", time.gmtime()),
+            "roles": ["teacher"],
+            "adminLevel": "",
+            "disabled": False,
+        }
     save(DATA / "auth-users.json", users)
 
     rooms["classes"] = keep_classes
