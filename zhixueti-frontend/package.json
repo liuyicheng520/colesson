@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && python scripts/sync-to-spring.py",
+    "typecheck": "vue-tsc --noEmit",
     "sync": "python scripts/sync-to-spring.py",
     "preview": "vite preview"
   },

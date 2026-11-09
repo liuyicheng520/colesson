@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -17,7 +17,7 @@ const logs = ref<ExceptionLogItem[]>([])
 const total = ref(0)
 const trendDays = ref<7 | 30>(7)
 const trendRef = ref<HTMLElement>()
-let trendChart: echarts.ECharts | null = null
+let trendChart: ECharts | null = null
 
 const query = reactive({
   keyword: '',

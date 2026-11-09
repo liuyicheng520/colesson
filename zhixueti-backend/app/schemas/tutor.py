@@ -63,6 +63,8 @@ class TutorMessageMeta(BaseModel):
     multimodal: dict[str, Any] | None = None
     disclaimer: str | None = None
     web_search_timeout: bool = False
+    # 本轮实际发生的工具调用轨迹，如 ["kb_search:4"]；未触发工具时为空
+    tool_calls: list[str] = Field(default_factory=list)
 
 
 class TutorMessageItem(BaseModel):

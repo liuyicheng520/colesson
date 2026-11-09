@@ -9,6 +9,8 @@ from app.llm.base import BaseLLMProvider, LLMResult
 
 
 class OpenAICompatibleProvider(BaseLLMProvider):
+    supports_tools = True
+
     def __init__(
         self,
         provider_name: str,
@@ -33,6 +35,8 @@ class OpenAICompatibleProvider(BaseLLMProvider):
         model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 2048,
+        tools: list[dict] | None = None,
+        tool_choice: str | None = None,
     ) -> LLMResult:
         model = model or self.default_model
         payload = {
@@ -41,6 +45,10 @@ class OpenAICompatibleProvider(BaseLLMProvider):
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
+        if tools:
+            payload["tools"] = tools
+            if tool_choice:
+                payload["tool_choice"] = tool_choice
         start = time.perf_counter()
         # 长讲义可达 8k tokens，超时放宽；连接 10s 内必须建立
         read_timeout = 300 if max_tokens and max_tokens >= 4096 else 90
@@ -57,6 +65,7 @@ class OpenAICompatibleProvider(BaseLLMProvider):
         usage = data.get("usage", {})
         choice = data["choices"][0]
         content = choice["message"]["content"]
+        raw_tool_calls = choice["message"].get("tool_calls") or None
         return LLMResult(
             content=content,
             provider=self.provider_name,
@@ -66,6 +75,7 @@ class OpenAICompatibleProvider(BaseLLMProvider):
             total_tokens=usage.get("total_tokens", 0),
             latency_ms=latency,
             finish_reason=str(choice.get("finish_reason") or ""),
+            tool_calls=raw_tool_calls,
         )
 
     async def stream_chat(

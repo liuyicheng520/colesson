@@ -226,7 +226,8 @@ router.beforeEach(async (to, _from, next) => {
     if (userStore.isLoggedIn && userStore.userInfo) {
       if (to.meta.adminGuest) {
         // 管理员直接进大盘；非管理员停在登录页（避免 /admin/login → /admin/login 死循环），可直接输入管理员账号
-        return next(userStore.isAdmin ? '/admin/dashboard' : true)
+        if (userStore.isAdmin) return next('/admin/dashboard')
+        return next()
       }
       return next(userStore.isAdmin ? '/admin/dashboard' : '/student/home')
     }
@@ -238,7 +239,8 @@ router.beforeEach(async (to, _from, next) => {
       }
       if (userStore.isLoggedIn && userStore.userInfo) {
         if (to.meta.adminGuest) {
-          return next(userStore.isAdmin ? '/admin/dashboard' : true)
+          if (userStore.isAdmin) return next('/admin/dashboard')
+          return next()
         }
         return next(userStore.isAdmin ? '/admin/dashboard' : '/student/home')
       }
@@ -294,7 +296,7 @@ router.beforeEach(async (to, _from, next) => {
         return next('/admin/login')
       }
       const routeName = String(to.name || '')
-      const requiredPerm = to.meta.perm || ADMIN_ROUTE_PERMS[routeName]
+      const requiredPerm = String(to.meta.perm || ADMIN_ROUTE_PERMS[routeName] || '')
       if (requiredPerm && !permissionStore.hasPerm(requiredPerm)) {
         return next('/admin/forbidden')
       }

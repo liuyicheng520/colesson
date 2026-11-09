@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import uuid
 from typing import Any
@@ -10,6 +11,8 @@ from typing import Any
 from app.agents.base import BaseAgent
 from app.agents.context import OrchestrationContext
 from app.utils.subject_utils import detect_subject_category, is_programming_subject
+
+logger = logging.getLogger(__name__)
 
 
 def _escape_raw_newlines_in_json_strings(text: str) -> str:
@@ -1301,11 +1304,42 @@ class CoordinatorAgent(BaseAgent):
             f"用户画像:\n{ctx.profile_summary()}\n"
             f"本次生成约束:\n{ctx.generation_brief()}"
         )
+        # 规划前允许一次知识库工具调用：先看语料到什么程度，再决定子任务粒度。
+        # 失败或未启用知识库时静默跳过，规划行为与原先完全一致。
+        kb_brief, tool_trace = await self._probe_kb(ctx, user)
+        if kb_brief:
+            user = f"{user}\n知识库参考（供规划判断内容深度）:\n{kb_brief}"
         result = await self._chat(ctx, system, user, run.id, temperature=0.3)
         plan = _extract_json(result.content) or self._default_plan(ctx)
         ctx.orchestrator_plan = plan
-        self._finish_run(run.id, {"plan": plan, "tokens": result.total_tokens})
+        self._finish_run(run.id, {"plan": plan, "tokens": result.total_tokens, "tool_calls": tool_trace})
         return plan
+
+    async def _probe_kb(self, ctx: OrchestrationContext, probe: str) -> tuple[str, list[str]]:
+        """规划阶段的知识库探测：仅一次、只读、失败静默。"""
+        try:
+            from app.llm.tools import openai_tool_specs, run_tool
+
+            messages = [{"role": "user", "content": f"主题：{ctx.topic}\n请判断是否需要检索课程知识库以支撑内容规划。"}]
+            resp = await self.llm.chat(
+                messages,
+                temperature=0.0,
+                max_tokens=128,
+                user_id=ctx.user_id,
+                task_id=ctx.task_id,
+                tools=openai_tool_specs(["kb_search"]),
+            )
+            if not resp.tool_calls:
+                return "", []
+            out = await run_tool("kb_search", (resp.tool_calls[0].get("function") or {}).get("arguments"), db=self.db)
+            citations = out.get("citations") or [] if isinstance(out, dict) else []
+            if not citations:
+                return "", ["kb_search:0"]
+            brief = "\n".join(f"- {c.get('filename')}（来源分 {c.get('score')}）" for c in citations[:4])
+            return brief, [f"kb_search:{len(citations)}"]
+        except Exception as exc:
+            logger.warning("orchestrator kb probe skipped: %s", exc)
+            return "", []
 
     def _default_plan(self, ctx: OrchestrationContext) -> dict:
         type_to_agent = {

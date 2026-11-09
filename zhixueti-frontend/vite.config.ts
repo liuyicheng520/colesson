@@ -15,6 +15,22 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+  build: {
+    target: 'es2019',
+    // 三方库单独成块：首屏只需加载业务代码，图表与组件库可按路由缓存
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          echarts: ['echarts/core', 'echarts/charts', 'echarts/components', 'echarts/renderers'],
+          'element-plus': ['element-plus', '@element-plus/icons-vue'],
+          markdown: ['markdown-it', 'highlight.js'],
+          vendor: ['vue', 'vue-router', 'pinia', 'axios', 'dayjs'],
+        },
+      },
+    },
+    // element-plus 为完整引入的单一供应商块（首次加载后长期缓存），单独放宽阈值
+    chunkSizeWarningLimit: 1200,
+  },
   server: {
     host: true,
     port: 3000,

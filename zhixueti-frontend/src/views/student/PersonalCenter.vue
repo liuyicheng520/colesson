@@ -8,7 +8,7 @@ import { ElMessage } from 'element-plus'
 import {
   Camera, Edit, Lock, Refresh, DataAnalysis, Guide, Collection, Message, Document,
 } from '@element-plus/icons-vue'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 import { useUserStore } from '@/stores/user'
 import { useProfileStore } from '@/stores/profile'
 import ProfileRadar from '@/components/ProfileRadar.vue'
@@ -80,7 +80,7 @@ const demoMode = ref<'live' | 'empty' | 'full'>('live')
 const demoStep = ref(0)
 
 const trendChartRef = ref<HTMLElement>()
-let trendChart: echarts.ECharts | null = null
+let trendChart: ECharts | null = null
 
 const majorOptions = [
   '软件工程2024级',

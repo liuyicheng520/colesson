@@ -3,7 +3,7 @@ defineOptions({ name: 'StudentDashboard' })
 
 import { onMounted, onActivated, onDeactivated, ref, computed, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 import { ElMessage } from 'element-plus'
 import {
   Clock, Collection, Trophy, DataLine, TrendCharts, Guide,
@@ -24,8 +24,8 @@ const gongsheng = ref<GongshengOverview | null>(null)
 const trendRange = ref<'7d' | '30d'>('7d')
 const trendChartRef = ref<HTMLElement>()
 const masteryChartRef = ref<HTMLElement>()
-let trendChart: echarts.ECharts | null = null
-let masteryChart: echarts.ECharts | null = null
+let trendChart: ECharts | null = null
+let masteryChart: ECharts | null = null
 
 const overviewCards = computed(() => {
   const s = stats.value

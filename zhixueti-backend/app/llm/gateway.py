@@ -102,7 +102,26 @@ class LLMGateway:
         stream: bool = False,
         skip_security: bool = False,
         context: "SecurityContext | None" = None,
+        tools: list[dict] | None = None,
+        tool_choice: str | None = None,
     ) -> LLMResult:
+        if tools:
+            # 工具调用走直连路径：入参安全由调用方上游（输入护栏/会话层）把关，
+            # 产出内容的安全校验仍在持久化阶段执行；安全管线当前不支持 tools 透传。
+            return await self._raw_chat(
+                messages,
+                provider,
+                model,
+                temperature,
+                max_tokens,
+                user_id,
+                task_id,
+                agent_run_id,
+                stream,
+                tools=tools,
+                tool_choice=tool_choice,
+            )
+
         if self.db and self._content_safety_enabled() and not skip_security:
             from app.security.pipeline import SecurityPipeline
 
@@ -142,10 +161,15 @@ class LLMGateway:
         task_id: int | None = None,
         agent_run_id: int | None = None,
         stream: bool = False,
+        tools: list[dict] | None = None,
+        tool_choice: str | None = None,
     ) -> LLMResult:
         llm = self.get_provider(provider)
+        chat_kwargs: dict = {}
+        if tools and getattr(llm, "supports_tools", False):
+            chat_kwargs = {"tools": tools, "tool_choice": tool_choice or "auto"}
         try:
-            result = await llm.chat(messages, model, temperature, max_tokens)
+            result = await llm.chat(messages, model, temperature, max_tokens, **chat_kwargs)
         except Exception as exc:
             logger.exception("LLM call failed: %s", exc)
             fallback = self._fallback_provider()
@@ -162,6 +186,8 @@ class LLMGateway:
                     user_id=user_id,
                     task_id=task_id,
                     agent_run_id=agent_run_id,
+                    tools=tools,
+                    tool_choice=tool_choice,
                 )
             raise AppException(ErrorCode.LLM_PROVIDER_ERROR, str(exc), http_status=502)
 

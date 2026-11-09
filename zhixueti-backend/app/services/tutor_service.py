@@ -620,6 +620,46 @@ class TutorService:
 
             yield ("meta", meta.model_dump())
 
+            # ── 受控工具环：模型可按需追加检索知识库（最多 2 轮，任何异常静默回退）──
+            # 基础上下文仍由 _prepare_chat 照旧注入；此处只实现"模型主动发起检索"。
+            try:
+                if self.vector_kb.enabled:
+                    from app.llm.tools import openai_tool_specs, run_tool
+
+                    probe_msgs = list(messages)
+                    tool_trace: list[str] = []
+                    for _ in range(2):
+                        probe = await self.llm.chat(
+                            probe_msgs,
+                            temperature=0.0,
+                            max_tokens=256,
+                            user_id=user.id,
+                            task_id=session.agent_task_id,
+                            tools=openai_tool_specs(["kb_search"]),
+                        )
+                        if not probe.tool_calls:
+                            break
+                        yield ("progress", {"phase": "tool_call", "message": "模型正在补充检索知识库…"})
+                        for call in probe.tool_calls:
+                            fn = call.get("function") or {}
+                            out = await run_tool(fn.get("name") or "", fn.get("arguments"), db=self.db, user=user)
+                            hits = len(out.get("citations") or []) if isinstance(out, dict) else 0
+                            tool_trace.append(f"{fn.get('name')}:{hits}")
+                            probe_msgs = probe_msgs + [
+                                {"role": "assistant", "content": probe.content or "", "tool_calls": [call]},
+                                {
+                                    "role": "tool",
+                                    "tool_call_id": call.get("id"),
+                                    "content": json.dumps(out, ensure_ascii=False)[:6000],
+                                },
+                            ]
+                    if tool_trace:
+                        messages = probe_msgs
+                        meta.tool_calls = tool_trace
+                        logger.info("tutor tool loop session=%s trace=%s", session_no, tool_trace)
+            except Exception as exc:
+                logger.warning("tutor tool loop skipped session=%s: %s", session_no, exc)
+
             timeout_notice = ""
             if web_timed_out_pre and not meta.web_sources:
                 timeout_notice = "\n\n> ⚠️ 未能获取网络资料，已为您生成通用解答\n\n"

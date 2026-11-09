@@ -4,6 +4,7 @@
  */
 
 import type { DimensionProgressItem } from '@/types'
+import type { ProfileBuildMode } from '@/profile/modes'
 
 export type ProfileSourceType = 'assessment' | 'behavior' | 'dialogue' | 'questionnaire' | 'manual'
 

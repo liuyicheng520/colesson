@@ -7,7 +7,7 @@
  * 动效仅使用 canvas 重绘与 CSS transform/opacity；prefers-reduced-motion 下静态呈现。
  */
 import { computed, onActivated, onBeforeUnmount, onMounted, ref } from 'vue'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 import { adminOpsApi, type AdminOverviewStats, type AdminTrendStats } from '@/api/adminOps'
 import { adminAuditApi, type AuditOverviewStats, type ExceptionTrendItem } from '@/api/adminAudit'
 import { adminContentApi } from '@/api/adminContent'
@@ -26,8 +26,8 @@ const trendDays = ref<7 | 30>(7)
 const streamRef = ref<HTMLElement | null>(null)
 const anomalyRef = ref<HTMLElement | null>(null)
 const netRef = ref<HTMLCanvasElement | null>(null)
-let streamChart: echarts.ECharts | null = null
-let anomalyChart: echarts.ECharts | null = null
+let streamChart: ECharts | null = null
+let anomalyChart: ECharts | null = null
 let rafId = 0
 let stopNet: (() => void) | null = null
 

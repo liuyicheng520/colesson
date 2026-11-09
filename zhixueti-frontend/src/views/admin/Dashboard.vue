@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 import { ElMessage } from 'element-plus'
 import { adminOpsApi, type AdminOverviewStats, type AdminTrendStats } from '@/api/adminOps'
 import AdminPageHero from '@/components/admin/AdminPageHero.vue'
@@ -14,8 +14,8 @@ const trendDays = ref<7 | 30>(7)
 
 const trendRef = ref<HTMLElement>()
 const pieRef = ref<HTMLElement>()
-let trendChart: echarts.ECharts | null = null
-let pieChart: echarts.ECharts | null = null
+let trendChart: ECharts | null = null
+let pieChart: ECharts | null = null
 
 const cards = computed(() => {
   const o = overview.value

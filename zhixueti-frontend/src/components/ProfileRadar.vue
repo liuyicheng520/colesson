@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onActivated, onDeactivated, onBeforeUnmount, ref, watch, nextTick } from 'vue'
-import * as echarts from 'echarts'
+import echarts, { type ECharts } from '@/utils/echarts'
 
 export type RadarDim = {
   name: string
@@ -14,7 +14,7 @@ const props = defineProps<{
 }>()
 
 const chartRef = ref<HTMLElement>()
-let chart: echarts.ECharts | null = null
+let chart: ECharts | null = null
 
 function dispose() {
   chart?.dispose()

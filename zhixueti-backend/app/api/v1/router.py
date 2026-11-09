@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1 import admin, admin_audit, admin_content, admin_ops, agents, auth, behavior, kb, llm, paths, profiles, resources, security, system, tutor, users
+from app.api.v1 import admin, admin_audit, admin_content, admin_ops, agents, auth, behavior, kb, llm, mcp, paths, profiles, resources, security, system, tutor, users
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["认证"])
@@ -21,3 +21,4 @@ api_router.include_router(tutor.router, prefix="/tutor", tags=["智能答疑"])
 api_router.include_router(agents.router, prefix="/agents", tags=["多智能体"])
 api_router.include_router(kb.router, prefix="/kb", tags=["向量知识库"])
 api_router.include_router(llm.router, prefix="/llm", tags=["大模型网关"])
+api_router.include_router(mcp.router, prefix="/mcp", tags=["MCP 工具服务"])

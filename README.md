@@ -18,8 +18,9 @@
 ### 学生端（SPA）
 - 画像构建：六维学习画像诊断，驱动个性化生成
 - 资源中心 / 资源广场：多模态资源浏览与知识星图
-- 智能答疑：流式回答 + 知识库引用溯源
+- 智能答疑：流式回答 + 知识库引用溯源 + **模型工具调用**（模型可自主发起检索补齐依据）
 - 学习路径、学习数据、实战演练自测（作答草稿 / 对照参考答案 / 自评）
+- AI 视频讲解：讲稿驱动分页 + 浏览器语音朗读，朗读结束自动翻页
 
 ### 管理端
 - 数据大盘：KPI、平台趋势、功能使用占比、热门知识点 TOP10
@@ -43,8 +44,10 @@
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        ▼
 ┌──────────────────────── FastAPI 智学体 :8000 ──────────────────────────────┐
-│  多智能体编排（8 Agent 流水线） · RAG（ChromaDB 向量检索）                  │
+│  多智能体编排（8 Agent 流水线） · 工具调用（Function Calling）              │
+│  RAG：向量 + bigram BM25 混合检索 → 加权 RRF 融合 → 来源质量重排            │
 │  LLM 网关（DeepSeek / 通义千问 / 星火 / mock 多级降级） · 内容安全校验      │
+│  MCP 兼容端点（JSON-RPC 2.0：initialize / tools/list / tools/call）         │
 │  存储：SQLite（USE_SQLITE）或 MySQL                                        │
 └───────────────────────────────────────────────────────────────────────────┘
 ```
@@ -160,9 +163,21 @@ CoLesson-V2/
 |---|---|---|
 | 认证 | `POST /auth/login` · `POST /api/v1/auth/login` | 宿主会话 / 学生端 JWT |
 | 资源生成 | `POST /api/v1/resources/generate` | 多智能体流水线（SSE 进度） |
-| 知识库 | `GET /api/v1/kb/search` · `POST /api/v1/kb/reindex` | 向量检索 / 重建索引 |
+| 知识库 | `GET /api/v1/kb/search` · `POST /api/v1/kb/reindex` | 混合检索（向量+BM25+RFF+质量重排）/ 重建索引 |
+| 智能答疑 | `POST /api/v1/tutor/sessions/{no}/message/stream` | 流式回答 + 工具调用 + 引用溯源 |
 | 智能体 | `GET /api/v1/agents/definitions` · `PUT /api/v1/agents/definitions/{code}` | 定义与配置 |
+| MCP | `GET /api/v1/mcp` · `POST /api/v1/mcp` | 能力说明 / JSON-RPC（initialize·tools/list·tools/call） |
 | 管理 | `/api/v1/admin/*` · `/admin-api/*` | 内容治理 / 宿主运维 |
+
+### MCP 工具服务示例
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/mcp -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call",
+       "params":{"name":"kb_search","arguments":{"query":"TCP 三次握手","top_k":3}}}'
+```
+
+可用工具：`kb_search`（混合检索知识库）、`profile_get`（读取六维画像）、`learning_stats_get`（读取学习统计）。
 
 ---
 

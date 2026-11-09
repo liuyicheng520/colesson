@@ -31,6 +31,8 @@ const speaking = ref(false)
 let timer: ReturnType<typeof setInterval> | null = null
 let labTimer: ReturnType<typeof setInterval> | null = null
 let speechGen = 0
+// 当前是否由语音朗读驱动翻页（静音或合成不可用时回退为定时器驱动）
+let speechMode = false
 
 const scene = computed(() => props.slides[currentIndex.value] || {})
 const totalSteps = computed(() => props.slides.length)
@@ -80,10 +82,19 @@ function speakCurrent() {
   utter.rate = 1
   speaking.value = true
   utter.onend = () => {
-    if (myGen === speechGen) speaking.value = false
+    if (myGen !== speechGen) return
+    speaking.value = false
+    // 语音驱动翻页：一段朗读结束后自动进入下一页，实现"讲解完才翻页"
+    if (playing.value && speechMode) {
+      progress.value = 100
+      advanceOrStop()
+    }
   }
   utter.onerror = () => {
-    if (myGen === speechGen) speaking.value = false
+    if (myGen !== speechGen) return
+    speaking.value = false
+    // 合成失败时退回定时器驱动，避免停在进度上限
+    speechMode = false
   }
   window.speechSynthesis.speak(utter)
 }
@@ -94,21 +105,27 @@ function stopTimer() {
   playing.value = false
 }
 
+function advanceOrStop() {
+  if (currentIndex.value < totalSteps.value - 1) moveTo(currentIndex.value + 1, true)
+  else {
+    stopTimer()
+    stopSpeech()
+  }
+}
+
 function startTimer(reset = false) {
   if (!totalSteps.value) return
   if (reset) progress.value = 0
   if (timer) clearInterval(timer)
   playing.value = true
+  // 开启语音时以朗读结束作为翻页信号；静音时仍按讲稿时长定时推进
+  speechMode = !muted.value && !!narrationText.value && 'speechSynthesis' in window
   speakCurrent()
   timer = setInterval(() => {
-    progress.value = Math.min(100, progress.value + (10000 / duration.value))
-    if (progress.value >= 100) {
-      if (currentIndex.value < totalSteps.value - 1) moveTo(currentIndex.value + 1, true)
-      else {
-        stopTimer()
-        stopSpeech()
-      }
-    }
+    // 语音模式下进度条只走到 96%，剩余部分留给朗读结束事件收口
+    const ceiling = speechMode ? 96 : 100
+    progress.value = Math.min(ceiling, progress.value + (10000 / duration.value))
+    if (!speechMode && progress.value >= 100) advanceOrStop()
   }, 100)
 }
 
@@ -159,8 +176,13 @@ function togglePlay() {
 
 function toggleMute() {
   muted.value = !muted.value
-  if (muted.value) stopSpeech()
-  else if (playing.value) speakCurrent()
+  if (muted.value) {
+    speechMode = false
+    stopSpeech()
+  } else if (playing.value) {
+    speechMode = !!narrationText.value && 'speechSynthesis' in window
+    speakCurrent()
+  }
 }
 
 function prev() { moveTo(currentIndex.value - 1) }
