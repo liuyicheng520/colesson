@@ -53,7 +53,7 @@ function startSTT() {
   recognition = new SR()
   recognition.lang = 'zh-CN'
   recognition.interimResults = true
-  recognition.onresult = (e) => {
+  recognition.onresult = (e: any) => {
     const text = Array.from({ length: e.results.length }, (_, i) => e.results[i][0].transcript).join('')
     const last = e.results[e.results.length - 1]
     if (last?.[0] && (last as { isFinal?: boolean }).isFinal !== false) {

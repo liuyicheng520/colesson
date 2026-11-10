@@ -123,9 +123,10 @@ async function mermaidToPngLocal(code: string): Promise<string | null> {
     securityLevel: 'loose',
     fontFamily: 'Microsoft YaHei, sans-serif',
     flowchart: { htmlLabels: false, useMaxWidth: false },
-    sequence: { htmlLabels: false },
-    er: { htmlLabels: false },
-  })
+    // mermaid 类型定义未覆盖 sequence/er 的 htmlLabels，但运行时支持
+    sequence: { htmlLabels: false } as Record<string, unknown>,
+    er: { htmlLabels: false } as Record<string, unknown>,
+  } as Record<string, unknown>)
 
   try {
     await mermaid.parse(trimmed)
@@ -201,7 +202,14 @@ function addSlideFooter(page: PptxSlide, topic: string, pageNum: number, total: 
   })
 }
 
-function addTitleSlide(pptx: { addSlide: () => PptxSlide }, topic: string, slideCount: number) {
+// pptxgenjs 生成器的最小结构约束：其 addSlide 参数与返回类型随版本变化，
+// 这里放宽为结构兼容别名，避免与第三方类型定义冲突。
+type PptxLike = {
+  addSlide: (...args: any[]) => any
+  ShapeType?: { roundRect: string }
+}
+
+function addTitleSlide(pptx: PptxLike, topic: string, slideCount: number) {
   const page = pptx.addSlide()
   page.background = { color: THEME.purple }
 
@@ -260,7 +268,7 @@ function addTitleSlide(pptx: { addSlide: () => PptxSlide }, topic: string, slide
 }
 
 function addClosingSlide(
-  pptx: { addSlide: () => PptxSlide },
+  pptx: PptxLike,
   topic: string,
   stats: { content: number; quiz: number },
   pageNum: number,
@@ -379,7 +387,7 @@ function addClosingSlide(
 }
 
 async function addContentSlide(
-  pptx: { addSlide: () => PptxSlide; ShapeType: { roundRect: string } },
+  pptx: PptxLike,
   slide: TutorLectureSlide,
   topic: string,
   pageNum: number,
@@ -502,7 +510,7 @@ async function addContentSlide(
 }
 
 function addQuizSlide(
-  pptx: { addSlide: () => PptxSlide },
+  pptx: PptxLike,
   slide: TutorLectureSlide,
   topic: string,
   pageNum: number,

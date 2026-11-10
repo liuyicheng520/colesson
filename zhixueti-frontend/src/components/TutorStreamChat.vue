@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from 'vue'
+import { ref, watch, nextTick, computed, reactive } from 'vue'
 import { Loading, RefreshRight, Headset, VideoCamera } from '@element-plus/icons-vue'
 import RichMarkdownViewer from './RichMarkdownViewer.vue'
 import MarkdownViewer from './MarkdownViewer.vue'
@@ -68,7 +68,8 @@ const emit = defineEmits<{
 
 const input = ref('')
 const listRef = ref<HTMLElement>()
-const tts = useTtsPlayer(1)
+// reactive 包装：使 playingId / progress 等在模板中按值访问（否则比较恒为 false、进度为 NaN）
+const tts = reactive(useTtsPlayer(1))
 
 const deepModeModel = computed({
   get: () => props.deepMode ?? false,

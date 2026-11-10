@@ -134,7 +134,7 @@ function startVoice() {
   recognition = new SR()
   recognition.lang = 'zh-CN'
   recognition.interimResults = true
-  recognition.onresult = (e) => {
+  recognition.onresult = (e: any) => {
     let text = ''
     for (let i = 0; i < e.results.length; i++) text += e.results[i][0]?.transcript || ''
     if (text.trim()) {

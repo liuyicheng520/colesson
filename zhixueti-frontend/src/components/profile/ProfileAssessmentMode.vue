@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+import { profileApi } from '@/api/profile'
 import { ASSESSMENT_BANK } from '@/profile/assessmentBank'
 import {
   createAssessmentState,

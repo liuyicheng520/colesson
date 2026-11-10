@@ -384,6 +384,7 @@ export function useVideoGeneration(deps: VideoGenDeps) {
     streamingOutline,
     isOutlineStreaming,
     reviewOutlineEnabled,
+    reviewIntent,
     autoContinueHint,
     lecture,
     confirming,

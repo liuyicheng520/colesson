@@ -70,7 +70,7 @@ const typeIcons: Record<string, unknown> = {
   code: Monitor,
 }
 
-const typeLabels = computed(() => ({
+const typeLabels = computed<Record<string, string>>(() => ({
   ...TYPE_LABELS,
   code: codeTypeLabel(genForm.topic, genForm.goal),
 }))

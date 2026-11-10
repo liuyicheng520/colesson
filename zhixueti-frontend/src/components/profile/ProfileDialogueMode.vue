@@ -116,7 +116,8 @@ function useChip(text: string) {
   void handleSend(text)
 }
 
-function syncFromApi(data: Record<string, unknown>) {
+// 接口返回结构随模式变化，此处按字段读取，参数放宽为 any 以避免各模式自定义类型互相冲突
+function syncFromApi(data: any) {
   if (data.dimension_progress) localProgress.value = data.dimension_progress as DimensionProgressItem[]
   if (data.current_dimension_code && data.current_dimension_name) {
     currentDimension.value = { code: data.current_dimension_code as string, name: data.current_dimension_name as string }

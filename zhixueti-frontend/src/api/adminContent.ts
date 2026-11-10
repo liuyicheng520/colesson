@@ -118,12 +118,24 @@ export interface AdminDocumentPreview {
   truncated: boolean
 }
 
+/** 讲义分镜：字段随 slide 类型变化，此处收敛预览所需的最小形状 */
+export interface AdminLectureSlide {
+  type?: string
+  title?: string
+  bullets?: string[]
+  highlight?: string
+  mermaid?: string
+  question?: string
+  options?: string[]
+  [key: string]: unknown
+}
+
 export interface AdminLecturePreview {
   session_id: number
   lecture_id: string
   title: string
   topic: string | null
-  slides: Array<Record<string, unknown>>
+  slides: AdminLectureSlide[]
   video_url: string | null
   recommendations: string[]
 }

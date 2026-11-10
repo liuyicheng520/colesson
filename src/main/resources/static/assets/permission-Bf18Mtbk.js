@@ -1,1 +1,0 @@
-import{a as o}from"./index-XFAYuViF.js";function _(r){return o().hasPerm(r)}const s={ROLE_SUPER_ADMIN:"超级管理员",ROLE_CONTENT_ADMIN:"内容管理员",ROLE_OPS_ADMIN:"运维管理员",ROLE_ADMIN:"管理员"};function e(r){return s[r]||r}export{e as f,_ as h};

@@ -50,7 +50,11 @@ const muted = ref(false)
 const playProgress = ref(0)
 let playTimer: ReturnType<typeof setInterval> | null = null
 
-const drawerTitle = computed(() => props.title || props.payload?.data?.title || '内容预览')
+const drawerTitle = computed(() => {
+  const data = props.payload?.data
+  const inner = data && 'title' in data ? (data.title as string) : ''
+  return props.title || inner || '内容预览'
+})
 
 const docPages = computed(() => {
   if (props.payload?.kind !== 'document') return []
