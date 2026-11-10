@@ -14,11 +14,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install & Build SPA
+      - name: Install dependencies
         working-directory: zhixueti-frontend
-        run: |
-          npm install
-          npm run sync
+        run: npm install
+      - name: Type check (vue-tsc)
+        working-directory: zhixueti-frontend
+        run: npm run typecheck
+      - name: Build SPA
+        working-directory: zhixueti-frontend
+        run: npx vite build
 
   backend-syntax:
     runs-on: ubuntu-latest

@@ -201,6 +201,33 @@ const router = createRouter({
   routes,
 })
 
+/**
+ * 路由级分块加载失败兜底。
+ *
+ * 场景：版本发布后旧 index.html 仍被引用，按需加载的分块已被替换，用户点菜单得到白屏。
+ * 策略：同一次会话内自动整页重载一次（拿到新入口），仍失败则给出可读提示，避免死循环。
+ */
+const CHUNK_RETRY_KEY = 'spa:chunk-retry'
+router.onError((error) => {
+  const msg = String((error as Error)?.message || error)
+  const isChunkError = /Failed to fetch dynamically imported module|Importing a module script failed|Loading chunk .* failed/i.test(msg)
+  if (!isChunkError) return
+  if (sessionStorage.getItem(CHUNK_RETRY_KEY) === '1') {
+    sessionStorage.removeItem(CHUNK_RETRY_KEY)
+    window.alert('页面资源已更新，但自动刷新未生效。请手动刷新页面（Ctrl+F5）后重试。')
+    return
+  }
+  sessionStorage.setItem(CHUNK_RETRY_KEY, '1')
+  window.location.reload()
+})
+// 正常导航成功后清除重试标记，保证下次版本更新仍能自动恢复
+// 导航完成后：清除分块重试标记 + 按路由标题更新浏览器标签
+router.afterEach((to) => {
+  sessionStorage.removeItem(CHUNK_RETRY_KEY)
+  const pageTitle = String(to.meta.title || '').trim()
+  document.title = pageTitle ? `${pageTitle} · 智课共生` : '智课共生 · AI 互动智课生成与实时问答系统'
+})
+
 function withTimeout<T>(promise: Promise<T>, ms = 8000): Promise<T> {
   return Promise.race([
     promise,

@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
           <button class="hud-entry" type="button" @click="handleSelect('/admin/console')">CONSOLE</button>
           <el-badge :value="publishedAnnouncements.length || undefined" :hidden="!publishedAnnouncements.length">
             <el-tooltip content="系统公告" placement="bottom">
-              <button class="icon-btn" type="button" @click="showAnnouncements">
+              <button class="icon-btn" type="button" aria-label="查看系统公告" @click="showAnnouncements">
                 <el-icon><Bell /></el-icon>
               </button>
             </el-tooltip>
@@ -118,7 +118,13 @@ onBeforeUnmount(() => {
             <span class="who-role">{{ adminRoleLabel }}</span>
           </div>
           <button class="logout" type="button" @click="logout">退出登录</button>
-          <button class="icon-btn mobile-only" type="button" @click="mobileNavOpen = !mobileNavOpen">
+          <button
+            class="icon-btn mobile-only"
+            type="button"
+            :aria-label="mobileNavOpen ? '收起导航菜单' : '展开导航菜单'"
+            :aria-expanded="mobileNavOpen"
+            @click="mobileNavOpen = !mobileNavOpen"
+          >
             <el-icon><MenuIcon /></el-icon>
           </button>
         </div>

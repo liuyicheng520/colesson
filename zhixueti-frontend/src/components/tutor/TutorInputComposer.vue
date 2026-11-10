@@ -347,8 +347,8 @@ defineExpose({ pendingImages, autoResize })
           class="attachment-item image-item"
           @click="previewImageUrl = img.url; previewVisible = true"
         >
-          <img :src="img.url" :alt="img.file.name" />
-          <button type="button" class="item-remove" @click.stop="removePendingImage(img.id)">
+          <img :src="img.url" :alt="img.file.name" loading="lazy" decoding="async" />
+          <button type="button" class="item-remove" :aria-label="`移除图片 ${img.file.name}`" @click.stop="removePendingImage(img.id)">
             <el-icon><Close /></el-icon>
           </button>
         </div>
@@ -556,7 +556,7 @@ defineExpose({ pendingImages, autoResize })
 
     <!-- 图片预览 -->
     <el-dialog v-model="previewVisible" title="图片预览" width="auto" append-to-body destroy-on-close>
-      <img v-if="previewImageUrl" :src="previewImageUrl" class="preview-img" alt="预览" />
+      <img v-if="previewImageUrl" :src="previewImageUrl" class="preview-img" alt="图片预览" />
     </el-dialog>
   </div>
 </template>

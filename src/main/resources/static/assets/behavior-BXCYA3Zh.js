@@ -1,0 +1,1 @@
+import{r as t}from"./index-B9FbLEYC.js";const s={getStats(e){return t({method:"GET",url:"/behavior/stats",params:e})},startSession(e){return t({method:"POST",url:"/behavior/sessions/start",data:e})},batchEvents(e){return t({method:"POST",url:"/behavior/events/batch",data:e})},endSession(e){return t({method:"POST",url:`/behavior/sessions/${e}/end`})}};export{s as b};
